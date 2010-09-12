@@ -25,8 +25,6 @@ def check_python_version():
 def create_default_config(fn): 
    f = open(fn, 'w')
    print >> f, trim("""\
-   import os
-
    nick = 'phenny'
    host = 'irc.example.net'
    port = 6667
@@ -48,7 +46,7 @@ def create_default_config(fn):
 
    # Directories to load user modules from
    # e.g. /path/to/my/modules
-   extra = ['os.path.expanduser("~/.phenny/modules")']
+   extra = []
 
    # Services to load: maps channel names to white or black lists
    external = { 
@@ -63,8 +61,7 @@ def create_default_config(fn):
 
 def create_dotdir(dotdir): 
    print 'Creating a config directory at ~/.phenny...'
-   try: 
-      os.mkdir(dotdir)
+   try: os.mkdir(dotdir)
    except Exception, e: 
       print >> sys.stderr, 'There was a problem creating %s:' % dotdir
       print >> sys.stderr, e.__class__, str(e)
@@ -73,7 +70,6 @@ def create_dotdir(dotdir):
 
    print 'Creating a default config file at ~/.phenny/default.py...'
    default = os.path.join(dotdir, 'default.py')
-   os.mkdir(os.path.join(dotdir, 'modules'))
    create_default_config(default)
 
    print 'Done; now you can edit default.py, and run phenny! Enjoy.'
