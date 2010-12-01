@@ -265,6 +265,8 @@ def yi(phenny, input):
    extraraels, remainder = divide(remainder, 432000)
    if extraraels == 4: 
       return phenny.say('Yes! PARTAI!')
+   elif extraraels == 3:
+   	  return phenny.say('Soon...')
    else: phenny.say('Not yet...')
 yi.commands = ['yi']
 yi.priority = 'low'
