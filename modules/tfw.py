@@ -6,24 +6,29 @@ author: mutantmonkey <mutantmonkey@gmail.com>
 
 import random
 
-from urllib2 import urlopen
+from urllib import quote as urlquote
+from urllib2 import urlopen, HTTPError
 import lxml.html
 
 def tfw(phenny, input):
 	zipcode = input.group(2)
 
 	try:
-		zipcode = int(zipcode)
-	except ValueError:
-		phenny.say("Sorry, .tfw only supports zip codes")
+		req = urlopen("http://thefuckingweather.com/?zipcode=%s" % urlquote(zipcode))
+	except HTTPError:
+		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
-	req = urlopen("http://thefuckingweather.com/?zipcode=%d" % zipcode)
 	doc = lxml.html.parse(req)
 
 	location = doc.getroot().find_class('small')[0].text_content()
 
-	weather = doc.getroot().get_element_by_id('content')
+	try:
+		weather = doc.getroot().get_element_by_id('content')
+	except KeyError:
+		phenny.say("Unknown location")
+		return
+
 	main = weather.find_class('large')
 
 	# temperature is everything up to first <br />
@@ -41,7 +46,7 @@ def tfw(phenny, input):
 
 	response = "%s %s - %s - %s" % (temp, comment, remark, location)
 	phenny.say(response)
-tfw.rule = (['tfw'], r'(\d*)')
+tfw.rule = (['tfw'], r'(.*)')
 
 if __name__ == '__main__':
 	print __doc__.strip()
