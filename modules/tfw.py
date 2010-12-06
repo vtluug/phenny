@@ -26,7 +26,10 @@ def tfw(phenny, input):
 	
 	# parse comment (broken by <br />, so we have do it this way)
 	comments = main[0].xpath('text()')
-	comment = "%s %s" % (comments[1], comments[2])
+	if len(comments) > 2:
+		comment = "%s %s" % (comments[1], comments[2])
+	else :
+		comment = comments[1]
 
 	# remark is in its own div, so we have it easy
 	remark = weather.get_element_by_id('remark').text_content()
