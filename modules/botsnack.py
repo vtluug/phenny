@@ -7,8 +7,6 @@ author: mutantmonkey <mutantmonkey@gmail.com>
 import random
 
 def botsnack(phenny, input):
-	msg = input.group(2)
-
 	messages = ["Om nom nom", "Delicious, thanks!"]
 	response = random.choice(messages)
 
