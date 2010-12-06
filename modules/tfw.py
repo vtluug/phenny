@@ -11,7 +11,12 @@ import lxml.html
 
 def tfw(phenny, input):
 	zipcode = input.group(2)
-	zipcode = int(zipcode)
+
+	try:
+		zipcode = int(zipcode)
+	except ValueError:
+		phenny.say("Sorry, .tfw only supports zip codes")
+		return
 
 	req = urlopen("http://thefuckingweather.com/?zipcode=%d" % zipcode)
 	doc = lxml.html.parse(req)
@@ -36,7 +41,7 @@ def tfw(phenny, input):
 
 	response = "%s %s - %s - %s" % (temp, comment, remark, location)
 	phenny.say(response)
-tfw.rule = (['tfw'], r'(.*)')
+tfw.rule = (['tfw'], r'(\d*)')
 
 if __name__ == '__main__':
 	print __doc__.strip()
