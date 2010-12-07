@@ -12,6 +12,9 @@ import lxml.html
 
 def tfw(phenny, input):
 	zipcode = input.group(2)
+	if not zipcode:
+		# default to Blacksburg, VA
+		zipcode = "24060"
 
 	try:
 		req = urlopen("http://thefuckingweather.com/?zipcode=%s" % urlquote(zipcode))
