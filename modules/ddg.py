@@ -34,10 +34,11 @@ def ddg(phenny, input, celsius=False):
 		return phenny.reply(".ddg what?")
 
 	uri = result(query)
+	resultsuri = "https://duckduckgo.com/?q=" + web.urllib.quote(query.encode('utf-8'))
 	if uri:
-		phenny.reply("%s - Results from https://duckduckgo.com/" % uri)
+		phenny.reply("%s - Results from %s" % (uri, resultsuri))
 	else:
-		phenny.reply("No results found for '%s'." % query)
+		phenny.reply("No results found for '%s'; try %s" % (query, resultsuri))
 ddg.rule = (['ddg'], r'(.*)')
 
 if __name__ == '__main__':
