@@ -121,6 +121,59 @@ def now_playing(phenny, input):
 
 now_playing.commands = ['np']
 
+def tasteometer(phenny, input):
+    input1 = input.group(2)
+    input2 = input.group(3)
+    user1 = resolve_username(input1)
+    if not user1:
+        user1 = input1
+    user2 = resolve_username(input2)
+    if not user2:
+        user2 = input2
+    try:
+        req = urlopen("%smethod=tasteometer.compare&type1=user&type2=user&value1=%s&value2=%s" % (APIURL, urlquote(user1), urlquote(user2)))
+    except HTTPError, e:
+        if e.code == 400:
+            phenny.say("uhoh, someone doesn't exist on last.fm, perhaps they need to set user")
+            return
+        else:
+            phenny.say("uhoh. try again later, mmkay?")
+            return
+    doc = etree.parse(req)
+    root = doc.getroot()
+    score = root.xpath('comparison/result/score')
+    if len(score) == 0:
+        phenny.say("something isn't right. have those users scrobbled?")
+
+    score = float(score[0].text)
+    rating = ""
+    if score >= 0.9:
+        rating = "Super"
+    elif score >= 0.7:
+        rating = "Very High"
+    elif score >= 0.5:
+        rating = "High"
+    elif score >= 0.3:
+        rating = "Medium"
+    elif score >= 0.1:
+        rating = "Low"
+    else:
+        rating = "Very Low"
+
+    artists = root.xpath("comparison/result/artists/artist/name")
+    common_artists = ""
+    if len(artists) == 0:
+        common_artists = ". they don't have any artists in common."
+
+    names = []
+    map(lambda a: names.append(a.text) ,artists)
+    common_artists = "and music they have in common includes: %s" % ", ".join(names)
+
+
+    phenny.say("%s's and %s's musical compatibility rating is %s %s" % (user1, user2, rating, common_artists))
+
+tasteometer.rule = (['taste'], r'(\S+)\s+(\S+)')
+
 def save_config():
     configfile  = open(config_filename, 'wb')
     config.write(configfile)
