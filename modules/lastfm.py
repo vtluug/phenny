@@ -130,6 +130,8 @@ def tasteometer(phenny, input):
     user2 = resolve_username(input2)
     if not user2:
         user2 = input2
+    if not user2 or len(user2) == 0:
+        user2 = input.nick
     try:
         req = urlopen("%smethod=tasteometer.compare&type1=user&type2=user&value1=%s&value2=%s" % (APIURL, urlquote(user1), urlquote(user2)))
     except HTTPError, e:
@@ -172,7 +174,7 @@ def tasteometer(phenny, input):
 
     phenny.say("%s's and %s's musical compatibility rating is %s %s" % (user1, user2, rating, common_artists))
 
-tasteometer.rule = (['taste'], r'(\S+)\s+(\S+)')
+tasteometer.rule = (['taste'], r'(\S+)(?:\s+(\S+))?')
 
 def save_config():
     configfile  = open(config_filename, 'wb')
