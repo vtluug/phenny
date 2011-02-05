@@ -123,6 +123,10 @@ now_playing.commands = ['np']
 
 def tasteometer(phenny, input):
     input1 = input.group(2)
+    if not input1 or len(input1) == 0:
+        phenny.say("tasteometer: compares two users' musical taste")
+        phenny.say("syntax: .taste user1 user2")
+        return
     input2 = input.group(3)
     user1 = resolve_username(input1)
     if not user1:
@@ -146,6 +150,7 @@ def tasteometer(phenny, input):
     score = root.xpath('comparison/result/score')
     if len(score) == 0:
         phenny.say("something isn't right. have those users scrobbled?")
+        return
 
     score = float(score[0].text)
     rating = ""
@@ -164,13 +169,12 @@ def tasteometer(phenny, input):
 
     artists = root.xpath("comparison/result/artists/artist/name")
     common_artists = ""
+    names = []
     if len(artists) == 0:
         common_artists = ". they don't have any artists in common."
-
-    names = []
-    map(lambda a: names.append(a.text) ,artists)
-    common_artists = "and music they have in common includes: %s" % ", ".join(names)
-
+    else:
+        map(lambda a: names.append(a.text) ,artists)
+        common_artists = "and music they have in common includes: %s" % ", ".join(names)
 
     phenny.say("%s's and %s's musical compatibility rating is %s %s" % (user1, user2, rating, common_artists))
 
