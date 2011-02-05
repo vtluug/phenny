@@ -135,7 +135,9 @@ def tasteometer(phenny, input):
     if not user2:
         user2 = input2
     if not user2 or len(user2) == 0:
-        user2 = input.nick
+        user2 = resolve_username(input.nick)
+        if not user2:
+            user2 = input.nick
     try:
         req = urlopen("%smethod=tasteometer.compare&type1=user&type2=user&value1=%s&value2=%s" % (APIURL, urlquote(user1), urlquote(user2)))
     except HTTPError, e:
