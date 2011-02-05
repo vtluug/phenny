@@ -70,11 +70,17 @@ lastfm_set.rule = (['lastfm-set'], r'(\S+)\s+(?:(.*?),(.*)|(\S+))')
 
 def now_playing(phenny, input):
     nick = input.nick
-    user = input.group(2)
-    if not user or len(user.strip()) == 0:
-        user = resolve_username(nick)
-    if not user:
-        user = nick
+    user = ""
+    arg = input.group(2)
+    if not arg or len(arg.strip()) == 0:
+        user = resolve_username(nick) # use the sender
+        if not user: #nick didnt resolve
+            user = nick
+    else: # use the argument
+        user = resolve_username(arg.strip())
+        if not user: # user didnt resolve
+            user = arg
+    user = user.strip()
     try:
         req = urlopen("%smethod=user.getrecenttracks&user=%s" % (APIURL, urlquote(user)))
     except HTTPError, e:
