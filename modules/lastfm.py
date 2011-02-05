@@ -109,7 +109,10 @@ def now_playing(phenny, input):
 
     track = tags['name'].text.strip()
     artist = tags['artist'].text.strip()
-    album = tags['album'].text.strip()
+
+    album = "unknown"
+    if tags['album'].text:
+        album = tags['album'].text
 
     date = None
     stamp = None
@@ -119,11 +122,11 @@ def now_playing(phenny, input):
 
     if now:
         present = get_verb(nick)[1]
-        phenny.say("%s %s \"%s\" by %s-%s" %(user.strip(), present.strip(), track, artist, album))
+        phenny.say("%s %s \"%s\" by %s on %s" %(user.strip(), present.strip(), track, artist, album ))
         return
     else:
         past = get_verb(nick)[0]
-        phenny.say("%s %s \"%s\" by %s-%s %s ago" %(user.strip(), past.strip(), track, artist, album, pretty_date(stamp)))
+        phenny.say("%s %s \"%s\" by %s on %s %s ago" %(user.strip(), past.strip(), track, artist, album, pretty_date(stamp)))
 
 now_playing.commands = ['np']
 
