@@ -70,7 +70,9 @@ lastfm_set.rule = (['lastfm-set'], r'(\S+)\s+(?:(.*?),(.*)|(\S+))')
 
 def now_playing(phenny, input):
     nick = input.nick
-    user = resolve_username(nick)
+    user = input.group(2)
+    if not user:
+        user = resolve_username(nick)
     if not user:
         user = nick
     try:
@@ -89,7 +91,7 @@ def now_playing(phenny, input):
         phenny.say("%s hasn't played anything recently" % (user))
         return
     tracks = list(recenttracks[0])
-    print etree.tostring(recenttracks[0])
+    #print etree.tostring(recenttracks[0])
     first = tracks[0]
     now = True if first.get("nowplaying") == "true" else False
     tags = {}
