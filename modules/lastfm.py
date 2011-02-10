@@ -126,7 +126,7 @@ def now_playing(phenny, input):
         return
     else:
         past = get_verb(nick)[0]
-        phenny.say("%s %s \"%s\" by %s on %s %s ago" %(user.strip(), past.strip(), track, artist, album, pretty_date(stamp)))
+        phenny.say("%s %s \"%s\" by %s on %s %s" %(user.strip(), past.strip(), track, artist, album, pretty_date(stamp)))
 
 now_playing.commands = ['np']
 
