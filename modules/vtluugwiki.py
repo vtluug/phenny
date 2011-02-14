@@ -13,8 +13,8 @@ author: mutantmonkey <mutantmonkey@gmail.com>
 import re, urllib
 import web
 
-wikiuri = 'http://vtluug.org/wiki/%s'
-wikisearch = 'http://vtluug.org/wiki/Special:Search?' \
+wikiuri = 'https://vtluug.org/wiki/%s'
+wikisearch = 'https://vtluug.org/wiki/Special:Search?' \
                     + 'search=%s&fulltext=Search'
 
 r_tr = re.compile(r'(?ims)<tr[^>]*>.*?</tr>')
