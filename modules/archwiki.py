@@ -18,7 +18,7 @@ wikisearch = 'https://wiki.archlinux.org/index.php/Special:Search?' \
                     + 'search=%s&fulltext=Search'
 
 r_tr = re.compile(r'(?ims)<tr[^>]*>.*?</tr>')
-r_content = re.compile(r'(?ims)</table>.*?<!-- end content -->')
+r_content = re.compile(r'(?ims)</p>\n</div>.*?<!-- end content -->')
 r_paragraph = re.compile(r'(?ims)<p[^>]*>.*?</p>|<li(?!n)[^>]*>.*?</li>')
 r_tag = re.compile(r'<(?!!)[^>]+>')
 r_whitespace = re.compile(r'[\t\r\n ]+')
@@ -83,10 +83,10 @@ def archwiki(term, last=False):
 
    # kind of hacky fix to deal with Arch wiki template, should be cleaned up a bit
    content = r_content.findall(bytes)
-   if content:
-      paragraphs = r_paragraph.findall(content[0])
-   else:
-      paragraphs = r_paragraph.findall(bytes)
+   if not content or len(content) < 1:
+      return None
+   paragraphs = r_paragraph.findall(content[0])
+   print paragraphs
 
    if not paragraphs: 
       if not last: 
