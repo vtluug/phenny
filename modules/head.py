@@ -7,10 +7,14 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib, urllib2, httplib, urlparse, time
+import re, urllib, urllib2, httplib, urlparse, time, cookielib
 from htmlentitydefs import name2codepoint
 import web
 from tools import deprecated
+
+cj = cookielib.LWPCookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+urllib2.install_opener(opener)
 
 def head(phenny, input): 
    """Provide HTTP HEAD information."""
