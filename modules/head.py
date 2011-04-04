@@ -7,10 +7,15 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib, urllib2, httplib, urlparse, time
+import re, urllib, urllib2, httplib, urlparse, time, cookielib
 from htmlentitydefs import name2codepoint
+from string import join
 import web
 from tools import deprecated
+
+cj = cookielib.LWPCookieJar()
+opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+urllib2.install_opener(opener)
 
 def head(phenny, input): 
    """Provide HTTP HEAD information."""
@@ -26,6 +31,7 @@ def head(phenny, input):
 
    if not uri.startswith('htt'): 
       uri = 'http://' + uri
+   # uri = uri.replace('#!', '?_escaped_fragment_=')
 
    try: info = web.head(uri)
    except IOError: return phenny.say("Can't connect to %s" % uri)
@@ -77,9 +83,35 @@ def f_title(self, origin, match, args):
       uri = self.last_seen_uri.get(origin.sender)
    if not uri: 
       return self.msg(origin.sender, 'I need a URI to give the title of...')
+   title = gettitle(uri)
+   if title:
+      self.msg(origin.sender, origin.nick + ': ' + title)
+   else: self.msg(origin.sender, origin.nick + ': No title found')
+f_title.commands = ['title']
 
+def noteuri(phenny, input): 
+   uri = input.group(1).encode('utf-8')
+   if not hasattr(phenny.bot, 'last_seen_uri'): 
+      phenny.bot.last_seen_uri = {}
+   phenny.bot.last_seen_uri[input.sender] = uri
+noteuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
+noteuri.priority = 'low'
+
+titlecommands = r'(?:' + join(f_title.commands, r'|') + r')'
+def snarfuri(phenny, input):
+   if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
+      return
+   uri = input.group(1).encode('utf-8')
+   title = gettitle(uri)
+   if title:
+      phenny.msg(input.sender, '[ ' + title + ' ]')
+snarfuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
+snarfuri.priority = 'low'
+
+def gettitle(uri):
    if not ':' in uri: 
       uri = 'http://' + uri
+   uri = uri.replace('#!', '?_escaped_fragment_=')
 
    try: 
       redirects = 0
@@ -92,7 +124,6 @@ def f_title(self, origin, match, args):
          u = urllib2.urlopen(req)
          info = u.info()
          u.close()
-         # info = web.head(uri)
 
          if not isinstance(info, list): 
             status = '200'
@@ -105,23 +136,19 @@ def f_title(self, origin, match, args):
 
          redirects += 1
          if redirects >= 25: 
-            self.msg(origin.sender, origin.nick + ": Too many redirects")
-            return
+            return None
 
       try: mtype = info['content-type']
       except: 
-         err = ": Couldn't get the Content-Type, sorry"
-         return self.msg(origin.sender, origin.nick + err)
-      if not (('/html' in mtype) or ('/xhtml' in mtype)): 
-         self.msg(origin.sender, origin.nick + ": Document isn't HTML")
-         return
+         return None
+         if not (('/html' in mtype) or ('/xhtml' in mtype)): 
+            return None
 
       u = urllib2.urlopen(req)
       bytes = u.read(262144)
       u.close()
 
    except IOError: 
-      self.msg(origin.sender, "Can't connect to %s" % uri)
       return
 
    m = r_title.search(bytes)
@@ -155,21 +182,10 @@ def f_title(self, origin, match, args):
             try: title = title.decode('iso-8859-1').encode('utf-8')
             except: title = title.decode('cp1252').encode('utf-8')
          else: pass
-      else: title = '[The title is empty.]'
-
-      title = title.replace('\n', '')
-      title = title.replace('\r', '')
-      self.msg(origin.sender, origin.nick + ': ' + title)
-   else: self.msg(origin.sender, origin.nick + ': No title found')
-f_title.commands = ['title']
-
-def noteuri(phenny, input): 
-   uri = input.group(1).encode('utf-8')
-   if not hasattr(phenny.bot, 'last_seen_uri'): 
-      phenny.bot.last_seen_uri = {}
-   phenny.bot.last_seen_uri[input.sender] = uri
-noteuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
-noteuri.priority = 'low'
+         title = title.replace('\n', '')
+         title = title.replace('\r', '')
+      else: title = None
+   return title
 
 if __name__ == '__main__': 
    print __doc__.strip()
