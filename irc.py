@@ -155,7 +155,8 @@ class Bot(asynchat.async_chat):
       self.sending.release()
 
    def action(self, recipient, text):
-      textu = unicode(chr(1) + "ACTION %s" % text)
+      text = "ACTION %s" % text
+      textu = chr(1) + text + chr(1)
       return self.msg(recipient, textu)
 
    def notice(self, dest, text): 
