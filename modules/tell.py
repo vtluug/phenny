@@ -101,6 +101,7 @@ def f_remind(phenny, input):
 
    dumpReminders(phenny.tell_filename, phenny.reminders) # @@ tell
 f_remind.rule = ('$nick', ['tell', 'ask'], r'(\S+) (.*)')
+f_remind.thread = False
 
 def getReminders(phenny, channel, key, tellee): 
    lines = []
@@ -146,6 +147,7 @@ def message(phenny, input):
       dumpReminders(phenny.tell_filename, phenny.reminders) # @@ tell
 message.rule = r'(.*)'
 message.priority = 'low'
+message.thread = False
 
 def messageAlert(phenny, input):
    if (input.nick.lower() in phenny.reminders.keys()):
@@ -153,6 +155,7 @@ def messageAlert(phenny, input):
 messageAlert.event = 'JOIN'
 messageAlert.rule = r'.*'
 messageAlert.priority = 'low'
+messageAlert.thread = False
 
 if __name__ == '__main__': 
    print __doc__.strip()
