@@ -147,5 +147,12 @@ def message(phenny, input):
 message.rule = r'(.*)'
 message.priority = 'low'
 
+def messageAlert(phenny, input):
+   if (input.nick.lower() in phenny.reminders.keys()):
+      phenny.say(input.nick + ': You have messages.')
+messageAlert.event = 'JOIN'
+messageAlert.rule = r'.*'
+messageAlert.priority = 'low'
+
 if __name__ == '__main__': 
    print __doc__.strip()
