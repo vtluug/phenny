@@ -27,7 +27,7 @@ def result(query):
 		return None
 
 def ddg(phenny, input, celsius=False):
-	""".tfw <query> - Search Duck Duck Go for the specified query."""
+	""".ddg <query> - Search Duck Duck Go for the specified query."""
 
 	query = input.group(2)
 	if not query:
