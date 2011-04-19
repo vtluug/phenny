@@ -26,7 +26,7 @@ def result(query):
 	except IndexError:
 		return None
 
-def ddg(phenny, input, celsius=False):
+def ddg(phenny, input):
 	""".ddg <query> - Search Duck Duck Go for the specified query."""
 
 	query = input.group(2)
