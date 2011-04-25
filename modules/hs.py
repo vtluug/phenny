@@ -17,14 +17,15 @@ def search(query):
 	if len(result) <= 0:
 		return False
 
-	print "wtf"
-
 	return result
 
 def hs(phenny, input):
 	""".hs <pid/name/email> - Search for someone on Virginia Tech People Search."""
 
 	q = input.group(2)
+	if q is None:
+		return
+	q = q.strip()
 
 	# initially try search by PID
 	s = search('uupid=%s' % q)
