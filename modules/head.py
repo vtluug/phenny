@@ -113,6 +113,8 @@ def gettitle(uri):
       uri = 'http://' + uri
    uri = uri.replace('#!', '?_escaped_fragment_=')
 
+   title = None
+
    try: 
       redirects = 0
       while True: 

@@ -32,8 +32,8 @@ commands.priority = 'low'
 
 def help(phenny, input): 
    response = (
-      "Hey there, I'm the bot for #vtluug. Say \".commands\" to me " +
-      "in private for a list of my commands or check out my wiki " +
+      "Hey there, I'm a friendly bot for this channel. Say \".commands\" " +
+      "to me in private for a list of my commands or check out my wiki " +
       "page at %s. My owner is %s."
    ) % (phenny.config.helpurl, phenny.config.owner)
    #phenny.reply(response)
