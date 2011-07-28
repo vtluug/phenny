@@ -17,6 +17,10 @@ def sloganize(word):
 
 def slogan(phenny, input): 
     word = input.group(2)
+    if word is None:
+        phenny.say("You need to specify a word; try .slogan Granola")
+        return
+
     slogan = sloganize(word)
 
     # Remove HTML tags    
