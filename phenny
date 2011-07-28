@@ -27,6 +27,8 @@ def create_default_config(fn):
    print >> f, trim("""\
    nick = 'phenny'
    host = 'irc.example.net'
+   port = 6667
+   ssl = False
    channels = ['#example', '#test']
    owner = 'yournickname'
 
@@ -134,6 +136,9 @@ def main(argv=None):
 
       if not hasattr(module, 'port'): 
          module.port = 6667
+
+      if not hasattr(module, 'ssl'):
+         module.ssl = False
 
       if not hasattr(module, 'password'): 
          module.password = None
