@@ -20,7 +20,8 @@ def slogan(phenny, input):
     if word is None:
         phenny.say("You need to specify a word; try .slogan Granola")
         return
-
+    
+    word = word.strip()
     slogan = sloganize(word)
 
     # Remove HTML tags    
