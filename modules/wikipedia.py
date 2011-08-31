@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib
+import re, urllib, gzip, StringIO
 import web
 import json
 
@@ -25,10 +25,10 @@ r_redirect = re.compile(
 )
 
 abbrs = ['etc', 'ca', 'cf', 'Co', 'Ltd', 'Inc', 'Mt', 'Mr', 'Mrs', 
-            'Dr', 'Ms', 'Rev', 'Fr', 'St', 'Sgt', 'pron', 'approx', 'lit', 
-            'syn', 'transl', 'sess', 'fl', 'Op', 'Dec'] \
-    + list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') \
-    + list('abcdefghijklmnopqrstuvwxyz')
+         'Dr', 'Ms', 'Rev', 'Fr', 'St', 'Sgt', 'pron', 'approx', 'lit', 
+         'syn', 'transl', 'sess', 'fl', 'Op', 'Dec', 'Brig', 'Gen'] \
+   + list('ABCDEFGHIJKLMNOPQRSTUVWXYZ') \
+   + list('abcdefghijklmnopqrstuvwxyz')
 t_sentence = r'^.{5,}?(?<!\b%s)(?:\.(?=[\[ ][A-Z0-9]|\Z)|\Z)'
 r_sentence = re.compile(t_sentence % r')(?<!\b'.join(abbrs))
 
