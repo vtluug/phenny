@@ -61,7 +61,7 @@ def mlib(phenny, input):
    doc = lxml.html.parse(req)
    quote = doc.getroot().find_class('storycontent')[0][0].text_content()
    phenny.say(quote)
-mlih.commands = ['mlih']
+mlib.commands = ['mlib']
 
 if __name__ == '__main__':
    print __doc__.strip()
