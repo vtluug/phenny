@@ -15,7 +15,7 @@ def fml(phenny, input):
     try:
         req = urlopen("http://www.fmylife.com/random")
     except HTTPError:
-        phenny.say("I tried to use .fml, but it was broken. FML"
+        phenny.say("I tried to use .fml, but it was broken. FML")
         return
 
     doc = lxml.html.parse(req)
