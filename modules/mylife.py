@@ -2,6 +2,7 @@
 """
 mylife.py - various commentary on life
 author: Ramblurr <unnamedrambler@gmail.com>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 import random
@@ -47,10 +48,11 @@ def mliarab(phenny, input):
         return
 
     doc = lxml.html.parse(req)
-    quote = doc.getroot().find_class('entry')[0][0].text_content()
+    quotes = doc.getroot().find_class('entry')
+    quote = random.choice(quotes)[0].text_content()
     quote = quote.strip()
     phenny.say(quote)
-mliarab.commands = ['mliarab']
+mliarab.commands = ['mliar', 'mliarab']
 
 def mlib(phenny, input):
     """.mlib - My life is bro."""
