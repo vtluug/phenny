@@ -52,6 +52,44 @@ def mliarab(phenny, input):
     phenny.say(quote)
 mliarab.commands = ['mliarab']
 
+def mlib(phenny, input):
+    """.mlib - My life is bro."""
+    try:
+        req = urlopen("http://mylifeisbro.com/random")
+    except HTTPError:
+        phenny.say("MLIB is out getting a case of Natty. It's chill.")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('storycontent')[0][0].text_content()
+    phenny.say(quote)
+mlib.commands = ['mlib']
+
+def mlid(phenny, input):
+    """.mlib - My life is Desi."""
+    try:
+        req = urlopen("http://www.mylifeisdesi.com/random")
+    except HTTPError:
+        phenny.say("MLID is busy at the hookah lounge, be back soon.")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('oldlink')[0].text_content()
+    phenny.say(quote)
+mlid.commands = ['mlid']
+
+def mlig(phenny, input):
+    """.mlig - My life is ginger."""
+    try:
+        req = urlopen("http://www.mylifeisginger.org/random")
+    except HTTPError:
+        phenny.say("Busy eating your soul. Be back soon.")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('oldlink')[0].text_content()
+    phenny.say(quote)
+mlig.commands = ['mlig']
 
 def mlih(phenny, input):
     """.mlih - My life is ho."""
@@ -65,19 +103,6 @@ def mlih(phenny, input):
     quote = doc.getroot().find_class('storycontent')[0][0].text_content()
     phenny.say(quote)
 mlih.commands = ['mlih']
-
-def mlib(phenny, input):
-    """.mlib"""
-    try:
-        req = urlopen("http://mylifeisbro.com/random")
-    except HTTPError:
-        phenny.say("MLIB is out getting a case of Natty. It's chill.")
-        return
-
-    doc = lxml.html.parse(req)
-    quote = doc.getroot().find_class('storycontent')[0][0].text_content()
-    phenny.say(quote)
-mlib.commands = ['mlib']
 
 if __name__ == '__main__':
     print __doc__.strip()
