@@ -114,6 +114,17 @@ def gettitle(uri):
    uri = uri.replace('#!', '?_escaped_fragment_=')
 
    title = None
+   localhost = [
+      'http://localhost/', 'http://localhost:80/', 
+      'http://localhost:8080/', 'http://127.0.0.1/', 
+      'http://127.0.0.1:80/', 'http://127.0.0.1:8080/', 
+      'https://localhost/', 'https://localhost:80/', 
+      'https://localhost:8080/', 'https://127.0.0.1/', 
+      'https://127.0.0.1:80/', 'https://127.0.0.1:8080/', 
+   ]
+   for s in localhost: 
+      if uri.startswith(s): 
+         return phenny.reply('Sorry, access forbidden.')
 
    try: 
       redirects = 0
