@@ -41,6 +41,8 @@ def create_default_config(fn):
    # But admin.py is disabled by default, as follows:
    exclude = ['admin']
 
+   ignore = ['']
+
    # If you want to enumerate a list of modules rather than disabling
    # some, use "enable = ['example']", which takes precedent over exclude
    # 

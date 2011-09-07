@@ -203,6 +203,9 @@ class Phenny(irc.Bot):
       bytes, event, args = args[0], args[1], args[2:]
       text = decode(bytes)
 
+      if origin.nick in self.config.ignore:
+          return
+
       for priority in ('high', 'medium', 'low'): 
          items = self.commands[priority].items()
          for regexp, funcs in items: 
