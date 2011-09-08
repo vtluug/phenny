@@ -2,6 +2,7 @@
 """
 chillmeter.py - .chill measures chill level of the channel
 author: Casey Link <unnamedrambler@gmail.com>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 so chill bro.
 """
@@ -11,43 +12,41 @@ import random, time
 # chill decay rate per minute
 chill_decay_rate = 5
 
-# words that make the place chill
 chill_words = [
-    "chill",
-    "bro",
-    "fist bump",
-    "fistbump",
-    "natty",
-    "natties",
-    "head nod",
-    "she said",
-    "keystone",
-    "smirnoff",
-    "sandwhich",
-    "lax",
-    "lacrosse",
-    "pinny",
-    "a bowl",
-    "slampiece",
-    "smirnoff",
-    "ices",
-    "iced"
-]
+    # words that make the place chill
+    ("chill", 1),
+    ("bro", 1),
+    ("fist bump", 2),
+    ("fistbump", 2),
+    ("natty", 1),
+    ("natties", 2),
+    ("head nod", 1),
+    ("she said", 1),
+    ("keystone", 1),
+    ("sandwich", 1),
+    ("lax", 2),
+    ("lacrosse", 2),
+    ("pinny", 2),
+    ("bowl", 1),
+    ("slampiece", 2),
+    ("smirnoff", 1),
+    ("ices", 1),
+    ("iced", 1),
 
-# words that unchill the place
-unchill_words = [
-    "dude",
-    "suck",
-    "desi",
-    "lame",
-    "imageshack",
-    "microsoft",
-    "btreecat",
-    "homework",
-    "project",
-    "test",
-    "exam",
-    "4chan"
+    # words that unchill the place
+    ("dude", -1),
+    ("suck", -2),
+    ("desi", -1),
+    ("lame", -2),
+    ("imageshack", -1),
+    ("microsoft", -1),
+    ("btreecat", -1),
+    ("homework", -1),
+    ("project", -2),
+    ("test", -2),
+    ("exam", -2),
+    ("4chan", -1),
+    ("digg", -1),
 ]
 
 # all things chill
@@ -76,12 +75,8 @@ def measure(phenny, input):
         return # dont self count
 
     for w in chill_words:
-        if w in input.lower():
-            chill += 1
-
-    for w in unchill_words:
-        if w in input.lower():
-            chill -= 1
+        if w[0] in input.lower():
+            chill += w[1]
 
     measure.channels[input.sender] = chill
 
@@ -92,6 +87,7 @@ measure.last_tick = time.time()
 measure.channels = {}
 
 def chill(phenny, input):
+    """.chill - Measure the current channel chillness level."""
     level = measure.channels.get(input.sender, 0)
 
     n = random.randint(1,2)
@@ -100,6 +96,8 @@ def chill(phenny, input):
     for i in range(n):
         if level == 0:
             amount = random.randint(5, 10)
+        elif level < 0:
+            amount = random.randint(10, -level * 2 + 10)
         else:
             amount = random.randint(1, level)
         item = random.choice(chill_things)
@@ -115,9 +113,9 @@ def chill(phenny, input):
         items.append("%s %s" % (amount, item))
 
     item_str = ", ".join(items)
-    print level, item_str
+    #print level, item_str
 
-    if level == 0:
+    if level <= 0:
         message = "WARNING: CHILL LEVEL IS DANGEROUSLY LOW. RECOMMEND %s" % (item_str.upper())
     else:
         message = "chill level is currently: %s" % (item_str)
