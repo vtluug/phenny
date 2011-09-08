@@ -30,6 +30,22 @@ chill_words = [
     "slampiece"
 ]
 
+# words that unchill the place
+unchill_words = [
+    "dude",
+    "suck",
+    "desi",
+    "lame",
+    "imageshack",
+    "microsoft",
+    "btreecat",
+    "homework",
+    "project",
+    "test",
+    "exam",
+    "4chan"
+]
+
 # all things chill
 chill_things = [
     ("natty", "natties"),
@@ -57,6 +73,10 @@ def measure(phenny, input):
     for w in chill_words:
         if w in input.lower():
             chill += 1
+
+    for w in unchill_words:
+        if w in input.lower():
+            chill -= 1
 
     measure.channels[input.sender] = chill
 
