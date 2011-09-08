@@ -24,8 +24,9 @@ chill_words = [
     "keystone",
     "smirnoff",
     "sandwhich",
-    "lax pinny",
+    "lax",
     "lacrosse",
+    "pinny",
     "a bowl",
     "slampiece"
 ]
