@@ -67,8 +67,12 @@ def measure(phenny, input):
     now = time.time()
     if now - measure.last_tick > 60:
         measure.last_tick = now
-        chill -= chill_decay_rate
-        chill = max(0, chill)
+        if chill > 0:
+            chill -= chill_decay_rate
+            chill = max(0, chill)
+        elif chill < 0:
+            chill += chill_decay_rate
+            chill = min(0, chill)
         measure.channels[input.sender] = chill
 
     if ".chill" in input:
