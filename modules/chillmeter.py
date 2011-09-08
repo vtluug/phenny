@@ -28,7 +28,10 @@ chill_words = [
     "lacrosse",
     "pinny",
     "a bowl",
-    "slampiece"
+    "slampiece",
+    "smirnoff",
+    "ices",
+    "iced"
 ]
 
 # words that unchill the place
@@ -55,7 +58,8 @@ chill_things = [
     ("case of keystone", "cases of keystone"),
     ("fist bump", "fist bumps"),
     ("head nod", "head nods"),
-    ("bro", "bros")
+    ("bro", "bros"),
+    ("bowl", "bowls")
 ]
 
 # keeps a finger on the pulse of the chillness
@@ -92,12 +96,18 @@ def chill(phenny, input):
 
     n = random.randint(1,2)
     items = []
+    used = set()
     for i in range(n):
         if level == 0:
             amount = random.randint(5, 10)
         else:
             amount = random.randint(1, level)
         item = random.choice(chill_things)
+
+        while item in used:
+            item = random.choice(chill_things)
+        used.add(item)
+
         if amount == 1:
             item = item[0] # singular
         else:
