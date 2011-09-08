@@ -24,10 +24,10 @@ chill_words = [
     "keystone",
     "smirnoff",
     "sandwhich",
-    "lax",
+    "lax pinny",
     "lacrosse",
-    "pinny",
-    "a bowl"
+    "a bowl",
+    "slampiece"
 ]
 
 # all things chill
