@@ -23,7 +23,11 @@ chill_words = [
     "she said",
     "keystone",
     "smirnoff",
-    "sandwhich"
+    "sandwhich",
+    "lax",
+    "lacrosse",
+    "pinny",
+    "a bowl"
 ]
 
 # all things chill
