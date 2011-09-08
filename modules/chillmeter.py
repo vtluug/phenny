@@ -43,26 +43,31 @@ chill_things = [
 
 # keeps a finger on the pulse of the chillness
 def measure(phenny, input):
+    chill = measure.channels.get(input.sender, 0)
     now = time.time()
     if now - measure.last_tick > 60:
         measure.last_tick = now
-        measure.chill -= chill_decay_rate
-        measure.chill = max(0, measure.chill)
+        chill -= chill_decay_rate
+        chill = max(0, chill)
+        measure.channels[input.sender] = chill
 
     if ".chill" in input:
         return # dont self count
 
     for w in chill_words:
         if w in input.lower():
-            measure.chill += 1
+            chill += 1
+
+    measure.channels[input.sender] = chill
+
 
 measure.rule = r'.*'
 measure.priority = 'low'
-measure.chill = 0
 measure.last_tick = time.time()
+measure.channels = {}
 
 def chill(phenny, input):
-    level = measure.chill
+    level = measure.channels.get(input.sender, 0)
 
     n = random.randint(1,2)
     items = []
