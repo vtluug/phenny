@@ -31,9 +31,9 @@ def hs(phenny, input):
     results = RESULTS_URL.format(urlquote(q))
 
     try:
-        s = search('(|(uupid={0})(mail={0})(cn={1}))'.format(q[0], ' '.join(q)))
+        s = search('(|(uupid={0})(mail={0})(cn={1}))'.format(q))
         if not s:
-            s = search('(|(uupid=*{0}*)(mail=*{0}*)(cn=*{1}*))'.format(q[0], '*'.join(q)))
+            s = search('(|(uupid=*{0}*)(mail=*{0}*)(cn=*{1}*))'.format(q, '*'.join(q.split(' '))))
     except ldap.FILTER_ERROR:
         phenny.reply('Filter error; try to avoid injection attacks in the future please.')
         return
