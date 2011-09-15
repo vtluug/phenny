@@ -31,7 +31,7 @@ def hs(phenny, input):
     results = RESULTS_URL.format(urlquote(q))
 
     try:
-        s = search('(|(uupid={0})(mail={0})(cn={1}))'.format(q))
+        s = search('(|(uupid={0})(mail={0})(cn={0}))'.format(q))
         if not s:
             s = search('(|(uupid=*{0}*)(mail=*{0}*)(cn=*{1}*))'.format(q, '*'.join(q.split(' '))))
     except ldap.FILTER_ERROR:
