@@ -106,6 +106,19 @@ def mlih(phenny, input):
     phenny.say(quote)
 mlih.commands = ['mlih']
 
+def mlit(phenny, input):
+    """.mlit - My life is Twilight."""
+    try:
+        req = urlopen("http://mylifeistwilight.com/random")
+    except HTTPError:
+        phenny.say("Error: Your life is too Twilight. Go outside.")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('fmllink')[0].text_content()
+    phenny.say(quote)
+mlit.commands = ['mlit']
+
 if __name__ == '__main__':
     print __doc__.strip()
 
