@@ -115,7 +115,7 @@ def mlihp(phenny, input):
         return
 
     doc = lxml.html.parse(req)
-    quote = doc.getroot().find_class('oldlink')[0][0].text_content()
+    quote = doc.getroot().find_class('oldlink')[0].text_content()
     phenny.say(quote)
 mlihp.commands = ['mlihp']
 
