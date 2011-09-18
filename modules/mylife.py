@@ -106,6 +106,19 @@ def mlih(phenny, input):
     phenny.say(quote)
 mlih.commands = ['mlih']
 
+def mlihp(phenny, input):
+    """.mlihp - My life is Harry Potter."""
+    try:
+        req = urlopen("http://www.mylifeishp.com/random")
+    except HTTPError:
+        phenny.say("This service is not available to Muggles.")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('oldlink')[0][0].text_content()
+    phenny.say(quote)
+mlihp.commands = ['mlihp']
+
 def mlit(phenny, input):
     """.mlit - My life is Twilight."""
     try:
