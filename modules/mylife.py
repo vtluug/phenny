@@ -67,6 +67,20 @@ def mlib(phenny, input):
     phenny.say(quote)
 mlib.commands = ['mlib']
 
+def mlic(phenny, input):
+    """.mlic - My life is creepy."""
+    try:
+        req = urlopen("http://mylifeiscreepy.com/random")
+    except HTTPError:
+        phenny.say("Error: Have you checked behind you?")
+        return
+
+    doc = lxml.html.parse(req)
+    quote = doc.getroot().find_class('oldlink')[0].text_content()
+    quote = quote.strip()
+    phenny.say(quote)
+mlic.commands = ['mlic']
+
 def mlid(phenny, input):
     """.mlib - My life is Desi."""
     try:
