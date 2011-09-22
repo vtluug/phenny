@@ -7,9 +7,10 @@ author: Casey Link <unnamedrambler@gmail.com>
 
 import random
 
-import ConfigParser, os
-from urllib import quote as urlquote
-from urllib2 import urlopen, HTTPError
+import configparser, os
+from urllib.parse import quote as urlquote
+from urllib.request import urlopen
+from urllib.error import HTTPError
 from lxml import etree
 from datetime import datetime
 
@@ -17,7 +18,7 @@ APIKEY = "b25b959554ed76058ac220b7b2e0a026"
 APIURL = "http://ws.audioscrobbler.com/2.0/?api_key="+APIKEY+"&"
 AEPURL = "http://www.davethemoonman.com/lastfm/aep.php?format=txt&username="
 
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 config.optionxform = str
 config_filename = ""
 
@@ -84,7 +85,7 @@ def now_playing(phenny, input):
     user = user.strip()
     try:
         req = urlopen("%smethod=user.getrecenttracks&user=%s" % (APIURL, urlquote(user)))
-    except HTTPError, e:
+    except HTTPError as e:
         if e.code == 400:
             phenny.say("%s doesn't exist on last.fm, perhaps they need to set user" % (user))
             return
@@ -151,7 +152,7 @@ def aep(phenny, input):
     user = user.strip()
     try:
         req = urlopen("%s%s" % (AEPURL, urlquote(user)))
-    except HTTPError, e:
+    except HTTPError as e:
         phenny.say("uhoh. try again later, mmkay?")
         return
     result = req.read()
@@ -182,7 +183,7 @@ def tasteometer(phenny, input):
             user2 = input.nick
     try:
         req = urlopen("%smethod=tasteometer.compare&type1=user&type2=user&value1=%s&value2=%s" % (APIURL, urlquote(user1), urlquote(user2)))
-    except HTTPError, e:
+    except HTTPError as e:
         if e.code == 400:
             phenny.say("uhoh, someone doesn't exist on last.fm, perhaps they need to set user")
             return
@@ -217,7 +218,7 @@ def tasteometer(phenny, input):
     if len(artists) == 0:
         common_artists = ". they don't have any artists in common."
     else:
-        map(lambda a: names.append(a.text) ,artists)
+        list(map(lambda a: names.append(a.text) ,artists))
         common_artists = "and music they have in common includes: %s" % ", ".join(names)
 
     phenny.say("%s's and %s's musical compatibility rating is %s %s" % (user1, user2, rating, common_artists))
@@ -294,4 +295,4 @@ def pretty_date(time=False):
     return str(day_diff/365) + " years ago"
 
 if __name__ == '__main__':
-    print __doc__.strip()
+    print(__doc__.strip())

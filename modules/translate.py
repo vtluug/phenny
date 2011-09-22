@@ -8,12 +8,12 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 import web
 
 def detect(text): 
    uri = 'http://ajax.googleapis.com/ajax/services/language/detect'
-   q = urllib.quote(text)
+   q = urllib.parse.quote(text)
    bytes = web.get(uri + '?q=' + q + '&v=1.0')
    result = web.json(bytes)
    try: return result['responseData']['language']
@@ -21,7 +21,7 @@ def detect(text):
 
 def translate(text, input, output): 
    uri = 'http://ajax.googleapis.com/ajax/services/language/translate'
-   q = urllib.quote(text)
+   q = urllib.parse.quote(text)
    pair = input + '%7C' + output
    bytes = web.get(uri + '?q=' + q + '&v=1.0&langpair=' + pair)
    result = web.json(bytes)
@@ -32,7 +32,7 @@ def tr(phenny, context):
    """Translates a phrase, with an optional language hint."""
    input, output, phrase = context.groups()
 
-   phrase = phrase.encode('utf-8')
+   phrase = phrase
 
    if (len(phrase) > 350) and (not context.admin): 
       return phenny.reply('Phrase must be under 350 characters.')
@@ -41,8 +41,7 @@ def tr(phenny, context):
    if not input: 
       err = 'Unable to guess your crazy moon language, sorry.'
       return phenny.reply(err)
-   input = input.encode('utf-8')
-   output = (output or 'en').encode('utf-8')
+   output = (output or 'en')
 
    if input != output: 
       msg = translate(phrase, input, output)
@@ -56,12 +55,12 @@ def tr(phenny, context):
       phenny.reply(msg)
    else: phenny.reply('Language guessing failed, so try suggesting one!')
 
-tr.rule = ('$nick', ur'(?:([a-z]{2}) +)?(?:([a-z]{2}) +)?["“](.+?)["”]\? *$')
+tr.rule = ('$nick', r'(?:([a-z]{2}) +)?(?:([a-z]{2}) +)?["“](.+?)["”]\? *$')
 tr.example = '$nickname: "mon chien"? or $nickname: fr "mon chien"?'
 tr.priority = 'low'
 
 def mangle(phenny, input): 
-   phrase = input.group(2).encode('utf-8')
+   phrase = input.group(2)
    for lang in ['fr', 'de', 'es', 'it', 'ja']: 
       backup = phrase
       phrase = translate(phrase, 'en', lang)
@@ -81,4 +80,4 @@ def mangle(phenny, input):
 mangle.commands = ['mangle']
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

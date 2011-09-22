@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 import web
 
 definitions = 'https://github.com/nslater/oblique/wiki'
@@ -30,9 +30,9 @@ def mappings(uri):
 
 def service(phenny, input, command, args): 
    t = o.services[command]
-   template = t.replace('${args}', urllib.quote(args.encode('utf-8'), ''))
-   template = template.replace('${nick}', urllib.quote(input.nick, ''))
-   uri = template.replace('${sender}', urllib.quote(input.sender, ''))
+   template = t.replace('${args}', urllib.parse.quote(args, ''))
+   template = template.replace('${nick}', urllib.parse.quote(input.nick, ''))
+   uri = template.replace('${sender}', urllib.parse.quote(input.sender, ''))
 
    info = web.head(uri)
    if isinstance(info, list): 
@@ -80,7 +80,7 @@ def o(phenny, input):
       msg = o.services.get(args, 'No such service!')
       return phenny.reply(msg)
 
-   if not o.services.has_key(command): 
+   if command not in o.services: 
       return phenny.reply('Service not found in %s' % o.serviceURI)
 
    if hasattr(phenny.config, 'external'): 
@@ -102,7 +102,7 @@ def snippet(phenny, input):
    if not o.services: 
       refresh(phenny)
 
-   search = urllib.quote(input.group(2).encode('utf-8'))
+   search = urllib.parse.quote(input.group(2))
    py = "BeautifulSoup.BeautifulSoup(re.sub('<.*?>|(?<= ) +', '', " + \
         "''.join(chr(ord(c)) for c in " + \
         "eval(urllib.urlopen('http://ajax.googleapis.com/ajax/serv" + \
@@ -114,4 +114,4 @@ def snippet(phenny, input):
 snippet.commands = ['snippet']
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

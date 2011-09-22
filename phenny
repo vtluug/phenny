@@ -19,12 +19,12 @@ dotdir = os.path.expanduser('~/.phenny')
 def check_python_version(): 
    if sys.version_info < (2, 4): 
       error = 'Error: Requires Python 2.4 or later, from www.python.org'
-      print >> sys.stderr, error
+      print(error, file=sys.stderr)
       sys.exit(1)
 
 def create_default_config(fn): 
    f = open(fn, 'w')
-   print >> f, trim("""\
+   print(trim("""\
    nick = 'phenny'
    host = 'irc.example.net'
    port = 6667
@@ -61,23 +61,23 @@ def create_default_config(fn):
    }
 
    # EOF
-   """)
+   """), file=f)
    f.close()
 
 def create_dotdir(dotdir): 
-   print 'Creating a config directory at ~/.phenny...'
+   print('Creating a config directory at ~/.phenny...')
    try: os.mkdir(dotdir)
-   except Exception, e: 
-      print >> sys.stderr, 'There was a problem creating %s:' % dotdir
-      print >> sys.stderr, e.__class__, str(e)
-      print >> sys.stderr, 'Please fix this and then run phenny again.'
+   except Exception as e: 
+      print('There was a problem creating %s:' % dotdir, file=sys.stderr)
+      print(e.__class__, str(e), file=sys.stderr)
+      print('Please fix this and then run phenny again.', file=sys.stderr)
       sys.exit(1)
 
-   print 'Creating a default config file at ~/.phenny/default.py...'
+   print('Creating a default config file at ~/.phenny/default.py...')
    default = os.path.join(dotdir, 'default.py')
    create_default_config(default)
 
-   print 'Done; now you can edit default.py, and run phenny! Enjoy.'
+   print('Done; now you can edit default.py, and run phenny! Enjoy.')
    sys.exit(0)
 
 def check_dotdir(): 
@@ -107,8 +107,8 @@ def config_names(config):
    if os.path.isdir(there): 
       return files(there)
 
-   print >> sys.stderr, "Error: Couldn't find a config file!"
-   print >> sys.stderr, 'What happened to ~/.phenny/default.py?'
+   print("Error: Couldn't find a config file!", file=sys.stderr)
+   print('What happened to ~/.phenny/default.py?', file=sys.stderr)
    sys.exit(1)
 
 def main(argv=None): 
@@ -118,7 +118,7 @@ def main(argv=None):
    parser.add_option('-c', '--config', metavar='fn', 
       help='use this configuration file or directory')
    opts, args = parser.parse_args(argv)
-   if args: print >> sys.stderr, 'Warning: ignoring spurious arguments'
+   if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
 
    # Step Two: Check Dependencies
 
@@ -154,7 +154,7 @@ def main(argv=None):
       if module.host == 'irc.example.net': 
          error = ('Error: you must edit the config file first!\n' + 
                   "You're currently using %s" % module.filename)
-         print >> sys.stderr, error
+         print(error, file=sys.stderr)
          sys.exit(1)
 
       config_modules.append(module)
@@ -165,7 +165,7 @@ def main(argv=None):
    except ImportError: 
       try: from phenny import run
       except ImportError: 
-         print >> sys.stderr, "Error: Couldn't find phenny to import"
+         print("Error: Couldn't find phenny to import", file=sys.stderr)
          sys.exit(1)
 
    # Step Five: Initialise And Run The Phennies

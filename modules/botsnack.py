@@ -44,12 +44,12 @@ def botsnack(phenny, input):
     #    ignore this invocation. Else reset to the default state
     if botsnack.coolingdown:
         if now - botsnack.coolingstarted > botsnack.coolingperiod:
-            print "cooling down over, reseting"
+            print("cooling down over, reseting")
             botsnack.coolingdown = False
             botsnack.hunger = 50.0
             botsnack.last_tick = now
         else:
-            print "cooling down! %s < %s" %(now - botsnack.coolingstarted, botsnack.coolingperiod)
+            print("cooling down! %s < %s" %(now - botsnack.coolingstarted, botsnack.coolingperiod))
             return # ignore!
 
     # 1. Time has has passed, so the bot has gotten
@@ -60,7 +60,7 @@ def botsnack(phenny, input):
 
     botsnack.hunger = increase_hunger(old_hunger, delta)
 
-    print "hunger was %s, increased to %s" %(old_hunger, botsnack.hunger)
+    print("hunger was %s, increased to %s" %(old_hunger, botsnack.hunger))
 
     botsnack.last_tick = now
 
@@ -68,7 +68,7 @@ def botsnack(phenny, input):
 
     old_hunger = botsnack.hunger
     botsnack.hunger = decrease_hunger(old_hunger, random.uniform(1,5))
-    print "hunger was %s, decreased to %s" %(old_hunger, botsnack.hunger)
+    print("hunger was %s, decreased to %s" %(old_hunger, botsnack.hunger))
 
     if botsnack.hunger > 95: # special case to prevent abuse
         phenny.say("Too much food!")
@@ -106,5 +106,5 @@ botsnack.last_tick = time.time()
 botsnack.coolingdown = False
 
 if __name__ == '__main__':
-	print __doc__.strip()
+	print(__doc__.strip())
 

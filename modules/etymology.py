@@ -59,8 +59,7 @@ def etymology(word):
    sentence = m.group(0)
 
    try: 
-      sentence = unicode(sentence, 'iso-8859-1')
-      sentence = sentence.encode('utf-8')
+      sentence = str(sentence, 'iso-8859-1')
    except: pass
 
    maxlength = 275
@@ -98,4 +97,4 @@ f_etymology.priority = 'high'
 
 if __name__=="__main__": 
    import sys
-   print etymology(sys.argv[1])
+   print(etymology(sys.argv[1]))

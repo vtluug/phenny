@@ -33,14 +33,14 @@ def google_search(query):
    try: return results['responseData']['results'][0]['unescapedUrl']
    except IndexError: return None
    except TypeError: 
-      print results
+      print(results)
       return False
 
 def google_count(query): 
    results = google_ajax(query)
-   if not results.has_key('responseData'): return '0'
-   if not results['responseData'].has_key('cursor'): return '0'
-   if not results['responseData']['cursor'].has_key('estimatedResultCount'): 
+   if 'responseData' not in results: return '0'
+   if 'cursor' not in results['responseData']: return '0'
+   if 'estimatedResultCount' not in results['responseData']['cursor']: 
       return '0'
    return results['responseData']['cursor']['estimatedResultCount']
 
@@ -56,7 +56,6 @@ def g(phenny, input):
    query = input.group(2)
    if not query: 
       return phenny.reply('.g what?')
-   query = query.encode('utf-8')
    uri = google_search(query)
    if uri: 
       phenny.reply(uri)
@@ -74,7 +73,6 @@ def gc(phenny, input):
    query = input.group(2)
    if not query: 
       return phenny.reply('.gc what?')
-   query = query.encode('utf-8')
    num = formatnumber(google_count(query))
    phenny.say(query + ': ' + num)
 gc.commands = ['gc']
@@ -95,7 +93,6 @@ def gcs(phenny, input):
    results = []
    for i, query in enumerate(queries): 
       query = query.strip('[]')
-      query = query.encode('utf-8')
       n = int((formatnumber(google_count(query)) or '0').replace(',', ''))
       results.append((n, query))
       if i >= 2: __import__('time').sleep(0.25)
@@ -125,7 +122,6 @@ def bing(phenny, input):
    if not query:
       return phenny.reply('.bing what?')
 
-   query = query.encode('utf-8')
    uri = bing_search(query, lang)
    if uri: 
       phenny.reply(uri)
@@ -150,7 +146,6 @@ def duck(phenny, input):
    query = input.group(2)
    if not query: return phenny.reply('.ddg what?')
 
-   query = query.encode('utf-8')
    uri = duck_search(query)
    if uri: 
       phenny.reply(uri)
@@ -163,7 +158,7 @@ duck.commands = ['duck', 'ddg']
 def search(phenny, input): 
    if not input.group(2): 
       return phenny.reply('.search for what?')
-   query = input.group(2).encode('utf-8')
+   query = input.group(2)
    gu = google_search(query) or '-'
    bu = bing_search(query) or '-'
    du = duck_search(query) or '-'
@@ -188,7 +183,7 @@ search.commands = ['search']
 def suggest(phenny, input): 
    if not input.group(2):
       return phenny.reply("No query term.")
-   query = input.group(2).encode('utf-8')
+   query = input.group(2)
    uri = 'http://websitedev.de/temp-bin/suggest.pl?q='
    answer = web.get(uri + web.urllib.quote(query).replace('+', '%2B'))
    if answer: 
@@ -197,4 +192,4 @@ def suggest(phenny, input):
 suggest.commands = ['suggest']
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

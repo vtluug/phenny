@@ -4,8 +4,8 @@ tfw.py - the fucking weather module
 author: mutantmonkey <mutantmonkey@gmail.com>
 """
 
-from urllib import quote as urlquote
-from urllib2 import HTTPError
+from urllib.parse import quote as urlquote
+from urllib.error import HTTPError
 import web
 import lxml.html
 
@@ -24,7 +24,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 
 	try:
 		req = web.get("http://thefuckingweather.com/?zipcode=%s%s" % (urlquote(zipcode), celsius_param))
-	except HTTPError:
+	except (HTTPError, IOError):
 		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
@@ -46,7 +46,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 		if c.isdigit():
 			tempt += c
 	temp = int(tempt)
-	deg = unichr(176).encode('latin-1')
+	deg = chr(176)
 			
 	# add units and convert if necessary
 	if fahrenheit:
@@ -82,5 +82,5 @@ def tfwc(phenny, input):
 tfwc.rule = (['tfwc'], r'(.*)')
 
 if __name__ == '__main__':
-	print __doc__.strip()
+	print(__doc__.strip())
 

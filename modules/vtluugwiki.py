@@ -10,7 +10,7 @@ modified from Wikipedia module
 author: mutantmonkey <mutantmonkey@gmail.com>
 """
 
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 import web
 import json
 
@@ -64,9 +64,9 @@ def vtluug(phenny, input):
     origterm = input.groups()[1]
     if not origterm: 
         return phenny.say('Perhaps you meant ".vtluug Zen"?')
-    origterm = origterm.encode('utf-8')
+    origterm = origterm
 
-    term = urllib.unquote(origterm)
+    term = urllib.parse.unquote(origterm)
     term = term[0].upper() + term[1:]
     term = term.replace(' ', '_')
 
@@ -83,4 +83,4 @@ vtluug.commands = ['vtluug']
 vtluug.priority = 'high'
 
 if __name__ == '__main__': 
-    print __doc__.strip()
+    print(__doc__.strip())

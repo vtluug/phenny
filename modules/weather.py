@@ -7,16 +7,16 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 import web
 from tools import deprecated
 
 r_from = re.compile(r'(?i)([+-]\d+):00 from')
 
 def location(name): 
-   name = urllib.quote(name.encode('utf-8'))
+   name = urllib.parse.quote(name)
    uri = 'http://ws.geonames.org/searchJSON?q=%s&maxRows=1' % name
-   for i in xrange(10): 
+   for i in range(10): 
       bytes = web.get(uri)
       if bytes is not None: break
 
@@ -220,25 +220,25 @@ def f_weather(self, origin, match, args):
          description = 'Violent storm'
       else: description = 'Hurricane'
 
-      degrees = wind[0:3]
+      degrees = float(wind[0:3]
       if degrees == 'VRB': 
-         degrees = u'\u21BB'.encode('utf-8')
+         degrees = '\u21BB'
       elif (degrees <= 22.5) or (degrees > 337.5): 
-         degrees = u'\u2191'.encode('utf-8')
+         degrees = '\u2191'
       elif (degrees > 22.5) and (degrees <= 67.5): 
-         degrees = u'\u2197'.encode('utf-8')
+         degrees = '\u2197'
       elif (degrees > 67.5) and (degrees <= 112.5): 
-         degrees = u'\u2192'.encode('utf-8')
+         degrees = '\u2192'
       elif (degrees > 112.5) and (degrees <= 157.5): 
-         degrees = u'\u2198'.encode('utf-8')
+         degrees = '\u2198'
       elif (degrees > 157.5) and (degrees <= 202.5): 
-         degrees = u'\u2193'.encode('utf-8')
+         degrees = '\u2193'
       elif (degrees > 202.5) and (degrees <= 247.5): 
-         degrees = u'\u2199'.encode('utf-8')
+         degrees = '\u2199'
       elif (degrees > 247.5) and (degrees <= 292.5): 
-         degrees = u'\u2190'.encode('utf-8')
+         degrees = '\u2190'
       elif (degrees > 292.5) and (degrees <= 337.5): 
-         degrees = u'\u2196'.encode('utf-8')
+         degrees = '\u2196'
 
       if not icao_code.startswith('EN') and not icao_code.startswith('ED'): 
          wind = '%s %skt (%s)' % (description, speed, degrees)
@@ -274,13 +274,13 @@ def f_weather(self, origin, match, args):
                level = 0
 
       if level == 8: 
-         cover = u'Overcast \u2601'.encode('utf-8')
+         cover = 'Overcast \u2601'
       elif level == 5: 
          cover = 'Cloudy'
       elif level == 3: 
          cover = 'Scattered'
       elif (level == 1) or (level == 0): 
-         cover = u'Clear \u263C'.encode('utf-8')
+         cover = 'Clear \u263C'
       else: cover = 'Cover Unknown'
    else: cover = 'Cover Unknown'
 
@@ -310,10 +310,10 @@ def f_weather(self, origin, match, args):
 
          if isinstance(temp, int): 
             f = round((temp * 1.8) + 32, 2)
-            temp = u'%s\u2109 (%s\u2103)'.encode('utf-8') % (f, temp)
+            temp = '%s\u2109 (%s\u2103)' % (f, temp)
    else: pressure = '?mb'
    if isinstance(temp, int): 
-      temp = u'%s\u2103'.encode('utf-8') % temp
+      temp = '%s\u2103' % temp
 
    if cond: 
       conds = cond
@@ -397,14 +397,14 @@ def f_weather(self, origin, match, args):
    #    args = (icao, time, cover, temp, pressure, cond, wind)
 
    if not cond: 
-      format = u'%s, %s, %s, %s - %s %s'
+      format = '%s, %s, %s, %s - %s %s'
       args = (cover, temp, pressure, wind, str(icao_code), time)
    else: 
-      format = u'%s, %s, %s, %s, %s - %s, %s'
+      format = '%s, %s, %s, %s, %s - %s, %s'
       args = (cover, temp, pressure, cond, wind, str(icao_code), time)
 
-   self.msg(origin.sender, format.encode('utf-8') % args)
+   self.msg(origin.sender, format % args)
 f_weather.rule = (['weather'], r'(.*)')
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

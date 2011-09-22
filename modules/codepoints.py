@@ -21,7 +21,7 @@ def about(u, cp=None, name=None):
    if not unicodedata.combining(u): 
       template = 'U+%04X %s (%s)'
    else: template = 'U+%04X %s (\xe2\x97\x8c%s)'
-   return template % (cp, name, u.encode('utf-8'))
+   return template % (cp, name, u)
 
 def codepoint_simple(arg): 
    arg = arg.upper()
@@ -29,8 +29,8 @@ def codepoint_simple(arg):
    r_label = re.compile('\\b' + arg.replace(' ', '.*\\b') + '\\b')
 
    results = []
-   for cp in xrange(0xFFFF): 
-      u = unichr(cp)
+   for cp in range(0xFFFF): 
+      u = chr(cp)
       try: name = unicodedata.name(u)
       except ValueError: continue
 
@@ -38,8 +38,8 @@ def codepoint_simple(arg):
          results.append((len(name), u, cp, name))
    if not results: 
       r_label = re.compile('\\b' + arg.replace(' ', '.*\\b'))
-      for cp in xrange(0xFFFF): 
-         u = unichr(cp)
+      for cp in range(0xFFFF): 
+         u = chr(cp)
          try: name = unicodedata.name(u)
          except ValueError: continue
 
@@ -57,8 +57,8 @@ def codepoint_extended(arg):
    try: r_search = re.compile(arg)
    except: raise ValueError('Broken regexp: %r' % arg)
 
-   for cp in xrange(1, 0x10FFFF): 
-      u = unichr(cp)
+   for cp in range(1, 0x10FFFF): 
+      u = chr(cp)
       name = unicodedata.name(u, '-')
 
       if r_search.search(name): 
@@ -90,7 +90,7 @@ def u(phenny, input):
             break
 
       if len(arg) == 4: 
-         try: u = unichr(int(arg, 16))
+         try: u = chr(int(arg, 16))
          except ValueError: pass
          else: return phenny.say(about(u))
 
@@ -131,4 +131,4 @@ bytes.commands = ['bytes']
 bytes.example = '.bytes \xe3\x8b\xa1'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

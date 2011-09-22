@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib, gzip, StringIO
+import re, urllib.request, urllib.parse, urllib.error, gzip, io
 import web
 import json
 
@@ -61,9 +61,9 @@ def wik(phenny, input):
     origterm = input.groups()[1]
     if not origterm: 
         return phenny.say('Perhaps you meant ".wik Zen"?')
-    origterm = origterm.encode('utf-8')
+    origterm = origterm
 
-    term = urllib.unquote(origterm)
+    term = urllib.parse.unquote(origterm)
     term = term[0].upper() + term[1:]
     term = term.replace(' ', '_')
 
@@ -80,4 +80,4 @@ wik.commands = ['wik']
 wik.priority = 'high'
 
 if __name__ == '__main__': 
-    print __doc__.strip()
+    print(__doc__.strip())

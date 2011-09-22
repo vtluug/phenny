@@ -14,5 +14,5 @@ def nsfw(phenny, input):
 nsfw.rule = (['nsfw'], r'(.*)')
 
 if __name__ == '__main__':
-	print __doc__.strip()
+	print(__doc__.strip())
 

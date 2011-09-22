@@ -7,20 +7,20 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib, urllib2, httplib, urlparse, time, cookielib
-from htmlentitydefs import name2codepoint
+import re, urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.client, urllib.parse, time, http.cookiejar
+from html.entities import name2codepoint
 from string import join
 import web
 from tools import deprecated
 
-cj = cookielib.LWPCookieJar()
-opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-urllib2.install_opener(opener)
+cj = http.cookiejar.LWPCookieJar()
+opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
+urllib.request.install_opener(opener)
 
 def head(phenny, input): 
    """Provide HTTP HEAD information."""
    uri = input.group(2)
-   uri = (uri or '').encode('utf-8')
+   uri = (uri or '')
    if ' ' in uri: 
       uri, header = uri.rsplit(' ', 1)
    else: uri, header = uri, None
@@ -35,7 +35,7 @@ def head(phenny, input):
 
    try: info = web.head(uri)
    except IOError: return phenny.say("Can't connect to %s" % uri)
-   except httplib.InvalidURL: return phenny.say("Not a valid URI, sorry.")
+   except http.client.InvalidURL: return phenny.say("Not a valid URI, sorry.")
 
    if not isinstance(info, list): 
       try: info = dict(info)
@@ -49,20 +49,20 @@ def head(phenny, input):
 
    if header is None: 
       data = []
-      if info.has_key('Status'): 
+      if 'Status' in info: 
          data.append(info['Status'])
-      if info.has_key('content-type'): 
+      if 'content-type' in info: 
          data.append(info['content-type'].replace('; charset=', ', '))
-      if info.has_key('last-modified'): 
+      if 'last-modified' in info: 
          modified = info['last-modified']
          modified = time.strptime(modified, '%a, %d %b %Y %H:%M:%S %Z')
          data.append(time.strftime('%Y-%m-%d %H:%M:%S UTC', modified))
-      if info.has_key('content-length'): 
+      if 'content-length' in info: 
          data.append(info['content-length'] + ' bytes')
       phenny.reply(', '.join(data))
    else: 
       headerlower = header.lower()
-      if info.has_key(headerlower): 
+      if headerlower in info: 
          phenny.say(header + ': ' + info.get(headerlower))
       else: 
          msg = 'There was no %s header in the response.' % header
@@ -77,7 +77,7 @@ r_entity = re.compile(r'&[A-Za-z0-9#]+;')
 def f_title(self, origin, match, args): 
    """.title <URI> - Return the title of URI."""
    uri = match.group(2)
-   uri = (uri or '').encode('utf-8')
+   uri = (uri or '')
 
    if not uri and hasattr(self, 'last_seen_uri'): 
       uri = self.last_seen_uri.get(origin.sender)
@@ -90,7 +90,7 @@ def f_title(self, origin, match, args):
 f_title.commands = ['title']
 
 def noteuri(phenny, input): 
-   uri = input.group(1).encode('utf-8')
+   uri = input.group(1)
    if not hasattr(phenny.bot, 'last_seen_uri'): 
       phenny.bot.last_seen_uri = {}
    phenny.bot.last_seen_uri[input.sender] = uri
@@ -101,7 +101,7 @@ titlecommands = r'(?:' + join(f_title.commands, r'|') + r')'
 def snarfuri(phenny, input):
    if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
       return
-   uri = input.group(1).encode('utf-8')
+   uri = input.group(1)
    title = gettitle(uri)
    if title:
       phenny.msg(input.sender, '[ ' + title + ' ]')
@@ -137,7 +137,7 @@ def gettitle(uri):
             status = str(info[1])
             info = info[0]
          if status.startswith('3'): 
-            uri = urlparse.urljoin(uri, info['Location'])
+            uri = urllib.parse.urljoin(uri, info['Location'])
          else: break
 
          redirects += 1
@@ -173,20 +173,20 @@ def gettitle(uri):
          entity = m.group(0)
          if entity.startswith('&#x'): 
             cp = int(entity[3:-1], 16)
-            return unichr(cp).encode('utf-8')
+            return chr(cp)
          elif entity.startswith('&#'): 
             cp = int(entity[2:-1])
-            return unichr(cp).encode('utf-8')
+            return chr(cp)
          else: 
             char = name2codepoint[entity[1:-1]]
-            return unichr(char).encode('utf-8')
+            return chr(char)
       title = r_entity.sub(e, title)
 
       if title: 
          try: title.decode('utf-8')
          except: 
-            try: title = title.decode('iso-8859-1').encode('utf-8')
-            except: title = title.decode('cp1252').encode('utf-8')
+            try: title = title.decode('iso-8859-1')
+            except: title = title.decode('cp1252')
          else: pass
          title = title.replace('\n', '')
          title = title.replace('\r', '')
@@ -194,4 +194,4 @@ def gettitle(uri):
    return title
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

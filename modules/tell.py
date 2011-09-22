@@ -37,7 +37,7 @@ def loadReminders(fn):
 
 def dumpReminders(fn, data): 
    f = open(fn, 'w')
-   for tellee in data.iterkeys(): 
+   for tellee in data.keys(): 
       for remindon in data[tellee]: 
          line = '\t'.join((tellee,) + remindon)
          try: f.write(line + '\n')
@@ -62,9 +62,9 @@ def f_remind(phenny, input):
 
    # @@ Multiple comma-separated tellees? Cf. Terje, #swhack, 2006-04-15
    verb, tellee, msg = input.groups()
-   verb = verb.encode('utf-8')
-   tellee = tellee.encode('utf-8')
-   msg = msg.encode('utf-8')
+   verb = verb
+   tellee = tellee
+   msg = msg
 
    tellee_original = tellee.rstrip('.,:;')
    tellee = tellee_original.lower()
@@ -79,7 +79,7 @@ def f_remind(phenny, input):
    if not tellee in (teller.lower(), phenny.nick, 'me'): # @@
       # @@ <deltab> and year, if necessary
       warn = False
-      if not phenny.reminders.has_key(tellee): 
+      if tellee not in phenny.reminders: 
          phenny.reminders[tellee] = [(teller, verb, timenow, msg)]
       else: 
          # if len(phenny.reminders[tellee]) >= maximum: 
@@ -144,14 +144,14 @@ def message(phenny, input):
       for line in reminders[maximum:]: 
          phenny.msg(tellee, line)
 
-   if len(phenny.reminders.keys()) != remkeys: 
+   if len(list(phenny.reminders.keys())) != remkeys: 
       dumpReminders(phenny.tell_filename, phenny.reminders) # @@ tell
 message.rule = r'(.*)'
 message.priority = 'low'
 message.thread = False
 
 def messageAlert(phenny, input):
-   if (input.nick.lower() in phenny.reminders.keys()):
+   if (input.nick.lower() in list(phenny.reminders.keys())):
       phenny.say(input.nick + ': You have messages.')
 messageAlert.event = 'JOIN'
 messageAlert.rule = r'.*'
@@ -159,4 +159,4 @@ messageAlert.priority = 'low'
 messageAlert.thread = False
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

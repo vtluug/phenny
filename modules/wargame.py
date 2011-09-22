@@ -8,9 +8,10 @@ author: Casey Link <unnamedrambler@gmail.com>
 
 import random
 
-import ConfigParser, os
-from urllib import quote as urlquote
-from urllib2 import urlopen, HTTPError
+import configparser, os
+from urllib.parse import quote as urlquote
+from urllib.request import urlopen
+from urllib.error import HTTPError
 from lxml import etree
 from lxml import objectify
 from datetime import datetime
@@ -25,7 +26,7 @@ class server(object):
         self.players = []
     def __str__(self):
         s = "%s - %d players: " %(self.name, len(self.players))
-        s += ", ".join(map(lambda p: str(p), self.players))
+        s += ", ".join([str(p) for p in self.players])
         return s
 
 class player(object):
@@ -79,7 +80,7 @@ def wargame(phenny, input):
             return
     try:
         req = urlopen(APIURL)
-    except HTTPError, e:
+    except HTTPError as e:
             phenny.say("uhoh. try again later, mmkay?")
             return
     root = objectify.parse(req).getroot()
@@ -90,11 +91,11 @@ def wargame(phenny, input):
     for server_e in root.servers.server:
         servers.append( parse_server( server_e ) )
 
-    phenny.say( "wargame network is %s. last updated %s. available targets: %s" % ( "ONLINE" if online else "OFFLINE", updated, ", ".join(map(lambda s: s.name, servers))) )
+    phenny.say( "wargame network is %s. last updated %s. available targets: %s" % ( "ONLINE" if online else "OFFLINE", updated, ", ".join([s.name for s in servers])) )
 def wargame_scores(phenny, s_name):
     try:
         req = urlopen(APIURL)
-    except HTTPError, e:
+    except HTTPError as e:
             phenny.say("uhoh. try again later, mmkay?")
             return
     root = objectify.parse(req).getroot()

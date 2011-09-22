@@ -17,7 +17,7 @@ def f_seen(self, origin, match, args):
    nick = match.group(2).lower()
    if not hasattr(self, 'seen'): 
       return self.msg(origin.sender, '?')
-   if self.seen.has_key(nick): 
+   if nick in self.seen: 
       channel, t = self.seen[nick]
       t = time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime(t))
 
@@ -41,9 +41,9 @@ def f_note(self, origin, match, args):
       #    self.chanspeak[args[2]] = args[0]
 
    try: note(self, origin, match, args)
-   except Exception, e: print e
+   except Exception as e: print(e)
 f_note.rule = r'(.*)'
 f_note.priority = 'low'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

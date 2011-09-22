@@ -12,7 +12,7 @@ import web
 uri = 'http://www.sloganizer.net/en/outbound.php?slogan=%s'
 
 def sloganize(word): 
-    bytes = web.get(uri % web.urllib.quote(word.encode('utf-8')))
+    bytes = web.get(uri % web.quote(word))
     return bytes
 
 def slogan(phenny, input): 
@@ -37,4 +37,4 @@ slogan.commands = ['slogan']
 slogan.example = '.slogan Granola'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

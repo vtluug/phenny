@@ -5,7 +5,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 import ldap
-from urllib import quote as urlquote
+from urllib.parse import quote as urlquote
 
 LDAP_URI = "ldap://directory.vt.edu"
 RESULTS_URL = "http://search.vt.edu/search/people.html?q={0}"
@@ -56,5 +56,5 @@ def hs(phenny, input):
 hs.rule = (['hs'], r'(.*)')
 
 if __name__ == '__main__':
-    print __doc__.strip()
+    print(__doc__.strip())
 

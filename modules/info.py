@@ -12,7 +12,7 @@ def doc(phenny, input):
    name = input.group(1)
    name = name.lower()
 
-   if phenny.doc.has_key(name): 
+   if name in phenny.doc: 
       phenny.reply(phenny.doc[name][0])
       if phenny.doc[name][1]: 
          phenny.say('e.g. ' + phenny.doc[name][1])
@@ -23,7 +23,7 @@ doc.priority = 'low'
 def commands(phenny, input): 
    # This function only works in private message
    if input.sender.startswith('#'): return
-   names = ', '.join(sorted(phenny.doc.iterkeys()))
+   names = ', '.join(sorted(phenny.doc.keys()))
    phenny.say('Commands I recognise: ' + names + '.')
    phenny.say(("For help, do '%s: help example?' where example is the " + 
                "name of the command you want help for.") % phenny.nick)
@@ -49,7 +49,7 @@ def stats(phenny, input):
    channels = {}
 
    ignore = set(['f_note', 'startup', 'message', 'noteuri'])
-   for (name, user), count in phenny.stats.items(): 
+   for (name, user), count in list(phenny.stats.items()): 
       if name in ignore: continue
       if not user: continue
 
@@ -63,9 +63,9 @@ def stats(phenny, input):
          try: channels[user] += count
          except KeyError: channels[user] = count
 
-   comrank = sorted([(b, a) for (a, b) in commands.iteritems()], reverse=True)
-   userank = sorted([(b, a) for (a, b) in users.iteritems()], reverse=True)
-   charank = sorted([(b, a) for (a, b) in channels.iteritems()], reverse=True)
+   comrank = sorted([(b, a) for (a, b) in commands.items()], reverse=True)
+   userank = sorted([(b, a) for (a, b) in users.items()], reverse=True)
+   charank = sorted([(b, a) for (a, b) in channels.items()], reverse=True)
 
    # most heavily used commands
    creply = 'most used commands: '
@@ -88,4 +88,4 @@ stats.commands = ['stats']
 stats.priority = 'low'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

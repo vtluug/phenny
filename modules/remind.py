@@ -16,7 +16,7 @@ def filename(self):
 def load_database(name): 
    data = {}
    if os.path.isfile(name): 
-      f = open(name, 'rb')
+      f = open(name, 'r')
       for line in f: 
          unixtime, channel, nick, message = line.split('\t')
          message = message.rstrip('\n')
@@ -28,8 +28,8 @@ def load_database(name):
    return data
 
 def dump_database(name, data): 
-   f = open(name, 'wb')
-   for unixtime, reminders in data.iteritems(): 
+   f = open(name, 'w')
+   for unixtime, reminders in data.items(): 
       for channel, nick, message in reminders: 
          f.write('%s\t%s\t%s\t%s\n' % (unixtime, channel, nick, message))
    f.close()
@@ -97,12 +97,12 @@ scaling = {
    's': 1
 }
 
-periods = '|'.join(scaling.keys())
+periods = '|'.join(list(scaling.keys()))
 p_command = r'\.in ([0-9]+(?:\.[0-9]+)?)\s?((?:%s)\b)?:?\s?(.*)' % periods
 r_command = re.compile(p_command)
 
 def remind(phenny, input): 
-   m = r_command.match(input.bytes)
+   m = r_command.match(input.bytes.decode('utf-8'))
    if not m: 
       return phenny.reply("Sorry, didn't understand the input.")
    length, scale, message = m.groups()
@@ -133,4 +133,4 @@ def remind(phenny, input):
 remind.commands = ['in']
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())

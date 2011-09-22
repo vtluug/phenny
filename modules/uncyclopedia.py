@@ -10,7 +10,7 @@ modified from Wikipedia module
 author: mutantmonkey <mutantmonkey@gmail.com>
 """
 
-import re, urllib
+import re, urllib.request, urllib.parse, urllib.error
 import web
 
 wikiuri = 'http://uncyclopedia.wikia.com/wiki/%s'
@@ -46,14 +46,13 @@ def text(html):
    return unescape(html).strip()
 
 def search(term): 
-   try: import search
-   except ImportError, e: 
-      print e
+   try: from . import search
+   except ImportError as e: 
+      print(e)
       return term
 
-   if isinstance(term, unicode): 
-      term = term.encode('utf-8')
-   else: term = term.decode('utf-8')
+   if not isinstance(term, str): 
+      term = term.decode('utf-8')
 
    term = term.replace('_', ' ')
    try: uri = search.result('site:uncyclopedia.wikia.com %s' % term)
@@ -65,10 +64,10 @@ def search(term):
 def uncyclopedia(term, last=False): 
    global wikiuri
    if not '%' in term: 
-      if isinstance(term, unicode): 
-         t = term.encode('utf-8')
+      if isinstance(term, str): 
+         t = term
       else: t = term
-      q = urllib.quote(t)
+      q = urllib.parse.quote(t)
       u = wikiuri % q
       bytes = web.get(u)
    else: bytes = web.get(wikiuri % term)
@@ -77,7 +76,7 @@ def uncyclopedia(term, last=False):
    if not last: 
       r = r_redirect.search(bytes[:4096])
       if r: 
-         term = urllib.unquote(r.group(1))
+         term = urllib.parse.unquote(r.group(1))
          return uncyclopedia(term, last=True)
 
    paragraphs = r_paragraph.findall(bytes)
@@ -138,18 +137,15 @@ def uncyclopedia(term, last=False):
       return None
 
    sentence = '"' + sentence.replace('"', "'") + '"'
-   sentence = sentence.decode('utf-8').encode('utf-8')
-   wikiuri = wikiuri.decode('utf-8').encode('utf-8')
-   term = term.decode('utf-8').encode('utf-8')
    return sentence + ' - ' + (wikiuri % term)
 
 def uncyc(phenny, input): 
    origterm = input.groups()[1]
    if not origterm: 
       return phenny.say('Perhaps you meant ".uncyc Zen"?')
-   origterm = origterm.encode('utf-8')
+   origterm = origterm
 
-   term = urllib.unquote(origterm)
+   term = urllib.parse.unquote(origterm)
    term = term[0].upper() + term[1:]
    term = term.replace(' ', '_')
 
@@ -166,4 +162,4 @@ uncyc.commands = ['uncyc']
 uncyc.priority = 'high'
 
 if __name__ == '__main__': 
-   print __doc__.strip()
+   print(__doc__.strip())
