@@ -13,7 +13,7 @@ Installation
 ------------
 
 1. Run `./phenny` - this creates a default config file
-2. Edit `~/.phenny/default.py
+2. Edit `~/.phenny/default.py`
 3. Run `./phenny` - this now runs phenny with your settings
 
 Enjoy!
