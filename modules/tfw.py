@@ -5,7 +5,8 @@ author: mutantmonkey <mutantmonkey@gmail.com>
 """
 
 from urllib import quote as urlquote
-from urllib2 import urlopen, HTTPError
+from urllib2 import HTTPError
+import web
 import lxml.html
 
 def tfw(phenny, input, fahrenheit=False, celsius=False):
@@ -22,17 +23,17 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 		celsius_param = "&CELSIUS=yes"
 
 	try:
-		req = urlopen("http://thefuckingweather.com/?zipcode=%s%s" % (urlquote(zipcode), celsius_param))
+		req = web.get("http://thefuckingweather.com/?zipcode=%s%s" % (urlquote(zipcode), celsius_param))
 	except HTTPError:
 		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
-	doc = lxml.html.parse(req)
+	doc = lxml.html.fromstring(req)
 
-	location = doc.getroot().find_class('small')[0].text_content()
+	location = doc.find_class('small')[0].text_content()
 
 	try:
-		weather = doc.getroot().get_element_by_id('content')
+		weather = doc.get_element_by_id('content')
 	except KeyError:
 		phenny.say("Unknown location")
 		return

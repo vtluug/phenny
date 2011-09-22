@@ -129,14 +129,7 @@ def gettitle(uri):
    try: 
       redirects = 0
       while True: 
-         headers = {
-            'Accept': 'text/html', 
-            'User-Agent': 'Mozilla/5.0 (Phenny)'
-         }
-         req = urllib2.Request(uri, headers=headers)
-         u = urllib2.urlopen(req)
-         info = u.info()
-         u.close()
+         info = web.head(uri)
 
          if not isinstance(info, list): 
             status = '200'
@@ -157,9 +150,9 @@ def gettitle(uri):
          if not (('/html' in mtype) or ('/xhtml' in mtype)): 
             return None
 
-      u = urllib2.urlopen(req)
-      bytes = u.read(262144)
-      u.close()
+      bytes = web.get(uri)
+      #bytes = u.read(262144)
+      #u.close()
 
    except IOError: 
       return
