@@ -220,10 +220,10 @@ def f_weather(self, origin, match, args):
          description = 'Violent storm'
       else: description = 'Hurricane'
 
-      degrees = float(wind[0:3]
-      if degrees == 'VRB': 
-         degrees = '\u21BB'
-      elif (degrees <= 22.5) or (degrees > 337.5): 
+      degrees = float(wind[0:3])
+      #if degrees == 'VRB': 
+      #   degrees = '\u21BB'
+      if (degrees <= 22.5) or (degrees > 337.5): 
          degrees = '\u2191'
       elif (degrees > 22.5) and (degrees <= 67.5): 
          degrees = '\u2197'

@@ -79,9 +79,8 @@ def c(phenny, input):
    parts = bytes.split('",')
    answer = [p for p in parts if p.startswith('rhs: "')][0][6:]
    if answer: 
-      answer = answer.decode('unicode-escape')
-      answer = ''.join(chr(ord(c)) for c in answer)
-      answer = answer.decode('utf-8')
+      #answer = ''.join(chr(ord(c)) for c in answer)
+      #answer = answer.decode('utf-8')
       answer = answer.replace('\xc2\xa0', ',')
       answer = answer.replace('<sup>', '^(')
       answer = answer.replace('</sup>', ')')

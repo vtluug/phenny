@@ -228,7 +228,7 @@ class Phenny(irc.Bot):
                             t.start()
                         else: self.call(func, origin, phenny, input)
 
-                        for source in [origin.sender, origin.nick]: 
+                        for source in [decode(origin.sender), decode(origin.nick)]: 
                             try: self.stats[(func.name, source)] += 1
                             except KeyError: 
                                 self.stats[(func.name, source)] = 1
