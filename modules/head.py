@@ -9,7 +9,6 @@ http://inamidst.com/phenny/
 
 import re, urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.client, urllib.parse, time, http.cookiejar
 from html.entities import name2codepoint
-from string import join
 import web
 from tools import deprecated
 
@@ -97,7 +96,7 @@ def noteuri(phenny, input):
 noteuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
 noteuri.priority = 'low'
 
-titlecommands = r'(?:' + join(f_title.commands, r'|') + r')'
+titlecommands = r'(?:' + r'|'.join(f_title.commands) + r')'
 def snarfuri(phenny, input):
    if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
       return
@@ -183,11 +182,6 @@ def gettitle(uri):
       title = r_entity.sub(e, title)
 
       if title: 
-         try: title.decode('utf-8')
-         except: 
-            try: title = title.decode('iso-8859-1')
-            except: title = title.decode('cp1252')
-         else: pass
          title = title.replace('\n', '')
          title = title.replace('\r', '')
       else: title = None

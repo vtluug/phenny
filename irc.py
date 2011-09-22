@@ -101,7 +101,7 @@ class Bot(asynchat.async_chat):
         if use_ssl:
             sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1)
         # FIXME: ssl module does not appear to work properly with nonblocking sockets
-        #sock.setblocking(0)
+        sock.setblocking(0)
         self.set_socket(sock)
 
     def handle_connect(self): 
