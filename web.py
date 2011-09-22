@@ -21,7 +21,11 @@ def get(uri):
     if not uri.startswith('http'): 
         return
     u = urllib.request.urlopen(uri)
-    bytes = u.read().decode('utf-8')
+    bytes = u.read()
+    try:
+        bytes = bytes.decode('utf-8')
+    except UnicodeDecodeError:
+        bytes = bytes.decode('ISO-8859-1')
     u.close()
     return bytes
 
@@ -38,7 +42,11 @@ def post(uri, query):
         return
     data = urllib.parse.urlencode(query)
     u = urllib.request.urlopen(uri, data)
-    bytes = u.read().decode('utf-8')
+    bytes = u.read()
+    try:
+        bytes = bytes.decode('utf-8')
+    except UnicodeDecodeError:
+        bytes = bytes.decode('ISO-8859-1')
     u.close()
     return bytes
 
