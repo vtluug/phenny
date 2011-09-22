@@ -52,7 +52,6 @@ class Bot(asynchat.async_chat):
 
     def __write(self, args, text=None): 
         # print '%r %r %r' % (self, args, text)
-        print(args, text)
         try: 
             if text is not None: 
                 self.push((b' '.join(args) + b' :' + text)[:512] + b'\r\n')
@@ -64,16 +63,20 @@ class Bot(asynchat.async_chat):
     def write(self, args, text=None): 
         """This is a safe version of __write"""
         def safe(input): 
-            input = input.replace('\n', '')
-            input = input.replace('\r', '')
-            return input.encode('utf-8')
+            if type(input) == str:
+                input = input.replace('\n', '')
+                input = input.replace('\r', '')
+                return input.encode('utf-8')
+            else:
+                return input
         try: 
             args = [safe(arg) for arg in args]
             if text is not None: 
                 text = safe(text)
             self.__write(args, text)
         except Exception as e:
-            pass
+            raise
+            #pass
 
     def run(self, host, port=6667, ssl=False, ipv6=False): 
         self.initiate_connect(host, port, ssl, ipv6)
@@ -118,12 +121,10 @@ class Bot(asynchat.async_chat):
 
     def found_terminator(self): 
         line = self.buffer
-        print(line)
         if line.endswith(b'\r'): 
             line = line[:-1]
         self.buffer = b''
 
-        # print line
         if line.startswith(b':'): 
             source, line = line[1:].split(b' ', 1)
         else: source = None
