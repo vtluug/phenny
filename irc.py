@@ -15,8 +15,11 @@ class Origin(object):
     source = re.compile(r'([^!]*)!?([^@]*)@?(.*)')
 
     def __init__(self, bot, source, args): 
-        source = source.decode('utf-8')
-        match = Origin.source.match(source or '')
+        if source:
+            source = source.decode('utf-8')
+        else:
+            source = ""
+        match = Origin.source.match(source)
         self.nick, self.user, self.host = match.groups()
 
         if len(args) > 1: 
