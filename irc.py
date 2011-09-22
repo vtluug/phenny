@@ -67,14 +67,18 @@ class Bot(asynchat.async_chat):
          self.__write(args, text)
       except Exception, e: pass
 
-   def run(self, host, port=6667, ssl=False): 
-      self.initiate_connect(host, port, ssl)
+   def run(self, host, port=6667, ssl=False, ipv6=False): 
+      self.initiate_connect(host, port, ssl, ipv6)
 
-   def initiate_connect(self, host, port, ssl): 
+   def initiate_connect(self, host, port, ssl, ipv6): 
       if self.verbose: 
          message = 'Connecting to %s:%s...' % (host, port)
          print >> sys.stderr, message,
-      self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
+      if ipv6 and socket.has_ipv6:
+          af = socket.AF_INET6
+      else:
+          af = socket.AF_INET
+      self.create_socket(af, socket.SOCK_STREAM)
       self.connect((host, port))
       if ssl:
          import ssl
