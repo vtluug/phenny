@@ -10,10 +10,10 @@ http://inamidst.com/phenny/
 import re
 import web
 
-class Grab(web.urllib.URLopener):
+class Grab(web.urllib.request.URLopener):
    def __init__(self, *args):
       self.version = 'Mozilla/5.0 (Phenny)'
-      web.urllib.URLopener.__init__(self, *args)
+      web.urllib.request.URLopener.__init__(self, *args)
       self.addheader('Referer', 'https://github.com/sbp/phenny')
    def http_error_default(self, url, fp, errcode, errmsg, headers):
       return web.urllib.addinfourl(fp, [headers, errcode], "http:" + url)
