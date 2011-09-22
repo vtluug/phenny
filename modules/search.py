@@ -21,11 +21,11 @@ class Grab(web.urllib.request.URLopener):
 def google_ajax(query): 
    """Search using AjaxSearch, and return its JSON."""
    uri = 'http://ajax.googleapis.com/ajax/services/search/web'
-   args = '?v=1.0&safe=off&q=' + web.urllib.quote(query)
-   handler = web.urllib._urlopener
-   web.urllib._urlopener = Grab()
+   args = '?v=1.0&safe=off&q=' + web.quote(query)
+   handler = web.urllib.request._urlopener
+   web.urllib.request._urlopener = Grab()
    bytes = web.get(uri + args)
-   web.urllib._urlopener = handler
+   web.urllib.request._urlopener = handler
    return web.json(bytes)
 
 def google_search(query): 
@@ -106,7 +106,7 @@ gcs.commands = ['gcs', 'comp']
 r_bing = re.compile(r'<h3><a href="([^"]+)"')
 
 def bing_search(query, lang='en-GB'): 
-   query = web.urllib.quote(query)
+   query = web.quote(query)
    base = 'http://www.bing.com/search?mkt=%s&q=' % lang
    bytes = web.get(base + query)
    m = r_bing.search(bytes)
@@ -136,7 +136,7 @@ r_duck = re.compile(r'nofollow" class="[^"]+" href="(.*?)">')
 
 def duck_search(query): 
    query = query.replace('!', '')
-   query = web.urllib.quote(query)
+   query = web.quote(query)
    uri = 'http://duckduckgo.com/html/?q=%s&kl=uk-en' % query
    bytes = web.get(uri)
    m = r_duck.search(bytes)
@@ -185,7 +185,7 @@ def suggest(phenny, input):
       return phenny.reply("No query term.")
    query = input.group(2)
    uri = 'http://websitedev.de/temp-bin/suggest.pl?q='
-   answer = web.get(uri + web.urllib.quote(query).replace('+', '%2B'))
+   answer = web.get(uri + web.quote(query).replace('+', '%2B'))
    if answer: 
       phenny.say(answer)
    else: phenny.reply('Sorry, no result.')
