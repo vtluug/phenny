@@ -13,11 +13,13 @@ import irc
 home = os.getcwd()
 
 def decode(bytes): 
-    if type(bytes) == str:
+    if not bytes or type(bytes) == str:
         return bytes
-    try: text = bytes.decode('utf-8')
+    try:
+        text = bytes.decode('utf-8')
     except UnicodeDecodeError: 
-        try: text = bytes.decode('iso-8859-1')
+        try:
+            text = bytes.decode('iso-8859-1')
         except UnicodeDecodeError: 
             text = bytes.decode('cp1252')
     return text
