@@ -22,6 +22,8 @@ def decode(bytes):
             text = bytes.decode('iso-8859-1')
         except UnicodeDecodeError: 
             text = bytes.decode('cp1252')
+    except AttributeError:
+        return bytes
     return text
 
 class Phenny(irc.Bot): 
