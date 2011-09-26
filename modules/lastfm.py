@@ -226,7 +226,7 @@ def tasteometer(phenny, input):
 tasteometer.rule = (['taste'], r'(\S+)(?:\s+(\S+))?')
 
 def save_config():
-    configfile  = open(config_filename, 'wb')
+    configfile  = open(config_filename, 'w')
     config.write(configfile)
     configfile.close()
 
