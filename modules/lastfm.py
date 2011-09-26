@@ -8,6 +8,7 @@ author: Casey Link <unnamedrambler@gmail.com>
 import random
 
 import configparser, os
+import http.client
 from urllib.parse import quote as urlquote
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -92,6 +93,9 @@ def now_playing(phenny, input):
         else:
             phenny.say("uhoh. try again later, mmkay?")
             return
+    except http.client.BadStatusLine:
+        phenny.say("uhoh. try again later, mmkay?")
+        return
     doc = etree.parse(req)
     root = doc.getroot()
     recenttracks = list(root)
@@ -152,7 +156,7 @@ def aep(phenny, input):
     user = user.strip()
     try:
         req = urlopen("%s%s" % (AEPURL, urlquote(user)))
-    except HTTPError as e:
+    except (HTTPError, http.client.BadStatusLine) as e:
         phenny.say("uhoh. try again later, mmkay?")
         return
     result = req.read()
@@ -183,7 +187,7 @@ def tasteometer(phenny, input):
             user2 = input.nick
     try:
         req = urlopen("%smethod=tasteometer.compare&type1=user&type2=user&value1=%s&value2=%s" % (APIURL, urlquote(user1), urlquote(user2)))
-    except HTTPError as e:
+    except (HTTPError, http.client.BadStatusLine) as e:
         if e.code == 400:
             phenny.say("uhoh, someone doesn't exist on last.fm, perhaps they need to set user")
             return
