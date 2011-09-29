@@ -23,7 +23,7 @@ def text(html):
    return text
 
 def wiktionary(word): 
-   bytes = web.get(uri % web.urllib.quote(word))
+   bytes = web.get(uri % web.quote(word))
    bytes = r_ul.sub('', bytes)
 
    mode = None
