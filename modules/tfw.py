@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 tfw.py - the fucking weather module
 author: mutantmonkey <mutantmonkey@gmail.com>

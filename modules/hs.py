@@ -1,25 +1,39 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 hs.py - hokie stalker module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-import ldap
-from urllib.parse import quote as urlquote
+import web
+import lxml.etree
 
-LDAP_URI = "ldap://directory.vt.edu"
+SEARCH_URL = "https://webapps.middleware.vt.edu/peoplesearch/PeopleSearch?query={0}&dsml-version=2"
 RESULTS_URL = "http://search.vt.edu/search/people.html?q={0}"
 PERSON_URL = "http://search.vt.edu/search/person.html?person={0:d}"
+NS = NS = '{urn:oasis:names:tc:DSML:2:0:core}'
 
-l = ldap.initialize(LDAP_URI)
-
-"""Search LDAP using the argument as a query. Argument must be a valid LDAP query."""
+"""Search the people search database using the argument as a query."""
 def search(query):
-    result = l.search_s('ou=People,dc=vt,dc=edu', ldap.SCOPE_SUBTREE, query)
-    if len(result) <= 0:
+    query = web.quote(query)
+    try:
+        req = web.get(SEARCH_URL.format(query))
+    except (HTTPError, IOError):
+        phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
+        return
+
+    xml = lxml.etree.fromstring(req.encode('utf-8'))
+    results = xml.findall('{0}searchResponse/{0}searchResultEntry'.format(NS))
+    if len(results) <= 0:
         return False
 
-    return result
+    ret = []
+    for entry in results:
+        entry_data = {}
+        for attr in entry:
+            entry_data[attr.attrib['name']] = attr[0].text
+        ret.append(entry_data)
+
+    return ret
 
 def hs(phenny, input):
     """.hs <pid/name/email> - Search for someone on Virginia Tech People Search."""
@@ -28,29 +42,16 @@ def hs(phenny, input):
     if q is None:
         return
     q = q.strip()
-    results = RESULTS_URL.format(urlquote(q))
+    results = RESULTS_URL.format(web.quote(q))
 
-    try:
-        s = search('(|(uupid={0})(mail={0})(cn={0}))'.format(q))
-        if not s:
-            s = search('(|(uupid=*{0}*)(mail=*{0}*)(cn=*{1}*))'.format(q, '*'.join(q.split(' '))))
-    except ldap.FILTER_ERROR:
-        phenny.reply('Filter error; try to avoid injection attacks in the future please.')
-        return
-    except ldap.SIZELIMIT_EXCEEDED:
-        phenny.reply('Too many results to display here; check out {0}'.format(results))
-        return
-    except ldap.TIMELIMIT_EXCEEDED:
-        phenny.reply('Time limit exceeded; check out {0}'.format(results))
-        return
-
+    s = search(q)
     if s:
         if len(s) >1:
             phenny.reply("Multiple results found; try {0}".format(results))
         else:
-            for dh, entry in s:
-                person = PERSON_URL.format(int(entry['uid'][0]))
-                phenny.reply("{0} - {1}".format(entry['cn'][0], person))
+            for entry in s:
+                person = PERSON_URL.format(int(entry['uid']))
+                phenny.reply("{0} - {1}".format(entry['cn'], person))
     else:
         phenny.reply("No results found")
 hs.rule = (['hs'], r'(.*)')
