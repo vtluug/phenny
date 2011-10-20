@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 chillmeter.py - .chill measures chill level of the channel
 author: Casey Link <unnamedrambler@gmail.com>
@@ -32,6 +32,15 @@ chill_words = [
     ("smirnoff", 1),
     ("ices", 1),
     ("iced", 1),
+    ("longboard", 2),
+    ("boning", 1),
+    ("orange", 1),
+    ("maroon", 1),
+    ("kicks", 1),
+    ("dome", 1),
+    ("69", 1),
+    ("bang", 1),
+    ("COD", 2),
 
     # words that unchill the place
     ("dude", -1),
@@ -47,6 +56,8 @@ chill_words = [
     ("exam", -2),
     ("4chan", -1),
     ("digg", -1),
+    ("work", -1),
+    ("unchill", -2),
 ]
 
 # all things chill
