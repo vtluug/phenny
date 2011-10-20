@@ -41,6 +41,7 @@ chill_words = [
     ("69", 1),
     ("bang", 1),
     ("COD", 2),
+    ("blazed", 1),
 
     # words that unchill the place
     ("dude", -1),
