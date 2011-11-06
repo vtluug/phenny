@@ -43,7 +43,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 	# temperature is everything up to first <br />
 	tempt = ""
 	for c in main[0].text:
-		if c.isdigit():
+		if c.isdigit() or c == '-':
 			tempt += c
 	temp = int(tempt)
 	deg = chr(176)
