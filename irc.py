@@ -23,7 +23,7 @@ class Origin(object):
         self.nick, self.user, self.host = match.groups()
 
         if len(args) > 1: 
-            target = args[1]
+            target = args[1].decode('utf-8')
         else: target = None
 
         mappings = {bot.nick: self.nick, None: None}
