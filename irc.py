@@ -15,15 +15,11 @@ class Origin(object):
     source = re.compile(r'([^!]*)!?([^@]*)@?(.*)')
 
     def __init__(self, bot, source, args): 
-        if source:
-            source = source.decode('utf-8')
-        else:
-            source = ""
         match = Origin.source.match(source)
         self.nick, self.user, self.host = match.groups()
 
         if len(args) > 1: 
-            target = args[1].decode('utf-8')
+            target = args[1]
         else: target = None
 
         mappings = {bot.nick: self.nick, None: None}
@@ -125,19 +121,21 @@ class Bot(asynchat.async_chat):
             line = line[:-1]
         self.buffer = b''
 
-        if line.startswith(b':'): 
-            source, line = line[1:].split(b' ', 1)
+        line = line.decode('utf-8')
+
+        if line.startswith(':'): 
+            source, line = line[1:].split(' ', 1)
         else: source = None
 
-        if b' :' in line: 
-            argstr, text = line.split(b' :', 1)
-        else: argstr, text = line, b''
+        if ' :' in line: 
+            argstr, text = line.split(' :', 1)
+        else: argstr, text = line, ''
         args = argstr.split()
 
         origin = Origin(self, source, args)
         self.dispatch(origin, tuple([text] + args))
 
-        if args[0] == b'PING': 
+        if args[0] == 'PING': 
             self.write(('PONG', text))
 
     def dispatch(self, origin, args): 

@@ -198,7 +198,7 @@ class Phenny(irc.Bot):
             self.error(origin)
 
     def limit(self, origin, func): 
-        if origin.sender and origin.sender.startswith(b'#'): 
+        if origin.sender and origin.sender.startswith('#'): 
             if hasattr(self.config, 'limit'): 
                 limits = self.config.limit.get(origin.sender)
                 if limits and (func.__module__ not in limits): 
