@@ -15,6 +15,8 @@ class Origin(object):
     source = re.compile(r'([^!]*)!?([^@]*)@?(.*)')
 
     def __init__(self, bot, source, args): 
+        if not source:
+            source = ""
         match = Origin.source.match(source)
         self.nick, self.user, self.host = match.groups()
 
