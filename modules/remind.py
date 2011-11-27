@@ -102,7 +102,7 @@ p_command = r'\.in ([0-9]+(?:\.[0-9]+)?)\s?((?:%s)\b)?:?\s?(.*)' % periods
 r_command = re.compile(p_command)
 
 def remind(phenny, input): 
-   m = r_command.match(input.bytes.decode('utf-8'))
+   m = r_command.match(input.bytes)
    if not m: 
       return phenny.reply("Sorry, didn't understand the input.")
    length, scale, message = m.groups()
