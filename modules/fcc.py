@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 from urllib.error import HTTPError
 import web
-import lxml.html
+import json
 
 def fcc(phenny, input):
 	""".fcc <callsign> - Look up a callsign issued by the FCC."""
@@ -14,19 +14,18 @@ def fcc(phenny, input):
 	callsign = input.group(2)
 
 	try:
-		req = web.post("http://www.arrl.org/advanced-call-sign-search",
-		        {'data[Search][terms]': callsign})
+		req = web.get("http://callook.info/{0}/json".format(web.quote(callsign)))
 	except (HTTPError, IOError):
 		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
-	doc = lxml.html.fromstring(req)
-	result = doc.xpath('//h3')
-	if len(result) != 2:
+	data = json.loads(req)
+	if len(data) <= 0:
 	    phenny.reply('No results found for {0}'.format(callsign))
 	    return
 
-	response = result[0].text_content().strip()
+	response = "{0} - {1} - {2}".format(data['current']['callsign'],
+	        data['name'], data['otherInfo']['ulsUrl'])
 	phenny.say(response)
 fcc.rule = (['fcc'], r'(.*)')
 
