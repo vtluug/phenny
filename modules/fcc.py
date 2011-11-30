@@ -20,7 +20,7 @@ def fcc(phenny, input):
 		return
 
 	data = json.loads(req)
-	if len(data) <= 0:
+	if len(data) <= 0 or data['status'] == 'INVALID':
 	    phenny.reply('No results found for {0}'.format(callsign))
 	    return
 
