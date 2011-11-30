@@ -40,7 +40,7 @@ def head(uri):
 def post(uri, query): 
     if not uri.startswith('http'): 
         return
-    data = urllib.parse.urlencode(query)
+    data = urllib.parse.urlencode(query).encode('utf-8')
     u = urllib.request.urlopen(uri, data)
     bytes = u.read()
     try:
