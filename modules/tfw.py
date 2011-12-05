@@ -30,12 +30,11 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 
 	doc = lxml.html.fromstring(req)
 
-	location = doc.find_class('small')[0].text_content()
-
-	try:
+    try:
+	    location = doc.find_class('small')[0].text_content()
 		weather = doc.get_element_by_id('content')
-	except KeyError:
-		phenny.say("Unknown location")
+	except (IndexError, KeyError):
+		phenny.say("UNKNOWN FUCKING LOCATION. Try another?")
 		return
 
 	main = weather.find_class('large')
