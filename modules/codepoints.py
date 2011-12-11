@@ -70,13 +70,13 @@ def u(phenny, input):
     # phenny.msg('#inamidst', '%r' % arg)
     if not arg: 
         return phenny.reply('You gave me zero length input.')
-    elif not arg.strip(b' '): 
+    elif not arg.strip(' '): 
         if len(arg) > 1: return phenny.reply('%s SPACEs (U+0020)' % len(arg))
         return phenny.reply('1 SPACE (U+0020)')
 
     # @@ space
     if set(arg.upper()) - set(
-        b'ABCDEFGHIJKLMNOPQRSTUVWYXYZ0123456789- .?+*{}[]\\/^$'): 
+        'ABCDEFGHIJKLMNOPQRSTUVWYXYZ0123456789- .?+*{}[]\\/^$'): 
         printable = False
     elif len(arg) > 1: 
         printable = True
@@ -84,7 +84,7 @@ def u(phenny, input):
 
     if printable: 
         extended = False
-        for c in b'.?+*{}[]\\/^$': 
+        for c in '.?+*{}[]\\/^$': 
             if c in arg: 
                 extended = True
                 break
@@ -93,8 +93,6 @@ def u(phenny, input):
             try: u = chr(int(arg, 16))
             except ValueError: pass
             else: return phenny.say(about(u))
-
-        arg = arg.decode('utf-8')
 
         if extended: 
             # look up a codepoint with regexp
@@ -113,7 +111,7 @@ def u(phenny, input):
                 phenny.say(result)
             else: phenny.reply("Sorry, no results for %r." % arg)
     else: 
-        text = arg.decode('utf-8')
+        text = arg
         # look up less than three podecoints
         if len(text) <= 3: 
             for u in text: 
