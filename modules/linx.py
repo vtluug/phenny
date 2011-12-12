@@ -14,6 +14,7 @@ def linx(phenny, input):
 	url = input.group(2)
 	if not url:
 	    phenny.reply("No URL provided. CAN I HAS?")
+	    return
 
 	try:
 		req = web.post("http://linx.li/vtluug", {'url': url})
