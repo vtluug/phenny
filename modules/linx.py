@@ -12,11 +12,13 @@ def linx(phenny, input):
 	""".linx <url> - Upload a URL to linx.li."""
 
 	url = input.group(2)
+	if not url:
+	    phenny.reply("No URL provided. CAN I HAS?")
 
 	try:
 		req = web.post("http://linx.li/vtluug", {'url': url})
 	except (HTTPError, IOError):
-		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
+		phenny.reply("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
 	data = json.loads(req)
