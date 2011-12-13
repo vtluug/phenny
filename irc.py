@@ -11,6 +11,7 @@ import sys, re, time, traceback
 import socket, asyncore, asynchat
 import ssl
 
+
 class Origin(object): 
     source = re.compile(r'([^!]*)!?([^@]*)@?(.*)')
 
@@ -26,6 +27,7 @@ class Origin(object):
 
         mappings = {bot.nick: self.nick, None: None}
         self.sender = mappings.get(target, target)
+
 
 class Bot(asynchat.async_chat): 
     def __init__(self, nick, name, channels, password=None): 
@@ -52,7 +54,8 @@ class Bot(asynchat.async_chat):
         # print '%r %r %r' % (self, args, text)
         try: 
             if text is not None: 
-                self.push((b' '.join(args) + b' :' + text)[:512] + b'\r\n')
+                # 510 because CR and LF count too, as nyuszika7h points out
+                self.push((' '.join(args) + ' :' + text)[:510] + '\r\n')
             else:
                 self.push(b' '.join(args)[:512] + b'\r\n')
         except IndexError: 
@@ -221,6 +224,7 @@ class TestBot(Bot):
             self.msg(origin.sender, 'pong (%s)' % delay)
         else: self.msg(origin.sender, 'pong')
     f_ping.rule = r'^\.ping(?:[ \t]+(\d+))?$'
+
 
 def main(): 
     bot = TestBot('testbot007', 'testbot007', ['#wadsworth'])
