@@ -15,11 +15,11 @@ def fcc(phenny, input):
 
 	try:
 		req = web.get("http://callook.info/{0}/json".format(web.quote(callsign)))
-	except (HTTPError, IOError):
+		data = json.loads(req)
+	except (HTTPError, IOError, ValueError):
 		phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 		return
 
-	data = json.loads(req)
 	if len(data) <= 0 or data['status'] == 'INVALID':
 	    phenny.reply('No results found for {0}'.format(callsign))
 	    return
