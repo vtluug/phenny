@@ -30,7 +30,7 @@ def urbandict(phenny, input):
     result = data['list'][0]
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(urlquote(word))
 
-    response = "{0} - {1}".format(result['definition'], url)
+    response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     phenny.say(response)
 urbandict.rule = (['urb'], r'(.*)')
 
