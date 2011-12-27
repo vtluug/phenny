@@ -26,6 +26,7 @@ def urbandict(phenny, input):
 
     if data['result_type'] == 'no_results':
         phenny.say("No results found for {0}".format(word))
+        return
 
     result = data['list'][0]
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(urlquote(word))
