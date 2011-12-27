@@ -9,24 +9,33 @@ http://inamidst.com/phenny/
 """
 
 import re, urllib.request, urllib.parse, urllib.error
+import json
 import web
 
-def detect(text): 
-   uri = 'http://ajax.googleapis.com/ajax/services/language/detect'
-   q = urllib.parse.quote(text)
-   bytes = web.get(uri + '?q=' + q + '&v=1.0')
-   result = web.json(bytes)
-   try: return result['responseData']['language']
-   except Exception: return None
+def translate(text, input='auto', output='en'): 
+   opener = urllib.request.build_opener()
+   opener.addheaders = [(
+      'User-Agent', 'Mozilla/5.0' + 
+      '(X11; U; Linux i686)' + 
+      'Gecko/20071127 Firefox/2.0.0.11'
+   )]
 
-def translate(text, input, output): 
-   uri = 'http://ajax.googleapis.com/ajax/services/language/translate'
-   q = urllib.parse.quote(text)
-   pair = input + '%7C' + output
-   bytes = web.get(uri + '?q=' + q + '&v=1.0&langpair=' + pair)
-   result = web.json(bytes)
-   try: return result['responseData']['translatedText'].encode('cp1252')
-   except Exception: return None
+   input, output = urllib.parse.quote(input), urllib.parse.quote(output)
+   text = urllib.parse.quote(text)
+
+   result = opener.open('http://translate.google.com/translate_a/t?' +
+      ('client=t&hl=en&sl=%s&tl=%s&multires=1' % (input, output)) + 
+      ('&otf=1&ssel=0&tsel=0&uptl=en&sc=1&text=%s' % text)).read()
+   result = result.decode('utf-8')
+
+   while ',,' in result: 
+      result = result.replace(',,', ',null,')
+   data = json.loads(result)
+
+   try: language = data[-2][0][0]
+   except: language = '?'
+
+   return ''.join(x[0] for x in data[0]), language
 
 def tr(phenny, context): 
    """Translates a phrase, with an optional language hint."""
@@ -37,16 +46,13 @@ def tr(phenny, context):
    if (len(phrase) > 350) and (not context.admin): 
       return phenny.reply('Phrase must be under 350 characters.')
 
-   input = input or detect(phrase)
-   if not input: 
-      err = 'Unable to guess your crazy moon language, sorry.'
-      return phenny.reply(err)
-   output = (output or 'en')
+   input = input or 'auto'
+   input = input.encode('utf-8')
+   output = (output or 'en').encode('utf-8')
 
    if input != output: 
-      msg = translate(phrase, input, output)
-      if isinstance(msg, str): 
-         msg = msg.decode('utf-8')
+      msg, input = translate(phrase, input, output)
+      output = output.decode('utf-8')
       if msg: 
          msg = web.decode(msg) # msg.replace('&#39;', "'")
          msg = '"%s" (%s to %s, translate.google.com)' % (msg, input, output)
