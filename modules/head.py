@@ -153,8 +153,9 @@ def gettitle(uri):
         try: mtype = info['content-type']
         except: 
             return None
-            if not (('/html' in mtype) or ('/xhtml' in mtype)): 
-                return None
+
+        if not (('/html' in mtype) or ('/xhtml' in mtype)): 
+            return None
 
         bytes = web.get(uri)
         #bytes = u.read(262144)
