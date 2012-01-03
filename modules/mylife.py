@@ -43,8 +43,9 @@ def mliarab(phenny, input):
     try:
          req = web.get("http://mylifeisarabic.com/random/")
     except (HTTPError, IOError):
-        phenny.say("The site you requested, mylifeisarabic.com, has been banned \
-                  in the UAE. You will be reported to appropriate authorities")
+        phenny.say("The site you requested, mylifeisarabic.com, has been " \
+                "banned in the UAE. You will be reported to appropriate " \
+                "authorities")
         return
 
     doc = lxml.html.fromstring(req)
