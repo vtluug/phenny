@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 
 modified from Wikipedia module
-author: mutantmonkey <mutantmonkey@gmail.com>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 import re, urllib.request, urllib.parse, urllib.error

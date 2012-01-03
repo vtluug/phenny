@@ -10,9 +10,7 @@ def nsfw(phenny, input):
         phenny.say(".nsfw <link> - for when a link isn't safe for work")
         return
     phenny.say("!!NSFW!! -> %s <- !!NSFW!!" % (link))
-
 nsfw.rule = (['nsfw'], r'(.*)')
 
 if __name__ == '__main__':
-	print(__doc__.strip())
-
+    print(__doc__.strip())

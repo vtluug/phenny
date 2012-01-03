@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 tfw.py - the fucking weather module
-author: mutantmonkey <mutantmonkey@gmail.com>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 from urllib.parse import quote as urlquote
@@ -82,4 +82,3 @@ tfwc.rule = (['tfwc'], r'(.*)')
 
 if __name__ == '__main__':
     print(__doc__.strip())
-

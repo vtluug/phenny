@@ -24,23 +24,23 @@ config.optionxform = str
 config_filename = ""
 
 def setup(self):
-   fn = self.nick + '-' + self.config.host + '.lastfm.db'
-   global config_filename
-   config_filename = os.path.join(os.path.expanduser('~/.phenny'), fn)
-   if not os.path.exists(config_filename):
-      try: f = open(config_filename, 'w')
-      except OSError: pass
-      else:
-         f.write('')
-         f.close()
+    fn = self.nick + '-' + self.config.host + '.lastfm.db'
+    global config_filename
+    config_filename = os.path.join(os.path.expanduser('~/.phenny'), fn)
+    if not os.path.exists(config_filename):
+        try: f = open(config_filename, 'w')
+        except OSError: pass
+        else:
+            f.write('')
+            f.close()
 
-   config_file = config.read(config_filename)
-   if not config.has_section("Nick2User"):
+    config_file = config.read(config_filename)
+    if not config.has_section("Nick2User"):
         config.add_section("Nick2User")
-   if not config.has_section("User2Nick"):
-       config.add_section("User2Nick")
-   if not config.has_section("Nick2Verb"):
-       config.add_section("Nick2Verb")
+    if not config.has_section("User2Nick"):
+        config.add_section("User2Nick")
+    if not config.has_section("Nick2Verb"):
+        config.add_section("Nick2Verb")
 
 def lastfm_set(phenny, input):
     cmd = input.group(2)

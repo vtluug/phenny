@@ -1,7 +1,7 @@
 #!/usr/bin/python2
 """
 botsnack.py - .botsnack module (aka simulated hunger 1.0)
-author: mutantmonkey <mutantmonkey@gmail.com>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 author: Casey Link <unnamedrambler@gmail.com>
 
 This module simulates bot hunger and provides a mechanism
@@ -106,5 +106,4 @@ botsnack.last_tick = time.time()
 botsnack.coolingdown = False
 
 if __name__ == '__main__':
-	print(__doc__.strip())
-
+    print(__doc__.strip())
