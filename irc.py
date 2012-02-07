@@ -126,7 +126,10 @@ class Bot(asynchat.async_chat):
             line = line[:-1]
         self.buffer = b''
 
-        line = line.decode('utf-8')
+        try:
+            line = line.decode('utf-8')
+        except UnicodeDecodeError:
+            line = line.decode('iso-8859-1')
 
         if line.startswith(':'): 
             source, line = line[1:].split(' ', 1)
