@@ -281,7 +281,8 @@ tock.commands = ['tock']
 tock.priority = 'high'
 
 def npl(phenny, input): 
-    """Shows the time from NPL's SNTP server."""
+   """Shows the time from NPL's SNTP server."""
+    # for server in ('ntp1.npl.co.uk', 'ntp2.npl.co.uk'): 
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     client.sendto('\x1b' + 47 * '\0', ('ntp1.npl.co.uk', 123))
     data, address = client.recvfrom(1024)
@@ -290,7 +291,7 @@ def npl(phenny, input):
         d = dec('0.0')
         for i in range(8):
             d += dec(buf[32 + i]) * dec(str(math.pow(2, (3 - i) * 8)))
-        d -= dec(2208988800)
+        d -= dec(2208988800L)
         a, b = str(d).split('.')
         f = '%Y-%m-%d %H:%M:%S'
         result = datetime.datetime.fromtimestamp(d).strftime(f) + '.' + b[:6]
