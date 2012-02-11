@@ -23,11 +23,11 @@ def google_ajax(query):
     if isinstance(query, str): 
         query = query.encode('utf-8')
     uri = 'http://ajax.googleapis.com/ajax/services/search/web'
-    args = '?v=1.0&safe=off&q=' + web.urllib.quote(query)
-    handler = web.urllib._urlopener
-    web.urllib._urlopener = Grab()
+    args = '?v=1.0&safe=off&q=' + web.quote(query)
+    handler = web.urllib.request._urlopener
+    web.urllib.request._urlopener = Grab()
     bytes = web.get(uri + args)
-    web.urllib._urlopener = handler
+    web.urllib.request._urlopener = handler
     return web.json(bytes)
 
 def google_search(query): 
