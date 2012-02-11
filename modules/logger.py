@@ -35,6 +35,10 @@ def logger(phenny, input):
         'chars': len(input.group(1)),
     }
 
+    # format action messages
+    if sqlite_data['msg'][:8] == '\x01ACTION ':
+        sqlite_data['msg'] = '* {0} {1}'.format(sqlite_data['nick'], sqlite_data['msg'][8:-1])
+
     c = logger.conn.cursor()
     c.execute('''insert or replace into lines_by_nick
                     (channel, nick, lines, characters, last_time, quote)
@@ -51,7 +55,7 @@ def logger(phenny, input):
                     );''', sqlite_data)
     c.close()
 
-    if random.randint(0, 20) == 10 and not input.group(1)[:8] == '\x01ACTION ':
+    if random.randint(0, 20) == 10:
         c = logger.conn.cursor()
         c.execute('update lines_by_nick set quote=:msg where channel=:channel \
                 and nick=:nick', sqlite_data)
