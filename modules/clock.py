@@ -284,7 +284,7 @@ def npl(phenny, input):
     """Shows the time from NPL's SNTP server."""
     # for server in ('ntp1.npl.co.uk', 'ntp2.npl.co.uk'): 
     client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    client.sendto('\x1b' + 47 * '\0', ('ntp1.npl.co.uk', 123))
+    client.sendto(b'\x1b' + 47 * b'\0', ('ntp1.npl.co.uk', 123))
     data, address = client.recvfrom(1024)
     if data: 
         buf = struct.unpack('B' * 48, data)
