@@ -25,9 +25,12 @@ def rule34(phenny, input):
 
     doc = lxml.html.fromstring(req)
     doc.make_links_absolute('http://rule34.xxx/')
+    thumb = doc.find_class('thumb')
+    if len(thumb) <= 0:
+        phenny.reply("You just broke Rule 34! Better start uploading...")
+        return
 
     try:
-        thumb = doc.find_class('thumb')[0]
         link = thumb.find('a').attrib['href']
     except AttributeError:
         phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
