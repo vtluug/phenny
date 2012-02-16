@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 mylife.py - various commentary on life
 author: Ramblurr <unnamedrambler@gmail.com>

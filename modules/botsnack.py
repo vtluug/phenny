@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 botsnack.py - .botsnack module (aka simulated hunger 1.0)
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>

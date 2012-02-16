@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 nsfw.py - some things just aren't safe for work, a phenny module
 author: Casey Link <unnamedrambler@gmail.com

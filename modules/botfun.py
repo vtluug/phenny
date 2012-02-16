@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 """
 botfight.py - .botfight module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
