@@ -76,7 +76,7 @@ def f_remind(phenny, input):
         return phenny.reply('That nickname is too long.')
 
     timenow = time.strftime('%d %b %H:%MZ', time.gmtime())
-    if not tellee in (teller.lower(), phenny.nick, 'me'): # @@
+    if not tellee in (teller.lower(), phenny.nick.lower(), 'me'): # @@
         # @@ <deltab> and year, if necessary
         warn = False
         if tellee not in phenny.reminders: 
