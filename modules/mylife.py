@@ -38,23 +38,6 @@ def mlia(phenny, input):
     phenny.say(quote)
 mlia.commands = ['mlia']
 
-def mliarab(phenny, input):
-    """.mliarab - My life is Arabic."""
-    try:
-         req = web.get("http://mylifeisarabic.com/random/")
-    except (HTTPError, IOError):
-        phenny.say("The site you requested, mylifeisarabic.com, has been " \
-                "banned in the UAE. You will be reported to appropriate " \
-                "authorities")
-        return
-
-    doc = lxml.html.fromstring(req)
-    quotes = doc.find_class('entry')
-    quote = random.choice(quotes)[0].text_content()
-    quote = quote.strip()
-    phenny.say(quote)
-mliarab.commands = ['mliar', 'mliarab']
-
 def mlib(phenny, input):
     """.mlib - My life is bro."""
     try:
@@ -67,20 +50,6 @@ def mlib(phenny, input):
     quote = doc.find_class('storycontent')[0][0].text_content()
     phenny.say(quote)
 mlib.commands = ['mlib']
-
-def mlic(phenny, input):
-    """.mlic - My life is creepy."""
-    try:
-        req = web.get("http://mylifeiscreepy.com/random")
-    except (HTTPError, IOError):
-        phenny.say("Error: Have you checked behind you?")
-        return
-
-    doc = lxml.html.fromstring(req)
-    quote = doc.find_class('oldlink')[0].text_content()
-    quote = quote.strip()
-    phenny.say(quote)
-mlic.commands = ['mlic']
 
 def mlid(phenny, input):
     """.mlib - My life is Desi."""
