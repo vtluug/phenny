@@ -43,6 +43,8 @@ def service(phenny, input, command, args):
     lines = bytes.splitlines()
     if not lines: 
         return phenny.reply("Sorry, the service didn't respond any output.")
+    try: line = lines[0].encode('utf-8')[:350]
+    except: line = lines[0][:250]
     phenny.say(lines[0][:350])
 
 def refresh(phenny): 

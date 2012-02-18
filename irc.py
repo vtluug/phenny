@@ -51,7 +51,7 @@ class Bot(asynchat.async_chat):
     #     asynchat.async_chat.push(self, *args, **kargs)
 
     def __write(self, args, text=None): 
-        # print '%r %r %r' % (self, args, text)
+        # print 'PUSH: %r %r %r' % (self, args, text)
         try: 
             if text is not None: 
                 # 510 because CR and LF count too, as nyuszika7h points out
