@@ -73,37 +73,40 @@ tr.example = '$nickname: "mon chien"? or $nickname: fr "mon chien"?'
 tr.priority = 'low'
 
 def tr2(phenny, input): 
-   """Translates a phrase, with an optional language hint."""
-   command = input.group(2).encode('utf-8')
+    """Translates a phrase, with an optional language hint."""
+    command = input.group(2)
+    if not command:
+         phenny.reply("Please provide a phrase to translate")
+         return
 
-   def langcode(p): 
-      return p.startswith(':') and (2 < len(p) < 10) and p[1:].isalpha()
+    def langcode(p): 
+        return p.startswith(':') and (2 < len(p) < 10) and p[1:].isalpha()
 
-   args = ['auto', 'en']
+    args = ['auto', 'en']
 
-   for i in xrange(2): 
-      if not ' ' in command: break
-      prefix, cmd = command.split(' ', 1)
-      if langcode(prefix): 
-         args[i] = prefix[1:]
-         command = cmd
-   phrase = command
+    for i in range(2): 
+        if not ' ' in command: break
+        prefix, cmd = command.split(' ', 1)
+        if langcode(prefix): 
+            args[i] = prefix[1:]
+            command = cmd
+    phrase = command.encode('utf-8')
 
-   if (len(phrase) > 350) and (not input.admin): 
-      return phenny.reply('Phrase must be under 350 characters.')
+    if (len(phrase) > 350) and (not input.admin): 
+        return phenny.reply('Phrase must be under 350 characters.')
 
-   src, dest = args
-   if src != dest: 
-      msg, src = translate(phrase, src, dest)
-      if isinstance(msg, str): 
-         msg = msg.decode('utf-8')
-      if msg: 
-         msg = web.decode(msg) # msg.replace('&#39;', "'")
-         msg = '"%s" (%s to %s, translate.google.com)' % (msg, src, dest)
-      else: msg = 'The %s to %s translation failed, sorry!' % (src, dest)
+    src, dest = args
+    if src != dest: 
+        msg, src = translate(phrase, src, dest)
+        #if isinstance(msg, str): 
+        #    msg = msg.decode('utf-8')
+        if msg: 
+            msg = web.decode(msg) # msg.replace('&#39;', "'")
+            msg = '"%s" (%s to %s, translate.google.com)' % (msg, src, dest)
+        else: msg = 'The %s to %s translation failed, sorry!' % (src, dest)
 
-      phenny.reply(msg)
-   else: phenny.reply('Language guessing failed, so try suggesting one!')
+        phenny.reply(msg)
+    else: phenny.reply('Language guessing failed, so try suggesting one!')
 
 tr2.commands = ['tr']
 tr2.priority = 'low'
