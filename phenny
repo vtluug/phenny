@@ -17,163 +17,163 @@ from textwrap import dedent as trim
 dotdir = os.path.expanduser('~/.phenny')
 
 def check_python_version(): 
-   if sys.version_info < (3, 0): 
-      error = 'Error: Requires Python 3.0 or later, from www.python.org'
-      print(error, file=sys.stderr)
-      sys.exit(1)
+    if sys.version_info < (3, 0): 
+        error = 'Error: Requires Python 3.0 or later, from www.python.org'
+        print(error, file=sys.stderr)
+        sys.exit(1)
 
 def create_default_config(fn): 
-   f = open(fn, 'w')
-   print(trim("""\
-   nick = 'phenny'
-   host = 'irc.example.net'
-   port = 6667
-   ssl = False
-   ipv6 = False
-   channels = ['#example', '#test']
-   owner = 'yournickname'
+    f = open(fn, 'w')
+    print(trim("""\
+    nick = 'phenny'
+    host = 'irc.example.net'
+    port = 6667
+    ssl = False
+    ipv6 = False
+    channels = ['#example', '#test']
+    owner = 'yournickname'
 
-   # password is the NickServ password, serverpass is the server password
-   # password = 'example'
-   # serverpass = 'serverpass'
+    # password is the NickServ password, serverpass is the server password
+    # password = 'example'
+    # serverpass = 'serverpass'
 
-   # These are people who will be able to use admin.py's functions...
-   admins = [owner, 'someoneyoutrust']
-   # But admin.py is disabled by default, as follows:
-   exclude = ['admin']
+    # These are people who will be able to use admin.py's functions...
+    admins = [owner, 'someoneyoutrust']
+    # But admin.py is disabled by default, as follows:
+    exclude = ['admin']
 
-   ignore = ['']
+    ignore = ['']
 
-   # If you want to enumerate a list of modules rather than disabling
-   # some, use "enable = ['example']", which takes precedent over exclude
-   # 
-   # enable = []
+    # If you want to enumerate a list of modules rather than disabling
+    # some, use "enable = ['example']", which takes precedent over exclude
+    # 
+    # enable = []
 
-   # Directories to load user modules from
-   # e.g. /path/to/my/modules
-   extra = []
+    # Directories to load user modules from
+    # e.g. /path/to/my/modules
+    extra = []
 
-   # Services to load: maps channel names to white or black lists
-   external = { 
-      '#liberal': ['!'], # allow all
-      '#conservative': [], # allow none
-      '*': ['!'] # default whitelist, allow all
-   }
+    # Services to load: maps channel names to white or black lists
+    external = { 
+        '#liberal': ['!'], # allow all
+        '#conservative': [], # allow none
+        '*': ['!'] # default whitelist, allow all
+    }
 
-   # EOF
-   """), file=f)
-   f.close()
+    # EOF
+    """), file=f)
+    f.close()
 
 def create_dotdir(dotdir): 
-   print('Creating a config directory at ~/.phenny...')
-   try: os.mkdir(dotdir)
-   except Exception as e: 
-      print('There was a problem creating %s:' % dotdir, file=sys.stderr)
-      print(e.__class__, str(e), file=sys.stderr)
-      print('Please fix this and then run phenny again.', file=sys.stderr)
-      sys.exit(1)
+    print('Creating a config directory at ~/.phenny...')
+    try: os.mkdir(dotdir)
+    except Exception as e: 
+        print('There was a problem creating %s:' % dotdir, file=sys.stderr)
+        print(e.__class__, str(e), file=sys.stderr)
+        print('Please fix this and then run phenny again.', file=sys.stderr)
+        sys.exit(1)
 
-   print('Creating a default config file at ~/.phenny/default.py...')
-   default = os.path.join(dotdir, 'default.py')
-   create_default_config(default)
+    print('Creating a default config file at ~/.phenny/default.py...')
+    default = os.path.join(dotdir, 'default.py')
+    create_default_config(default)
 
-   print('Done; now you can edit default.py, and run phenny! Enjoy.')
-   sys.exit(0)
+    print('Done; now you can edit default.py, and run phenny! Enjoy.')
+    sys.exit(0)
 
 def check_dotdir(): 
-   if not os.path.isdir(dotdir): 
-      create_dotdir(dotdir)
+    if not os.path.isdir(dotdir): 
+        create_dotdir(dotdir)
 
 def config_names(config): 
-   config = config or 'default'
+    config = config or 'default'
 
-   def files(d): 
-      names = os.listdir(d)
-      return list(os.path.join(d, fn) for fn in names if fn.endswith('.py'))
+    def files(d): 
+        names = os.listdir(d)
+        return list(os.path.join(d, fn) for fn in names if fn.endswith('.py'))
 
-   here = os.path.join('.', config)
-   if os.path.isfile(here): 
-      return [here]
-   if os.path.isfile(here + '.py'): 
-      return [here + '.py']
-   if os.path.isdir(here): 
-      return files(here)
+    here = os.path.join('.', config)
+    if os.path.isfile(here): 
+        return [here]
+    if os.path.isfile(here + '.py'): 
+        return [here + '.py']
+    if os.path.isdir(here): 
+        return files(here)
 
-   there = os.path.join(dotdir, config)
-   if os.path.isfile(there): 
-      return [there]
-   if os.path.isfile(there + '.py'): 
-      return [there + '.py']
-   if os.path.isdir(there): 
-      return files(there)
+    there = os.path.join(dotdir, config)
+    if os.path.isfile(there): 
+        return [there]
+    if os.path.isfile(there + '.py'): 
+        return [there + '.py']
+    if os.path.isdir(there): 
+        return files(there)
 
-   print("Error: Couldn't find a config file!", file=sys.stderr)
-   print('What happened to ~/.phenny/default.py?', file=sys.stderr)
-   sys.exit(1)
+    print("Error: Couldn't find a config file!", file=sys.stderr)
+    print('What happened to ~/.phenny/default.py?', file=sys.stderr)
+    sys.exit(1)
 
 def main(argv=None): 
-   # Step One: Parse The Command Line
+    # Step One: Parse The Command Line
+ 
+    parser = optparse.OptionParser('%prog [options]')
+    parser.add_option('-c', '--config', metavar='fn', 
+       help='use this configuration file or directory')
+    opts, args = parser.parse_args(argv)
+    if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
+ 
+    # Step Two: Check Dependencies
+ 
+    check_python_version() # require python2.4 or later
+    if not opts.config:
+        check_dotdir() # require ~/.phenny, or make it and exit
+ 
+    # Step Three: Load The Configurations
+ 
+    config_modules = []
+    for config_name in config_names(opts.config): 
+        name = os.path.basename(config_name).split('.')[0] + '_config'
+        module = imp.load_source(name, config_name)
+        module.filename = config_name
+ 
+        if not hasattr(module, 'prefix'): 
+            module.prefix = r'\.'
+ 
+        if not hasattr(module, 'name'): 
+            module.name = 'Phenny Palmersbot, http://inamidst.com/phenny/'
+ 
+        if not hasattr(module, 'port'): 
+            module.port = 6667
+ 
+        if not hasattr(module, 'ssl'):
+            module.ssl = False
+ 
+        if not hasattr(module, 'ipv6'):
+            module.ipv6 = False
 
-   parser = optparse.OptionParser('%prog [options]')
-   parser.add_option('-c', '--config', metavar='fn', 
-      help='use this configuration file or directory')
-   opts, args = parser.parse_args(argv)
-   if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
+        if not hasattr(module, 'password'): 
+            module.password = None
 
-   # Step Two: Check Dependencies
+        if module.host == 'irc.example.net': 
+            error = ('Error: you must edit the config file first!\n' + 
+                   "You're currently using %s" % module.filename)
+            print(error, file=sys.stderr)
+            sys.exit(1)
 
-   check_python_version() # require python2.4 or later
-   if not opts.config:
-      check_dotdir() # require ~/.phenny, or make it and exit
+        config_modules.append(module)
 
-   # Step Three: Load The Configurations
+    # Step Four: Load Phenny
 
-   config_modules = []
-   for config_name in config_names(opts.config): 
-      name = os.path.basename(config_name).split('.')[0] + '_config'
-      module = imp.load_source(name, config_name)
-      module.filename = config_name
+    try: from __init__ import run
+    except ImportError: 
+        try: from phenny import run
+        except ImportError: 
+            print("Error: Couldn't find phenny to import", file=sys.stderr)
+            sys.exit(1)
 
-      if not hasattr(module, 'prefix'): 
-         module.prefix = r'\.'
+    # Step Five: Initialise And Run The Phennies
 
-      if not hasattr(module, 'name'): 
-         module.name = 'Phenny Palmersbot, http://inamidst.com/phenny/'
-
-      if not hasattr(module, 'port'): 
-         module.port = 6667
-
-      if not hasattr(module, 'ssl'):
-         module.ssl = False
-
-      if not hasattr(module, 'ipv6'):
-          module.ipv6 = False
-
-      if not hasattr(module, 'password'): 
-         module.password = None
-
-      if module.host == 'irc.example.net': 
-         error = ('Error: you must edit the config file first!\n' + 
-                  "You're currently using %s" % module.filename)
-         print(error, file=sys.stderr)
-         sys.exit(1)
-
-      config_modules.append(module)
-
-   # Step Four: Load Phenny
-
-   try: from __init__ import run
-   except ImportError: 
-      try: from phenny import run
-      except ImportError: 
-         print("Error: Couldn't find phenny to import", file=sys.stderr)
-         sys.exit(1)
-
-   # Step Five: Initialise And Run The Phennies
-
-   # @@ ignore SIGHUP
-   for config_module in config_modules: 
-      run(config_module) # @@ thread this
+    # @@ ignore SIGHUP
+    for config_module in config_modules: 
+        run(config_module) # @@ thread this
 
 if __name__ == '__main__': 
-   main()
+    main()
