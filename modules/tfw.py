@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 tfw.py - the fucking weather module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
@@ -45,16 +46,15 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         if c.isdigit() or c == '-':
             tempt += c
     temp = int(tempt)
-    deg = chr(176)
             
     # add units and convert if necessary
     if fahrenheit:
-        temp = "%d%cF?!" % (temp, deg)
+        temp = "{0:d}°F‽".format(temp)
     elif celsius:
-        temp = "%d%cC?!" % (temp, deg)
+        temp = "{0:d}°C‽".format(temp)
     else:
         tempev = (temp + 273.15) * 8.617343e-5 * 1000
-        temp = "%f meV?!" % tempev
+        temp = "%f meV‽" % tempev
     
     # parse comment (broken by <br />, so we have do it this way)
     comments = main[0].xpath('text()')
