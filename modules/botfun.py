@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-botfight.py - .botfight module
+botfun.py - activities that bots do
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
