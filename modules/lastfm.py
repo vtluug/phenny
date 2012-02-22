@@ -136,38 +136,6 @@ def now_playing(phenny, input):
 
 now_playing.commands = ['np']
 
-def aep(phenny, input):
-    # c/pied from now_playing, we should but this code in a function
-    # parse input and lookup lastfm user
-    nick = input.nick
-    user = ""
-    arg = input.group(2)
-    if arg == "help":
-        phenny.say("WTF is an AEP? see http://goo.gl/GBbx8")
-        return
-    if not arg or len(arg.strip()) == 0:
-        user = resolve_username(nick) # use the sender
-        if not user: #nick didnt resolve
-            user = nick
-    else: # use the argument
-        user = resolve_username(arg.strip())
-        if not user: # user didnt resolve
-            user = arg
-    user = user.strip()
-    try:
-        req = urlopen("%s%s" % (AEPURL, urlquote(user)))
-    except (HTTPError, http.client.BadStatusLine) as e:
-        phenny.say("uhoh. try again later, mmkay?")
-        return
-    result = req.read()
-    if "Bad Request" in result:
-        phenny.say("%s doesn't exist on last.fm, perhaps they need to set user (see lastfm-set)" % (user))
-        return
-    aep_val = result.split(":")[1]
-    phenny.say("%s has an AEP of %s" %(user, aep_val))
-    return
-aep.commands = ['aep']
-
 def tasteometer(phenny, input):
     input1 = input.group(2)
     if not input1 or len(input1) == 0:
