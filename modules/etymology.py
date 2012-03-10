@@ -8,15 +8,24 @@ http://inamidst.com/phenny/
 """
 
 import re
+import urllib.request
 import web
 from tools import deprecated
 
-etyuri = 'http://etymonline.com/?term=%s'
-etysearch = 'http://etymonline.com/?search=%s'
+etysite = 'http://www.etymonline.com/index.php?'
+etyuri = etysite + 'allowed_in_frame=0&term=%s'
+etysearch = etysite + 'allowed_in_frame=0&search=%s'
 
 r_definition = re.compile(r'(?ims)<dd[^>]*>.*?</dd>')
 r_tag = re.compile(r'<(?!!)[^>]+>')
 r_whitespace = re.compile(r'[\t\r\n ]+')
+
+class Grab(urllib.request.URLopener): 
+    def __init__(self, *args): 
+        self.version = 'Mozilla/5.0 (Phenny)'
+        urllib.URLopener.__init__(self, *args)
+    def http_error_default(self, url, fp, errcode, errmsg, headers): 
+        return urllib.addinfourl(fp, [headers, errcode], "http:" + url)
 
 abbrs = [
     'cf', 'lit', 'etc', 'Ger', 'Du', 'Skt', 'Rus', 'Eng', 'Amer.Eng', 'Sp', 
@@ -41,12 +50,16 @@ def text(html):
 def etymology(word): 
     # @@ <nsh> sbp, would it be possible to have a flag for .ety to get 2nd/etc
     # entries? - http://swhack.com/logs/2006-07-19#T15-05-29
-    
+
     if len(word) > 25: 
         raise ValueError("Word too long: %s[...]" % word[:10])
     word = {'axe': 'ax/axe'}.get(word, word)
 
-    bytes = web.get(etyuri % web.urllib.quote(word))
+    grab = urllib.request._urlopener
+    urllib.request._urlopener = Grab()
+    urllib.request._urlopener.addheader("Referer", "http://www.etymonline.com/")
+    bytes = web.get(etyuri % web.quote(word))
+    urllib.request._urlopener = grab
     definitions = r_definition.findall(bytes)
 
     if not definitions: 
@@ -59,8 +72,10 @@ def etymology(word):
     sentence = m.group(0)
 
     try: 
-        sentence = str(sentence, 'iso-8859-1')
+        sentence = unicode(sentence, 'iso-8859-1')
+        sentence = sentence.encode('utf-8')
     except: pass
+    sentence = web.decode(sentence)
 
     maxlength = 275
     if len(sentence) > maxlength: 
@@ -70,7 +85,7 @@ def etymology(word):
         sentence = ' '.join(words) + ' [...]'
 
     sentence = '"' + sentence.replace('"', "'") + '"'
-    return sentence + ' - ' + (etyuri % word)
+    return sentence + ' - etymonline.com'
 
 @deprecated
 def f_etymology(self, origin, match, args): 
