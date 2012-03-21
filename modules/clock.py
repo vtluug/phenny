@@ -256,7 +256,7 @@ beats.commands = ['beats']
 beats.priority = 'low'
 
 def divide(input, by): 
-    return (input / by), (input % by)
+    return (input // by), (input % by)
 
 def yi(phenny, input): 
     """Shows whether it is currently yi or not."""
