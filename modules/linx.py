@@ -34,13 +34,25 @@ if __name__ == '__main__':
     print(__doc__.strip())
 
 def lines(phenny, input):
-    """.lines <nickname> <date (YYYYMMDD)> - Returns the number of lines a user posted on a specific date."""
+    """.lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date."""
 
-    nickname = input.group(2)
-    date = input.group(3)
-    if not nickname or not date:
-        phenny.reply(".lines <nickname> <date (YYYYMMDD)> - Returns the number of lines a user posted on a specific date.")
+    if input.group(2):
+        info = input.group(2).split(" ")
+
+
+        if len(info) == 1:
+            nickname = info[0]
+            date = "today"
+        elif len(info) == 2:
+            nickname = info[0]
+            date = info[1]
+        else:
+            phenny.reply(".lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date.")
+            return
+    else:
+        phenny.reply(".lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date.")
         return
+
 
     try:
         req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date})
@@ -50,7 +62,7 @@ def lines(phenny, input):
 
     phenny.reply(req)
 
-lines.rule = (['lines'], r'([A-Za-z0-9\-_\\]+) (.*)')
+lines.rule = (['lines'], r'(.*)')
 
 if __name__ == '__main__':
     print(__doc__.strip())
