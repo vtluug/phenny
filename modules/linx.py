@@ -50,7 +50,7 @@ def lines(phenny, input):
 
     phenny.reply(req)
 
-lines.rule = (['lines'], r'([a-z0-9\-_\\]+) (.*)')
+lines.rule = (['lines'], r'([A-Za-z0-9\-_\\]+) (.*)')
 
 if __name__ == '__main__':
     print(__doc__.strip())
