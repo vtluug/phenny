@@ -40,7 +40,10 @@ def lines(phenny, input):
         info = input.group(2).split(" ")
 
 
-        if len(info) == 1:
+        if len(info) == 0:
+            nickname = input.nick
+            date = "today"
+        elif len(info) == 1:
             nickname = info[0]
             date = "today"
         elif len(info) == 2:
@@ -49,13 +52,13 @@ def lines(phenny, input):
         else:
             phenny.reply(".lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date.")
             return
-    else:
-        phenny.reply(".lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date.")
-        return
 
+    else:
+        nickname = input.nick
+        date = "today"
 
     try:
-        req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date})
+        req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick})
     except (HTTPError, IOError):
         phenny.reply("THE INTERNET IS FUCKING BROKEN. Please try again later.")
         return
