@@ -39,11 +39,7 @@ def lines(phenny, input):
     if input.group(2):
         info = input.group(2).split(" ")
 
-
-        if len(info) == 0:
-            nickname = input.nick
-            date = "today"
-        elif len(info) == 1:
+        if len(info) == 1:
             nickname = info[0]
             date = "today"
         elif len(info) == 2:
