@@ -25,8 +25,14 @@ def randomreddit(phenny, input):
 	try:
 		resp = web.get(url)
 	except:
-		phenny.reply('Reddit or subreddit unreachable.')
-		return
+		try:
+			resp = web.get(url)
+		except:
+			try:
+				resp = web.get(url)
+			except:
+				phenny.reply('Reddit or subreddit unreachable.')
+				return
 	
 	reddit = json.loads(resp)
 	post = choice(reddit['data']['children'])
