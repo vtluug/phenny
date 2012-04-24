@@ -9,14 +9,15 @@ from urllib.parse import quote as urlquote
 from urllib.error import HTTPError
 import web
 import lxml.html
+import lxml.cssselect
 
 def tfw(phenny, input, fahrenheit=False, celsius=False):
     """.tfw <city/zip> - Show the fucking weather at the specified location."""
 
-    zipcode = input.group(2)
-    if not zipcode:
+    where = input.group(2)
+    if not where:
         # default to Blacksburg, VA
-        zipcode = "24060"
+        where = "24060"
 
     if fahrenheit:
         celsius_param = ""
@@ -24,7 +25,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         celsius_param = "&CELSIUS=yes"
 
     try:
-        req = web.get("http://thefuckingweather.com/?zipcode=%s%s" % (urlquote(zipcode), celsius_param))
+        req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
     except (HTTPError, IOError):
         phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
         return
@@ -32,20 +33,15 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
     doc = lxml.html.fromstring(req)
 
     try:
-        location = doc.find_class('small')[0].text_content()
-        weather = doc.get_element_by_id('content')
+        #location = doc.find_class('small')[0].text_content()
+        location = doc.get_element_by_id('locationDisplaySpan').text_content()
     except (IndexError, KeyError):
         phenny.say("UNKNOWN FUCKING LOCATION. Try another?")
         return
 
-    main = weather.find_class('large')
-
-    # temperature is everything up to first <br />
-    tempt = ""
-    for c in main[0].text:
-        if c.isdigit() or c == '-':
-            tempt += c
-    temp = int(tempt)
+    temp_sel = lxml.cssselect.CSSSelector('span.temperature')
+    temp = temp_sel(doc)[0].text_content()
+    temp = int(temp)
             
     # add units and convert if necessary
     if fahrenheit:
@@ -56,17 +52,13 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         tempev = (temp + 273.15) * 8.617343e-5 * 1000
         temp = "%f meV‽" % tempev
     
-    # parse comment (broken by <br />, so we have do it this way)
-    comments = main[0].xpath('text()')
-    if len(comments) > 2:
-        comment = "%s %s" % (comments[1], comments[2])
-    else :
-        comment = comments[1]
+    remark_sel = lxml.cssselect.CSSSelector('p.remark')
+    remark = remark_sel(doc)[0].text_content()
 
-    # remark is in its own div, so we have it easy
-    remark = weather.get_element_by_id('remark').text_content()
+    flavor_sel = lxml.cssselect.CSSSelector('p.flavor')
+    flavor = flavor_sel(doc)[0].text_content()
 
-    response = "%s %s - %s - %s" % (temp, comment, remark, location)
+    response = "%s %s - %s - %s" % (temp, remark, flavor, location)
     phenny.say(response)
 tfw.rule = (['tfw'], r'(.*)')
 
