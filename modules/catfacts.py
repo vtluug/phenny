@@ -22,4 +22,3 @@ def catfacts(phenny, input):
     if fact:
         phenny.reply(fact)
 catfacts.commands = ['catfacts']
-catfacts.priority = 'high'
