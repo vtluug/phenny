@@ -10,7 +10,7 @@ def catfacts_ajax():
 def catfacts_get():
     fact = catfacts_ajax()
     try:
-        return fact['factoid']
+        return "{0} (#{1:d})".format(fact['factoid'], fact['id'])
     except IndexError:
         return None
     except TypeError:
