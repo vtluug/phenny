@@ -23,8 +23,7 @@ def short(phenny, input):
         return
 
     phenny.reply(req)
-
-linx.rule = (['short'], r'(.*)')
+short.rule = (['short'], r'(.*)')
 
 if __name__ == '__main__':
     print(__doc__.strip())
