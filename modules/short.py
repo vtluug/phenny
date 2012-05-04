@@ -1,4 +1,4 @@
-	#!/usr/bin/python3
+#!/usr/bin/python3
 """
 short.py - vtluug url shortner
 author: andreim <andreim@andreim.net>
