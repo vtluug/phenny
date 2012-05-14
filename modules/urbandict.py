@@ -14,7 +14,7 @@ def urbandict(phenny, input):
 
     word = input.group(2)
     if not word:
-        phenny.say(".urb <word> - Search Urban Dictionary for a definition.")
+        phenny.say(urbandict.__doc__.strip())
         return
 
     try:

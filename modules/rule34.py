@@ -14,7 +14,7 @@ def rule34(phenny, input):
 
     q = input.group(2)
     if not q:
-        phenny.say(".rule34 <query> - Rule 34: If it exists there is porn of it.")
+        phenny.say(rule34.__doc__.strip())
         return
 
     try:
