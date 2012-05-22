@@ -136,7 +136,7 @@ def bing(phenny, input):
 bing.commands = ['bing']
 bing.example = '.bing swhack'
 
-r_duck = re.compile(r'nofollow" class="[^"]+" href="(.*?)">')
+r_duck = re.compile(r'nofollow" class="[^"]+" href="(http.*?)">')
 
 def duck_search(query): 
    query = query.replace('!', '')
