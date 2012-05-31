@@ -200,9 +200,8 @@ class Bot(asynchat.async_chat):
         self.sending.release()
 
     def action(self, recipient, text):
-        text = "ACTION %s" % text
-        textu = chr(1) + text + chr(1)
-        return self.msg(recipient, textu)
+        text = "\x01ACTION {0}\x01".format(text)
+        return self.msg(recipient, text)
 
     def notice(self, dest, text): 
         self.write(('NOTICE', dest), text)
