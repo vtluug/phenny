@@ -86,4 +86,4 @@ class BotTest(unittest.TestCase):
         notice = "This is a notice!"
         self.bot.notice('jqh', notice)
 
-        mock_write.assert_called_once_with((b'NOTICE', 'jqh'), notice)
+        mock_write.assert_called_once_with(('NOTICE', 'jqh'), notice)

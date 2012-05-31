@@ -200,7 +200,7 @@ class Bot(asynchat.async_chat):
         return self.msg(recipient, textu)
 
     def notice(self, dest, text): 
-        self.write((b'NOTICE', dest), text)
+        self.write(('NOTICE', dest), text)
 
     def error(self, origin): 
         try: 
