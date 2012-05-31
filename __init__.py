@@ -8,7 +8,6 @@ http://inamidst.com/phenny/
 """
 
 import sys, os, time, threading, signal
-import bot
 
 class Watcher(object): 
    # Cf. http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/496735
@@ -38,6 +37,7 @@ def run_phenny(config):
    else: delay = 20
 
    def connect(config): 
+      import bot
       p = bot.Phenny(config)
       p.run(config.host, config.port, config.ssl, config.ipv6)
 
