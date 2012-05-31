@@ -1,8 +1,8 @@
 phenny
 ======
 
-This is an experimental port of phenny, a Python IRC bot, to Python3. Do not
-expect it to work well or at all yet.
+This is an experimental port of phenny, a Python IRC bot, to Python3. It is
+currently fairly stable, but it has not been as well-tested as the original.
 
 Support for IPv6 and SSL has been added. It appears that SSL support requires
 Python 3.2.
@@ -17,6 +17,11 @@ Installation
 3. Run `./phenny` - this now runs phenny with your settings
 
 Enjoy!
+
+Testing
+-------
+You will need `python-nose` and `python-mock`. To run the test, simply run
+`nosetests` or `nosetests3`, depending on your distribution.
 
 Authors
 -------
