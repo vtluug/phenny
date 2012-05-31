@@ -6,9 +6,10 @@ Tests for phenny's irc.py
 import sys
 sys.path.append('.')
 
-import irc
 import unittest
 from mock import call, patch, Mock
+
+import irc
 
 
 class OriginTest(unittest.TestCase):
