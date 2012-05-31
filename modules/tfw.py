@@ -27,8 +27,12 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
     try:
         req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
     except (HTTPError, IOError):
-        phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-        return
+        # the fucking weather is fucking unstable, try again
+        try:
+            req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
+        except (HTTPError, IOError):
+            phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
+            return
 
     doc = lxml.html.fromstring(req)
 
