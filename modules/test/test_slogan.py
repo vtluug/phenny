@@ -7,7 +7,6 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 import sys
 sys.path.append('.')
 
-import re
 import unittest
 from mock import MagicMock, Mock
 from modules.slogan import sloganize, slogan
