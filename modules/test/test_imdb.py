@@ -1,5 +1,5 @@
 """
-test_imdb.py - tests for the imdb module module
+test_imdb.py - tests for the imdb module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
@@ -16,7 +16,7 @@ class TestImdb(unittest.TestCase):
     def setUp(self):
         self.phenny = MagicMock()
 
-    def test_imdb_seach(self):
+    def test_imdb_search(self):
         data = imdb_search('Hackers')
 
         assert 'Plot' in data
