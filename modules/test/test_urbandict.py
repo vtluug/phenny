@@ -3,14 +3,11 @@ test_urbandict.py - tests for the urban dictionary module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import re
 import unittest
 from mock import MagicMock, Mock
 from modules.urbandict import urbandict
+
 
 class TestUrbandict(unittest.TestCase):
     def setUp(self):

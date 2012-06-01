@@ -3,14 +3,11 @@ test_tfw.py - tests for the fucking weather module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import re
 import unittest
 from mock import MagicMock, Mock
 from modules.tfw import tfw
+
 
 class TestTfw(unittest.TestCase):
     def setUp(self):

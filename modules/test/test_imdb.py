@@ -3,14 +3,11 @@ test_imdb.py - tests for the imdb module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import re
 import unittest
 from mock import MagicMock, Mock
 from modules.imdb import imdb_search, imdb
+
 
 class TestImdb(unittest.TestCase):
     def setUp(self):

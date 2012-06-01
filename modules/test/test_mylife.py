@@ -3,13 +3,10 @@ test_mylife.py - tests for the mylife module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import unittest
 from mock import MagicMock, Mock
 from modules import mylife
+
 
 class TestMylife(unittest.TestCase):
     def setUp(self):

@@ -2,13 +2,8 @@
 Tests for phenny's irc.py
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import unittest
 from mock import call, patch, Mock
-
 import irc
 
 

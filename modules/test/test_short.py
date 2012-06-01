@@ -3,13 +3,10 @@ test_short.py - tests for the vtluug url shortener module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import unittest
 from mock import MagicMock, Mock
 from modules.short import short
+
 
 class TestShort(unittest.TestCase):
     def setUp(self):

@@ -3,14 +3,11 @@ test_hs.py - tests for the hokie stalker module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import re
 import unittest
 from mock import MagicMock, Mock
 from modules.hs import search, hs
+
 
 class TestHs(unittest.TestCase):
     def setUp(self):

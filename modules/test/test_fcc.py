@@ -3,13 +3,10 @@ test_fcc.py - tests for the fcc callsign lookup module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import unittest
 from mock import MagicMock, Mock
 from modules.fcc import fcc
+
 
 class TestFcc(unittest.TestCase):
     def setUp(self):
