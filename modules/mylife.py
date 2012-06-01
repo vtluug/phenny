@@ -51,19 +51,6 @@ def mlib(phenny, input):
     phenny.say(quote)
 mlib.commands = ['mlib']
 
-def mlid(phenny, input):
-    """.mlib - My life is Desi."""
-    try:
-        req = web.get("http://www.mylifeisdesi.com/random")
-    except (HTTPError, IOError):
-        phenny.say("MLID is busy at the hookah lounge, be back soon.")
-        return
-
-    doc = lxml.html.fromstring(req)
-    quote = doc.find_class('oldlink')[0].text_content()
-    phenny.say(quote)
-mlid.commands = ['mlid']
-
 def mlig(phenny, input):
     """.mlig - My life is ginger."""
     try:
