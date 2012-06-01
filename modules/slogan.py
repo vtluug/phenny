@@ -29,10 +29,9 @@ def slogan(phenny, input):
     slogan = remove_tags.sub('', slogan)
     
     if not slogan:
-      phenny.say("Looks like an issue with sloganizer.net")
-      return
+        phenny.say("Looks like an issue with sloganizer.net")
+        return
     phenny.say(slogan)
-
 slogan.commands = ['slogan']
 slogan.example = '.slogan Granola'
 
