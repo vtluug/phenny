@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-rule34.py - urban dictionary module
+rule34.py - rule 34 module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
