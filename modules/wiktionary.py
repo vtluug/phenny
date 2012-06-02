@@ -9,52 +9,66 @@ http://inamidst.com/phenny/
 
 import re
 import web
+import json
 
 uri = 'http://en.wiktionary.org/w/index.php?title=%s&printable=yes'
-r_tag = re.compile(r'<[^>]+>')
+wikiapi = 'http://en.wiktionary.org/w/api.php?action=query&titles={0}&prop=revisions&rvprop=content&format=json'
+#r_tag = re.compile(r'<[^>]+>')
 r_ul = re.compile(r'(?ims)<ul>.*?</ul>')
+r_li = re.compile(r'^# ')
+r_img = re.compile(r'\[\[Image:.*\]\]')
+r_link1 = re.compile(r'\[\[([A-Za-z0-9\-_ ]+?)\]\]')
+r_link2 = re.compile(r'\[\[([A-Za-z0-9\-_ ]+?)\|(.+?)\]\]')
+r_context = re.compile(r'{{context\|(.+?)}}')
+r_template1 = re.compile(r'{{.+?\|(.+?)}}')
+r_template2 = re.compile(r'{{(.+?)}}')
 
 def text(html): 
-    text = r_tag.sub('', html).strip()
-    text = text.replace('\n', ' ')
-    text = text.replace('\r', '')
-    text = text.replace('(intransitive', '(intr.')
-    text = text.replace('(transitive', '(trans.')
+    text = r_li.sub('', html).strip()
+    text = r_img.sub('', text)
+    text = r_link1.sub(r'\1', text)
+    text = r_link2.sub(r'\2', text)
+    text = r_context.sub(r'\1:', text)
+    text = r_template1.sub(r'\1:', text)
+    text = r_template2.sub(r'\1:', text)
     return text
 
 def wiktionary(word): 
-    bytes = web.get(uri % web.quote(word))
-    bytes = r_ul.sub('', bytes)
+    bytes = web.get(wikiapi.format(web.quote(word)))
+    pages = json.loads(bytes)
+    pages = pages['query']['pages']
+    pg = next(iter(pages))
+    result = pages[pg]['revisions'][0]['*']
 
     mode = None
     etymology = None
     definitions = {}
-    for line in bytes.splitlines(): 
-        if 'id="Etymology"' in line: 
+    for line in result.splitlines(): 
+        if line == '===Etymology===':
             mode = 'etymology'
-        elif 'id="Noun"' in line: 
+        elif 'Noun' in line: 
             mode = 'noun'
-        elif 'id="Verb"' in line: 
+        elif 'Verb' in line: 
             mode = 'verb'
-        elif 'id="Adjective"' in line: 
+        elif 'Adjective' in line: 
             mode = 'adjective'
-        elif 'id="Adverb"' in line: 
+        elif 'Adverb' in line: 
             mode = 'adverb'
-        elif 'id="Interjection"' in line: 
+        elif 'Interjection' in line: 
             mode = 'interjection'
-        elif 'id="Particle"' in line: 
+        elif 'Particle' in line: 
             mode = 'particle'
-        elif 'id="Preposition"' in line: 
+        elif 'Preposition' in line: 
             mode = 'preposition'
-        elif 'id="' in line: 
+        elif len(line) == 0:
             mode = None
 
-        elif (mode == 'etmyology') and ('<p>' in line): 
+        elif mode == 'etymology':
             etymology = text(line)
-        elif (mode is not None) and ('<li>' in line): 
+        elif mode is not None and '#' in line:
             definitions.setdefault(mode, []).append(text(line))
 
-        if '<hr' in line: 
+        if '====Synonyms====' in line: 
             break
     return etymology, definitions
 
@@ -91,10 +105,6 @@ def w(phenny, input):
     phenny.say(result)
 w.commands = ['w']
 w.example = '.w bailiwick'
-
-def encarta(phenny, input): 
-    return phenny.reply('Microsoft removed Encarta, try .w instead!')
-encarta.commands = ['dict']
 
 if __name__ == '__main__': 
     print(__doc__.strip())
