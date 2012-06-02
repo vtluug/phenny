@@ -4,7 +4,7 @@ urbandict.py - urban dictionary module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.parse import quote as urlquote
+import urllib.request
 from urllib.error import HTTPError
 import web
 import json
@@ -17,9 +17,18 @@ def urbandict(phenny, input):
         phenny.say(urbandict.__doc__.strip())
         return
 
+    # create opener
+    opener = urllib.request.build_opener()
+    opener.addheaders = [
+        ('User-agent', web.Grab().version),
+        ('Referer', "http://m.urbandictionary.com"),
+    ]
+
     try:
-        req = web.get("http://www.urbandictionary.com/iphone/search/define?term={0}".format(urlquote(word)))
-        data = json.loads(req)
+        req = opener.open("http://api.urbandictionary.com/v0/define?term={0}"
+                .format(web.quote(word)))
+        data = req.read().decode('utf-8')
+        data = json.loads(data)
     except (HTTPError, IOError, ValueError):
         phenny.say("Urban Dictionary slemped out on me. Try again in a minute.")
         return
@@ -29,7 +38,7 @@ def urbandict(phenny, input):
         return
 
     result = data['list'][0]
-    url = 'http://www.urbandictionary.com/define.php?term={0}'.format(urlquote(word))
+    url = 'http://www.urbandictionary.com/define.php?term={0}'.format(web.quote(word))
 
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     phenny.say(response)
