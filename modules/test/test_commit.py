@@ -14,4 +14,4 @@ class TestCommit(unittest.TestCase):
 
     def test_commit(self):
         commit(self.phenny, None)
-        assert self.phenny.reply.called == 1
+        assert self.phenny.reply.called is True

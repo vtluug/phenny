@@ -47,7 +47,7 @@ class TestSearch(unittest.TestCase):
         input = Mock(group=lambda x: 'vtluug virginia phenny')
         gcs(self.phenny, input)
 
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_bing_search(self):
         out = bing_search('phenny')
@@ -59,7 +59,7 @@ class TestSearch(unittest.TestCase):
         input = Mock(group=lambda x: 'swhack')
         bing(self.phenny, input)
 
-        assert self.phenny.reply.called == 1
+        assert self.phenny.reply.called is True
 
     def test_duck_search(self):
         out = duck_search('phenny')
@@ -71,16 +71,17 @@ class TestSearch(unittest.TestCase):
         input = Mock(group=lambda x: 'swhack')
         duck(self.phenny, input)
 
-        assert self.phenny.reply.called == 1
+        assert self.phenny.reply.called is True
 
     def test_search(self):
         input = Mock(group=lambda x: 'vtluug')
         duck(self.phenny, input)
 
-        assert self.phenny.reply.called == 1
+        assert self.phenny.reply.called is True
 
     def test_suggest(self):
         input = Mock(group=lambda x: 'vtluug')
         suggest(self.phenny, input)
 
-        assert (self.phenny.reply.called == 1 or self.phenny.say.called == 1)
+        assert (self.phenny.reply.called is True or \
+                self.phenny.say.called is True)

@@ -14,25 +14,25 @@ class TestMylife(unittest.TestCase):
 
     def test_fml(self):
         mylife.fml(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_mlia(self):
         mylife.mlia(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_mlib(self):
         mylife.mlib(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_mlih(self):
         mylife.mlih(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_mlihp(self):
         mylife.mlihp(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
     def test_mlit(self):
         mylife.mlit(self.phenny, None)
-        assert self.phenny.say.called == 1
+        assert self.phenny.say.called is True
 
