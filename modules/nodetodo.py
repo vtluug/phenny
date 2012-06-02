@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-node-todo.py - node-todo uploader
+nodetodo.py - node-todo uploader
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 author: telnoratti <calvin@winkowski.me>
 """
