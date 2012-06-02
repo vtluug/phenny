@@ -4,7 +4,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 import unittest
-from mock import MagicMock, Mock
+from mock import MagicMock
 from modules import mylife
 
 

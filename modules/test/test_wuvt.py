@@ -9,7 +9,7 @@ sys.path.append('.')
 
 import re
 import unittest
-from mock import MagicMock, Mock
+from mock import MagicMock
 from modules.wuvt import wuvt
 
 class TestWuvt(unittest.TestCase):

@@ -21,5 +21,3 @@ class TestNodeTodo(unittest.TestCase):
         m = re.match('^http://node-todobin\.herokuapp\.com/list/[a-z0-9]+$',
                 out, flags=re.UNICODE)
         self.assertTrue(m)
-
-
