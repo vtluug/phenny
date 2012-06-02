@@ -20,8 +20,8 @@ Enjoy!
 
 Testing
 -------
-You will need `python-nose` and `python-mock`. To run the test, simply run
-`nosetests` or `nosetests3`, depending on your distribution.
+You will need the Python3 versions of `python-nose` and `python-mock`. To run
+the test, simply run `nosetests3`.
 
 Authors
 -------
