@@ -24,8 +24,9 @@ def translate(text, input='auto', output='en'):
         '(X11; U; Linux i686)' + 
         'Gecko/20071127 Firefox/2.0.0.11'
     )]
-    input, output = urllib.parse.quote(input), urllib.parse.quote(output)
-    text = urllib.parse.quote(text)
+    input = urllib.parse.quote(input)
+    output = urllib.parse.quote(output.encode('utf-8'))
+    text = urllib.parse.quote(text.encode('utf-8'))
 
     result = opener.open('http://translate.google.com/translate_a/t?' +
         ('client=t&hl=en&sl=%s&tl=%s&multires=1' % (input, output)) + 
@@ -54,12 +55,10 @@ def tr(phenny, context):
         return phenny.reply('Phrase must be under 350 characters.')
 
     input = input or 'auto'
-    input = input.encode('utf-8')
-    output = (output or 'en').encode('utf-8')
+    output = (output or 'en')
 
     if input != output: 
         msg, input = translate(phrase, input, output)
-        output = output.decode('utf-8')
         if msg: 
             msg = web.decode(msg) # msg.replace('&#39;', "'")
             msg = '"%s" (%s to %s, translate.google.com)' % (msg, input, output)
@@ -90,7 +89,8 @@ def tr2(phenny, input):
         if langcode(prefix): 
             args[i] = prefix[1:]
             command = cmd
-    phrase = command.encode('utf-8')
+    #phrase = command.encode('utf-8')
+    phrase = command
 
     if (len(phrase) > 350) and (not input.admin): 
         return phenny.reply('Phrase must be under 350 characters.')
@@ -115,14 +115,14 @@ def mangle(phenny, input):
     phrase = input.group(2)
     for lang in ['fr', 'de', 'es', 'it', 'ja']: 
         backup = phrase
-        phrase = translate(phrase, 'en', lang)
+        phrase, inputlang = translate(phrase, 'en', lang)
         if not phrase: 
             phrase = backup
             break
         __import__('time').sleep(0.5)
 
         backup = phrase
-        phrase = translate(phrase, lang, 'en')
+        phrase, inputlang = translate(phrase, lang, 'en')
         if not phrase: 
             phrase = backup
             break
