@@ -7,6 +7,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 from urllib.parse import quote as urlquote
 from urllib.error import HTTPError
+from tools import GrumbleError
 import web
 import lxml.html
 import lxml.cssselect
@@ -31,8 +32,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         try:
             req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
         except (HTTPError, IOError):
-            phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-            return
+            raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     doc = lxml.html.fromstring(req)
 

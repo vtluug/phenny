@@ -6,6 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 from urllib.error import HTTPError
 import web
+from tools import GrumbleError
 
 def commit(phenny, input):
     """.commit - Get a What the Commit commit message."""
@@ -13,8 +14,8 @@ def commit(phenny, input):
     try:
         msg = web.get("http://whatthecommit.com/index.txt")
     except (HTTPError, IOError, ValueError):
-        phenny.reply("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-        return
+        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
+
     phenny.reply(msg)
 commit.commands = ['commit']
 

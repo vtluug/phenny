@@ -6,6 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 import urllib.request
 from urllib.error import HTTPError
+from tools import GrumbleError
 import web
 import json
 
@@ -30,8 +31,8 @@ def urbandict(phenny, input):
         data = req.read().decode('utf-8')
         data = json.loads(data)
     except (HTTPError, IOError, ValueError):
-        phenny.say("Urban Dictionary slemped out on me. Try again in a minute.")
-        return
+        raise GrumbleError(
+                "Urban Dictionary slemped out on me. Try again in a minute.")
 
     if data['result_type'] == 'no_results':
         phenny.say("No results found for {0}".format(word))

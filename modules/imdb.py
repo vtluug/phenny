@@ -25,8 +25,8 @@ def imdb(phenny, input):
    if not query: return phenny.reply('.imdb what?')
 
    m = imdb_search(query)
-   try: 
-     phenny.reply('{0} ({1}): {2}  http://imdb.com/title/{3}'.format(m['Title'], m['Year'], m['Plot'], m['imdbID']))
+   try:
+       phenny.reply('{0} ({1}): {2}  http://imdb.com/title/{3}'.format(m['Title'], m['Year'], m['Plot'], m['imdbID']))
    except:
-     phenny.reply("No results found for '%s'." % query)
+        phenny.reply("No results found for '%s'." % query)
 imdb.commands = ['imdb']

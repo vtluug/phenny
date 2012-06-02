@@ -6,6 +6,7 @@ Copyright (c) 2011 Dafydd Crosby - http://www.dafyddcrosby.com
 Licensed under the Eiffel Forum License 2.
 """
 
+from tools import GrumbleError
 import re
 import web
 
@@ -29,8 +30,7 @@ def slogan(phenny, input):
     slogan = remove_tags.sub('', slogan)
     
     if not slogan:
-        phenny.say("Looks like an issue with sloganizer.net")
-        return
+        raise GrumbleError("Looks like an issue with sloganizer.net")
     phenny.say(slogan)
 slogan.commands = ['slogan']
 slogan.example = '.slogan Granola'

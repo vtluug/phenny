@@ -5,6 +5,7 @@ author: andreim <andreim@andreim.net>
 """
 
 from urllib.error import HTTPError
+from tools import GrumbleError
 import web
 import json
 
@@ -19,8 +20,7 @@ def short(phenny, input):
     try:
         req = web.post("http://vtlu.ug/vtluug", {'lurl': url})
     except (HTTPError, IOError):
-        phenny.reply("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-        return
+        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     phenny.reply(req)
 short.rule = (['short'], r'(.*)')

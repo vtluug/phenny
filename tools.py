@@ -7,6 +7,11 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
+
+class GrumbleError(Exception):
+    pass
+
+
 def deprecated(old): 
    def new(phenny, input, old=old): 
       self = phenny

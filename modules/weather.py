@@ -9,7 +9,7 @@ http://inamidst.com/phenny/
 
 import re, urllib.request, urllib.parse, urllib.error
 import web
-from tools import deprecated
+from tools import deprecated, GrumbleError
 
 r_from = re.compile(r'(?i)([+-]\d+):00 from')
 
@@ -28,9 +28,6 @@ def location(name):
     lat = results['geonames'][0]['lat']
     lng = results['geonames'][0]['lng']
     return name, countryName, lat, lng
-
-class GrumbleError(object): 
-    pass
 
 def local(icao, hour, minute): 
     uri = ('http://www.flightstats.com/' + 

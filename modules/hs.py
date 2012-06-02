@@ -4,6 +4,7 @@ hs.py - hokie stalker module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
+from tools import GrumbleError
 import web
 import lxml.etree
 
@@ -18,8 +19,7 @@ def search(query):
     try:
         req = web.get(SEARCH_URL.format(query))
     except (HTTPError, IOError):
-        phenny.say("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-        return
+        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     xml = lxml.etree.fromstring(req.encode('utf-8'))
     results = xml.findall('{0}searchResponse/{0}searchResultEntry'.format(NS))
