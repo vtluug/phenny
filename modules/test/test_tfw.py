@@ -5,6 +5,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 import re
 import unittest
+import tools
 from mock import MagicMock, Mock
 from modules.tfw import tfw
 
@@ -13,11 +14,11 @@ class TestTfw(unittest.TestCase):
     def setUp(self):
         self.phenny = MagicMock()
 
-    #def test_badloc(self):
-    #    input = Mock(group=lambda x: 'tu3jgoajgoahghqog')
-    #    tfw(self.phenny, input)
-    #
-    #    self.phenny.say.assert_called_once_with("UNKNOWN FUCKING LOCATION. Try another?")
+    def test_badloc(self):
+        input = Mock(group=lambda x: 'tu3jgoajgoahghqog')
+        tfw(self.phenny, input)
+    
+        self.phenny.say.assert_called_once_with("UNKNOWN FUCKING LOCATION. Try another?")
 
     def test_celsius(self):
         input = Mock(group=lambda x: '24060')

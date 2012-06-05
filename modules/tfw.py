@@ -20,33 +20,31 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         # default to Blacksburg, VA
         where = "24060"
 
-    if fahrenheit:
-        celsius_param = ""
-    else:
-        celsius_param = "&CELSIUS=yes"
+    url = "http://thefuckingweather.com/?where=" + urlquote(where)
+    if not fahrenheit:
+        url += "&CELSIUS=yes"
 
     try:
-        req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
+        req = web.get(url)
     except (HTTPError, IOError):
         # the fucking weather is fucking unstable, try again
         try:
-            req = web.get("http://thefuckingweather.com/?where={0}{1}".format(urlquote(where), celsius_param))
+            req = web.get(url)
         except (HTTPError, IOError):
             raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     doc = lxml.html.fromstring(req)
 
     try:
-        #location = doc.find_class('small')[0].text_content()
         location = doc.get_element_by_id('locationDisplaySpan').text_content()
+
+        temp_sel = lxml.cssselect.CSSSelector('span.temperature')
+        temp = temp_sel(doc)[0].text_content()
+        temp = int(temp)
     except (IndexError, KeyError):
         phenny.say("UNKNOWN FUCKING LOCATION. Try another?")
         return
 
-    temp_sel = lxml.cssselect.CSSSelector('span.temperature')
-    temp = temp_sel(doc)[0].text_content()
-    temp = int(temp)
-            
     # add units and convert if necessary
     if fahrenheit:
         temp = "{0:d}°F‽".format(temp)
