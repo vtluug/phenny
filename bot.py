@@ -9,6 +9,7 @@ http://inamidst.com/phenny/
 
 import sys, os, re, threading, imp
 import irc
+import tools
 
 home = os.getcwd()
 
@@ -194,6 +195,8 @@ class Phenny(irc.Bot):
 
     def call(self, func, origin, phenny, input): 
         try: func(phenny, input)
+        except tools.GrumbleError as e:
+            self.msg(origin.sender, str(e))
         except Exception as e: 
             self.error(origin)
 

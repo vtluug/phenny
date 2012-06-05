@@ -126,7 +126,6 @@ def main(argv=None):
     parser.add_argument('-c', '--config', metavar='fn', 
        help='use this configuration file or directory')
     args = parser.parse_args(argv)
-    #if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
  
     # Step Two: Check Dependencies
  
