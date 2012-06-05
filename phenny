@@ -11,7 +11,8 @@ Run ./phenny, then edit ~/.phenny/default.py
 Then run ./phenny again
 """
 
-import sys, os, imp, optparse
+import sys, os, imp
+import argparse
 from textwrap import dedent as trim
 
 dotdir = os.path.expanduser('~/.phenny')
@@ -121,22 +122,22 @@ def config_names(config):
 def main(argv=None): 
     # Step One: Parse The Command Line
  
-    parser = optparse.OptionParser('%prog [options]')
-    parser.add_option('-c', '--config', metavar='fn', 
+    parser = argparse.ArgumentParser(description="A Python IRC bot.")
+    parser.add_argument('-c', '--config', metavar='fn', 
        help='use this configuration file or directory')
-    opts, args = parser.parse_args(argv)
-    if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
+    args = parser.parse_args(argv)
+    #if args: print('Warning: ignoring spurious arguments', file=sys.stderr)
  
     # Step Two: Check Dependencies
  
     check_python_version() # require python2.4 or later
-    if not opts.config:
+    if not args.config:
         check_dotdir() # require ~/.phenny, or make it and exit
  
     # Step Three: Load The Configurations
  
     config_modules = []
-    for config_name in config_names(opts.config): 
+    for config_name in config_names(args.config): 
         name = os.path.basename(config_name).split('.')[0] + '_config'
         module = imp.load_source(name, config_name)
         module.filename = config_name
