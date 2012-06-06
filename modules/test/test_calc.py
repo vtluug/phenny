@@ -18,6 +18,12 @@ class TestCalc(unittest.TestCase):
 
         self.phenny.say.assert_called_once_with('25')
 
+    def test_c_scientific(self):
+        input = Mock(group=lambda x: '2^64')
+        c(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with('1.84467441 * 10^(19)')
+
     def test_py(self):
         input = Mock(group=lambda x: "'test'*3")
         py(self.phenny, input)

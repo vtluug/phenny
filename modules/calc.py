@@ -41,7 +41,9 @@ def c(phenny, input):
     if answer: 
         #answer = ''.join(chr(ord(c)) for c in answer)
         #answer = answer.decode('utf-8')
-        answer = answer.replace('\xc2\xa0', ',')
+        answer = answer.replace('\\x26#215;', '*')
+        answer = answer.replace('\\x3c', '<')
+        answer = answer.replace('\\x3e', '>')
         answer = answer.replace('<sup>', '^(')
         answer = answer.replace('</sup>', ')')
         answer = web.decode(answer)
