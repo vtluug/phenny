@@ -3,10 +3,6 @@ test_wuvt.py - tests for the wuvt module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-# add current working directory to path
-import sys
-sys.path.append('.')
-
 import re
 import unittest
 from mock import MagicMock
