@@ -38,7 +38,11 @@ def wiktionary(word):
     pages = json.loads(bytes)
     pages = pages['query']['pages']
     pg = next(iter(pages))
-    result = pages[pg]['revisions'][0]['*']
+
+    try:
+        result = pages[pg]['revisions'][0]['*']
+    except KeyError:
+        return '', ''
 
     mode = None
     etymology = None
