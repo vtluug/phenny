@@ -22,8 +22,8 @@ def wuvt(phenny, input) :
     except (URLError, HTTPError):
         raise GrumbleError('Cannot connect to wuvt')
     play= r_play.search(playing)
-    song = play.group(1)
-    artist = play.group(2)
+    song = play.group(2)
+    artist = play.group(1)
     dj = r_dj.search(djpage).group(1)
 
     if song and artist:
