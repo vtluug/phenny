@@ -10,9 +10,9 @@ http://inamidst.com/phenny/
 import re, urllib.request, urllib.parse, urllib.error, gzip, io
 import wiki
 
-wikiapi = 'http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={0}&limit=1&prop=snippet&format=json'
-wikiuri = 'http://en.wikipedia.org/wiki/{0}'
-wikisearch = 'http://en.wikipedia.org/wiki/Special:Search?' \
+wikiapi = 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={0}&limit=1&prop=snippet&format=json'
+wikiuri = 'https://en.wikipedia.org/wiki/{0}'
+wikisearch = 'https://en.wikipedia.org/wiki/Special:Search?' \
                           + 'search={0}&fulltext=Search'
 
 def wik(phenny, input): 
