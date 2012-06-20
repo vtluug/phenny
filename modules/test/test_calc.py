@@ -24,14 +24,30 @@ class TestCalc(unittest.TestCase):
 
         self.phenny.say.assert_called_once_with('1.84467441 * 10^(19)')
 
+    def test_c_none(self):
+        input = Mock(group=lambda x: 'aif')
+        c(self.phenny, input)
+
+        self.phenny.reply.assert_called_once_with('Sorry, no result.')
+
     def test_py(self):
         input = Mock(group=lambda x: "'test'*3")
         py(self.phenny, input)
 
         self.phenny.say.assert_called_once_with('testtesttest\n')
 
+    def test_py_none(self):
+        input = Mock(group=lambda x: "")
+        py(self.phenny, input)
+
     def test_wa(self):
         input = Mock(group=lambda x: 'airspeed of an unladen swallow')
         wa(self.phenny, input)
 
         self.phenny.say.assert_called_once_with('25 mph  (miles per hour)')
+
+    def test_wa_none(self):
+        input = Mock(group=lambda x: "jajoajaj ojewphjqo I!tj")
+        wa(self.phenny, input)
+
+        self.phenny.reply.assert_called_once_with('Sorry, no result.')

@@ -48,12 +48,12 @@ def c(phenny, input):
         answer = answer.replace('</sup>', ')')
         answer = web.decode(answer)
         phenny.say(answer)
-    else: phenny.say('Sorry, no result.')
+    else: phenny.reply('Sorry, no result.')
 c.commands = ['c']
 c.example = '.c 5 + 3'
 
 def py(phenny, input): 
-    query = input.group(2)
+    query = input.group(2) or ""
     uri = 'http://tumbolia.appspot.com/py/'
     answer = web.get(uri + web.quote(query))
     if answer: 
@@ -66,8 +66,13 @@ def wa(phenny, input):
         return phenny.reply("No search term.")
     query = input.group(2)
     uri = 'http://tumbolia.appspot.com/wa/'
+
     answer = web.get(uri + web.quote(query.replace('+', '%2B')))
-    answer = answer.split(';')[1]
+    try:
+        answer = answer.split(';')[1]
+    except IndexError:
+        answer = ""
+
     if answer: 
         phenny.say(answer)
     else: phenny.reply('Sorry, no result.')
