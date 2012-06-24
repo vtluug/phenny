@@ -22,6 +22,14 @@ class TestVtluugwiki(unittest.TestCase):
                 out, flags=re.UNICODE)
         self.assertTrue(m)
 
+    def test_vtluug_invalid(self):
+        term = "EAP-TLS#netcfg"
+        input = Mock(groups=lambda: ['', term])
+        vtluugwiki.vtluug(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with( "Can't find anything in "\
+                "the VTLUUG Wiki for \"{0}\".".format(term))
+
     def test_vtluug_none(self):
         term = "Ajgoajh"
         input = Mock(groups=lambda: ['', term])

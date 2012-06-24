@@ -22,6 +22,14 @@ class TestWikipedia(unittest.TestCase):
                 out, flags=re.UNICODE)
         self.assertTrue(m)
 
+    def test_wik_invalid(self):
+        term = "New York City#Climate"
+        input = Mock(groups=lambda: ['', term])
+        wikipedia.wik(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with( "Can't find anything in "\
+                "Wikipedia for \"{0}\".".format(term))
+
     def test_wik_none(self):
         term = "Ajgoajh"
         input = Mock(groups=lambda: ['', term])

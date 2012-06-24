@@ -22,6 +22,14 @@ class TestArchwiki(unittest.TestCase):
                 out, flags=re.UNICODE)
         self.assertTrue(m)
 
+    def test_awik_invalid(self):
+        term = "KVM#Enabling_KSM"
+        input = Mock(groups=lambda: ['', term])
+        archwiki.awik(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with( "Can't find anything in "\
+                "the ArchWiki for \"{0}\".".format(term))
+
     def test_awik_none(self):
         term = "Ajgoajh"
         input = Mock(groups=lambda: ['', term])

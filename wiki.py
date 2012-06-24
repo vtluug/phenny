@@ -43,9 +43,12 @@ class Wiki(object):
     def search(self, term, last=False):
         url = self.api.format(term)
         bytes = web.get(url)
-        result = json.loads(bytes)
-        result = result['query']['search']
-        if len(result) <= 0:
+        try:
+            result = json.loads(bytes)
+            result = result['query']['search']
+            if len(result) <= 0:
+                return None
+        except ValueError:
             return None
         term = result[0]['title']
         term = term.replace(' ', '_')
