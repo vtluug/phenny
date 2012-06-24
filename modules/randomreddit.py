@@ -35,8 +35,11 @@ def randomreddit(phenny, input):
             except:
                 raise GrumbleError('Reddit or subreddit unreachable.')
     
-    reddit = json.loads(resp)
-    post = choice(reddit['data']['children'])
+    try:
+        reddit = json.loads(resp)
+        post = choice(reddit['data']['children'])
+    except:
+        raise GrumbleError('Error parsing response from Reddit.')
 
     nsfw = False
     if post['data']['over_18']:
