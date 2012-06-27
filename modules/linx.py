@@ -79,5 +79,17 @@ def posted(phenny, input):
 
 posted.rule = (['posted'], r'(.*)')
 
+
+def postedlink(url):
+    """ helper method for gettitle() """
+
+    try:
+        req = web.post("http://linx.li/vtluugpostedurl", {'url': url})
+    except:
+        req = ""    
+
+    return req
+postedlink.channels = ['#vtluug']
+
 if __name__ == '__main__':
     print(__doc__.strip())

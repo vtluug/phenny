@@ -17,6 +17,7 @@ import time
 from html.entities import name2codepoint
 import web
 from tools import deprecated
+from modules.linx import postedlink
 
 cj = http.cookiejar.LWPCookieJar()
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -76,9 +77,6 @@ def head(phenny, input):
 head.commands = ['head']
 head.example = '.head http://www.w3.org/'
 
-r_title = re.compile(r'(?ims)<title[^>]*>(.*?)</title\s*>')
-r_entity = re.compile(r'&[A-Za-z0-9#]+;')
-
 @deprecated
 def f_title(self, origin, match, args): 
     """.title <URI> - Return the title of URI."""
@@ -95,6 +93,9 @@ def f_title(self, origin, match, args):
     else: self.msg(origin.sender, origin.nick + ': No title found')
 f_title.commands = ['title']
 
+r_title = re.compile(r'(?ims)<title[^>]*>(.*?)</title\s*>')
+r_entity = re.compile(r'&[A-Za-z0-9#]+;')
+
 def noteuri(phenny, input): 
     uri = input.group(1)
     if not hasattr(phenny.bot, 'last_seen_uri'): 
@@ -108,13 +109,13 @@ def snarfuri(phenny, input):
     if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
         return
     uri = input.group(1)
-    title = gettitle(uri)
+    title = gettitle(uri, input.sender)
     if title:
-        phenny.msg(input.sender, '[ ' + title + ' ]')
+        phenny.msg(input.sender, title)
 snarfuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
 snarfuri.priority = 'low'
 
-def gettitle(uri):
+def gettitle(uri, channel):
     if not ':' in uri: 
         uri = 'http://' + uri
     uri = uri.replace('#!', '?_escaped_fragment_=')
@@ -192,6 +193,12 @@ def gettitle(uri):
         if title: 
             title = title.replace('\n', '')
             title = title.replace('\r', '')
+
+            channels = ['#vtluug']
+            if channel in channels:
+                title = "[ " + title + " ] " + postedlink(uri)
+            else:
+                title = "[ " + title + " ] "
         else: title = None
     return title
 
