@@ -52,15 +52,6 @@ def c(phenny, input):
 c.commands = ['c']
 c.example = '.c 5 + 3'
 
-def py(phenny, input): 
-    query = input.group(2) or ""
-    uri = 'http://tumbolia.appspot.com/py/'
-    answer = web.get(uri + web.quote(query))
-    if answer: 
-        phenny.say(answer)
-    else: phenny.reply('Sorry, no result.')
-py.commands = ['py']
-
 def wa(phenny, input): 
     if not input.group(2):
         return phenny.reply("No search term.")

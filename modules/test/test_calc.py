@@ -5,7 +5,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 import unittest
 from mock import MagicMock, Mock
-from modules.calc import c, py, wa
+from modules.calc import c, wa
 
 
 class TestCalc(unittest.TestCase):
@@ -29,16 +29,6 @@ class TestCalc(unittest.TestCase):
         c(self.phenny, input)
 
         self.phenny.reply.assert_called_once_with('Sorry, no result.')
-
-    def test_py(self):
-        input = Mock(group=lambda x: "'test'*3")
-        py(self.phenny, input)
-
-        self.phenny.say.assert_called_once_with('testtesttest\n')
-
-    def test_py_none(self):
-        input = Mock(group=lambda x: "")
-        py(self.phenny, input)
 
     def test_wa(self):
         input = Mock(group=lambda x: 'airspeed of an unladen swallow')
