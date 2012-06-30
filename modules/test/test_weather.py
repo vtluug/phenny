@@ -26,10 +26,28 @@ class TestWeather(unittest.TestCase):
         
         self.assertEqual(icao, 'KIAD')
 
-    def test_location(self):
+    def test_airport(self):
         input = Mock(
                 match=Mock(group=lambda x: 'KIAD'),
                 sender='#phenny', nick='phenny_test')
         f_weather(self.phenny, input)
         
         assert self.phenny.msg.called is True
+
+    def test_place(self):
+        input = Mock(
+                match=Mock(group=lambda x: 'Blacksburg'),
+                sender='#phenny', nick='phenny_test')
+        f_weather(self.phenny, input)
+        
+        assert self.phenny.msg.called is True
+
+    def test_notfound(self):
+        input = Mock(
+                match=Mock(group=lambda x: 'Hell'),
+                sender='#phenny', nick='phenny_test')
+        f_weather(self.phenny, input)
+        
+        self.phenny.msg.called_once_with('#phenny',
+                "No NOAA data available for that location.")
+        

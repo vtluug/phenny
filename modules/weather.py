@@ -83,6 +83,10 @@ def f_weather(self, origin, match, args):
     try: bytes = web.get(uri % icao_code)
     except AttributeError: 
         raise GrumbleError('OH CRAP NOAA HAS GONE DOWN THE WEB IS BROKEN')
+    except urllib.error.HTTPError:
+        self.msg(origin.sender, "No NOAA data available for that location.")
+        return
+
     if 'Not Found' in bytes: 
         self.msg(origin.sender, icao_code+': no such ICAO code, or no NOAA data')
         return
