@@ -17,7 +17,7 @@ import time
 from html.entities import name2codepoint
 import web
 from tools import deprecated
-from modules.linx import postedlink
+from modules.linx import check_posted_link
 
 cj = http.cookiejar.LWPCookieJar()
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -194,9 +194,9 @@ def gettitle(uri, channel):
             title = title.replace('\n', '')
             title = title.replace('\r', '')
 
-            channels = ['#vtluug']
+            channels = ['#vtluug', '#vtcsec']
             if channel in channels:
-                title = "[ " + title + " ] " + postedlink(uri)
+                title = "[ " + title + " ] " + check_posted_link(uri, channel)
             else:
                 title = "[ " + title + " ] "
         else: title = None

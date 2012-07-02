@@ -53,7 +53,7 @@ def lines(phenny, input):
         date = "today"
 
     try:
-        req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick})
+        req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick, 'channel': input.sender})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
@@ -71,7 +71,7 @@ def posted(phenny, input):
         return
 
     try:
-        req = web.post("http://linx.li/vtluugposted", {'message': message, 'sender': input.nick})
+        req = web.post("http://linx.li/vtluugposted", {'message': message, 'sender': input.nick, 'channel': input.sender})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
@@ -80,16 +80,15 @@ def posted(phenny, input):
 posted.rule = (['posted'], r'(.*)')
 
 
-def postedlink(url):
+def check_posted_link(url, channel):
     """ helper method for gettitle() """
 
     try:
-        req = web.post("http://linx.li/vtluugpostedurl", {'url': url})
+        req = web.post("http://linx.li/vtluugpostedurl", {'url': url, 'channel': channel})
     except:
-        req = ""    
+        req = ""
 
     return req
-postedlink.channels = ['#vtluug']
 
 if __name__ == '__main__':
     print(__doc__.strip())
