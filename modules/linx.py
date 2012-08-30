@@ -10,8 +10,8 @@ import web
 import json
 
 
-def linx(phenny, input):
-    """.linx <url> - Upload a URL to linx.li."""
+def linx(phenny, input, short=False):
+    """.linx <url> - Upload a remote URL to linx.li."""
 
     url = input.group(2)
     if not url:
@@ -19,7 +19,7 @@ def linx(phenny, input):
         return
 
     try:
-        req = web.post("http://linx.li/vtluug", {'url': url})
+        req = web.post("http://linx.li/vtluug", {'url': url, 'short': short})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
@@ -30,6 +30,14 @@ def linx(phenny, input):
 
     phenny.reply(data['url'])
 linx.rule = (['linx'], r'(.*)')
+
+
+def lnx(phenny, input):
+    """
+    same as .linx but returns a short url.
+    """
+    linx(phenny, input, True)
+lnx.rule = (['lnx'], r'(.*)')
 
 
 def lines(phenny, input):
