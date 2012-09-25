@@ -114,6 +114,7 @@ def snarfuri(phenny, input):
         phenny.msg(input.sender, title)
 snarfuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
 snarfuri.priority = 'low'
+snarfuri.thread = True
 
 
 if __name__ == '__main__': 
