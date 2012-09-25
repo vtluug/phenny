@@ -14,14 +14,14 @@ import urllib.error
 import http.client
 import http.cookiejar
 import time
-from html.entities import name2codepoint
 import web
 from tools import deprecated
-from modules.linx import check_posted_link
+from modules.linx import get_title
 
 cj = http.cookiejar.LWPCookieJar()
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
 urllib.request.install_opener(opener)
+
 
 def head(phenny, input): 
     """Provide HTTP HEAD information."""
@@ -87,7 +87,7 @@ def f_title(self, origin, match, args):
         uri = self.last_seen_uri.get(origin.sender)
     if not uri: 
         return self.msg(origin.sender, 'I need a URI to give the title of...')
-    title = gettitle(uri)
+    title = get_title(uri)
     if title:
         self.msg(origin.sender, origin.nick + ': ' + title)
     else: self.msg(origin.sender, origin.nick + ': No title found')
@@ -109,98 +109,13 @@ def snarfuri(phenny, input):
     if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
         return
     uri = input.group(1)
-    title = gettitle(uri, input.sender)
+    title = get_title(uri, input.sender)
     if title:
         phenny.msg(input.sender, title)
 snarfuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
 snarfuri.priority = 'low'
+snarfuri.thread = True
 
-def gettitle(uri, channel):
-    if not ':' in uri: 
-        uri = 'http://' + uri
-    uri = uri.replace('#!', '?_escaped_fragment_=')
-
-    title = None
-    localhost = [
-        'http://localhost/', 'http://localhost:80/', 
-        'http://localhost:8080/', 'http://127.0.0.1/', 
-        'http://127.0.0.1:80/', 'http://127.0.0.1:8080/', 
-        'https://localhost/', 'https://localhost:80/', 
-        'https://localhost:8080/', 'https://127.0.0.1/', 
-        'https://127.0.0.1:80/', 'https://127.0.0.1:8080/', 
-    ]
-    for s in localhost: 
-        if uri.startswith(s): 
-            return phenny.reply('Sorry, access forbidden.')
-
-    try: 
-        redirects = 0
-        while True: 
-            info = web.head(uri)
-
-            if not isinstance(info, list): 
-                status = '200'
-            else: 
-                status = str(info[1])
-                info = info[0]
-            if status.startswith('3'): 
-                uri = urllib.parse.urljoin(uri, info['Location'])
-            else: break
-
-            redirects += 1
-            if redirects >= 25: 
-                return None
-
-        try: mtype = info['content-type']
-        except: 
-            return None
-
-        if not (('/html' in mtype) or ('/xhtml' in mtype)): 
-            return None
-
-        bytes = web.get(uri)
-        #bytes = u.read(262144)
-        #u.close()
-
-    except IOError: 
-        return
-
-    m = r_title.search(bytes)
-    if m: 
-        title = m.group(1)
-        title = title.strip()
-        title = title.replace('\t', ' ')
-        title = title.replace('\r', ' ')
-        title = title.replace('\n', ' ')
-        while '  ' in title: 
-            title = title.replace('  ', ' ')
-        if len(title) > 200: 
-            title = title[:200] + '[...]'
-        
-        def e(m): 
-            entity = m.group(0)
-            if entity.startswith('&#x'): 
-                cp = int(entity[3:-1], 16)
-                return chr(cp)
-            elif entity.startswith('&#'): 
-                cp = int(entity[2:-1])
-                return chr(cp)
-            else: 
-                char = name2codepoint[entity[1:-1]]
-                return chr(char)
-        title = r_entity.sub(e, title)
-
-        if title: 
-            title = title.replace('\n', '')
-            title = title.replace('\r', '')
-
-            channels = ['#vtluug', '#vtcsec']
-            if channel in channels:
-                title = "[ " + title + " ] " + check_posted_link(uri, channel)
-            else:
-                title = "[ " + title + " ] "
-        else: title = None
-    return title
 
 if __name__ == '__main__': 
     print(__doc__.strip())
