@@ -1,13 +1,22 @@
 #!/usr/bin/python3
 """
 linx.py - linx.li tools
-author: mutantmonkey <mutantmonkey@mutantmonkey.in>, andreim <andreim@andreim.net>
+author: andreim <andreim@andreim.net>
+author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import json
+
+
+def get_title(url, channel):
+    """ Have linx retrieve the (augmented) title """
+    try:
+        return web.post("http://linx.li/vtluuggettitle", {'url': url, 'channel': channel})
+    except:
+        return
 
 
 def linx(phenny, input, short=False):
@@ -87,16 +96,6 @@ def posted(phenny, input):
 
 posted.rule = (['posted'], r'(.*)')
 
-
-def check_posted_link(url, channel):
-    """ helper method for gettitle() """
-
-    try:
-        req = web.post("http://linx.li/vtluugpostedurl", {'url': url, 'channel': channel})
-    except:
-        req = ""
-
-    return req
 
 if __name__ == '__main__':
     print(__doc__.strip())
