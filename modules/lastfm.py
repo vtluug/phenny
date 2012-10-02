@@ -114,7 +114,11 @@ def now_playing(phenny, input):
         tags[e.tag] = e
 
     track = tags['name'].text.strip()
-    artist = tags['artist'].text.strip()
+
+    artist = ""
+    for e in tags['artist']:
+        if e.tag == 'name':
+            artist = e.text.strip()
 
     album = "unknown"
     if tags['album'].text:
