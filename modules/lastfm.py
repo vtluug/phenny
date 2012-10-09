@@ -15,7 +15,7 @@ from urllib.error import HTTPError
 from lxml import etree
 from datetime import datetime
 
-APIKEY = "b25b959554ed76058ac220b7b2e0a026"
+APIKEY = "f8f2a50033d7385e547fccbae92b2138"
 APIURL = "http://ws.audioscrobbler.com/2.0/?api_key="+APIKEY+"&"
 AEPURL = "http://www.davethemoonman.com/lastfm/aep.php?format=txt&username="
 
