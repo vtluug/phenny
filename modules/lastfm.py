@@ -103,7 +103,7 @@ def now_playing(phenny, input):
         phenny.say("%s hasn't played anything recently. this isn't you? try lastfm-set" % (user))
         return
     tracks = list(recenttracks[0])
-    #print etree.tostring(recenttracks[0])
+    #print(etree.tostring(recenttracks[0]))
     if len(tracks) == 0:
         phenny.say("%s hasn't played anything recently. this isn't you? try lastfm-set" % (user))
         return
@@ -115,10 +115,7 @@ def now_playing(phenny, input):
 
     track = tags['name'].text.strip()
 
-    artist = ""
-    for e in tags['artist']:
-        if e.tag == 'name':
-            artist = e.text.strip()
+    artist = tags['artist'].text.strip()
 
     album = "unknown"
     if tags['album'].text:
