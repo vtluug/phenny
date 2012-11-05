@@ -221,25 +221,26 @@ def f_weather(self, origin, match, args):
             description = 'Violent storm'
         else: description = 'Hurricane'
 
-        degrees = float(wind[0:3])
-        #if degrees == 'VRB': 
-        #    degrees = '\u21BB'
-        if (degrees <= 22.5) or (degrees > 337.5): 
-            degrees = '\u2191'
-        elif (degrees > 22.5) and (degrees <= 67.5): 
-            degrees = '\u2197'
-        elif (degrees > 67.5) and (degrees <= 112.5): 
-            degrees = '\u2192'
-        elif (degrees > 112.5) and (degrees <= 157.5): 
-            degrees = '\u2198'
-        elif (degrees > 157.5) and (degrees <= 202.5): 
-            degrees = '\u2193'
-        elif (degrees > 202.5) and (degrees <= 247.5): 
-            degrees = '\u2199'
-        elif (degrees > 247.5) and (degrees <= 292.5): 
-            degrees = '\u2190'
-        elif (degrees > 292.5) and (degrees <= 337.5): 
-            degrees = '\u2196'
+        if wind[0:3] == 'VRB': 
+            degrees = '\u21BB'
+        else:
+            degrees = float(wind[0:3])
+            if (degrees <= 22.5) or (degrees > 337.5): 
+                degrees = '\u2191'
+            elif (degrees > 22.5) and (degrees <= 67.5): 
+                degrees = '\u2197'
+            elif (degrees > 67.5) and (degrees <= 112.5): 
+                degrees = '\u2192'
+            elif (degrees > 112.5) and (degrees <= 157.5): 
+                degrees = '\u2198'
+            elif (degrees > 157.5) and (degrees <= 202.5): 
+                degrees = '\u2193'
+            elif (degrees > 202.5) and (degrees <= 247.5): 
+                degrees = '\u2199'
+            elif (degrees > 247.5) and (degrees <= 292.5): 
+                degrees = '\u2190'
+            elif (degrees > 292.5) and (degrees <= 337.5): 
+                degrees = '\u2196'
 
         if not icao_code.startswith('EN') and not icao_code.startswith('ED'): 
             wind = '%s %skt (%s)' % (description, speed, degrees)
