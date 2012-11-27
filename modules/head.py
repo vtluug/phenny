@@ -17,7 +17,7 @@ import time
 from html.entities import name2codepoint
 import web
 from tools import deprecated
-from modules.linx import get_title
+from modules.linx import get_title as linx_gettitle
 
 cj = http.cookiejar.LWPCookieJar()
 opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cj))
@@ -81,23 +81,6 @@ head.commands = ['head']
 head.example = '.head http://www.w3.org/'
 
 
-@deprecated
-def f_title(self, origin, match, args):
-    """.title <URI> - Return the title of URI."""
-    uri = match.group(2)
-    uri = (uri or '')
-
-    if not uri and hasattr(self, 'last_seen_uri'):
-        uri = self.last_seen_uri.get(origin.sender)
-    if not uri:
-        return self.msg(origin.sender, 'I need a URI to give the title of...')
-    title = gettitle(uri)
-    if title:
-        self.msg(origin.sender, origin.nick + ': ' + title)
-    else:
-        self.msg(origin.sender, origin.nick + ': No title found')
-f_title.commands = ['title']
-
 r_title = re.compile(r'(?ims)<title[^>]*>(.*?)</title\s*>')
 r_entity = re.compile(r'&[A-Za-z0-9#]+;')
 
@@ -110,18 +93,15 @@ def noteuri(phenny, input):
 noteuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
 noteuri.priority = 'low'
 
-titlecommands = r'(?:' + r'|'.join(f_title.commands) + r')'
 
 
 def snarfuri(phenny, input):
-    if re.match(r'(?i)' + phenny.config.prefix + titlecommands, input.group()):
-        return
     uri = input.group(1)
 
     if phenny.config.linx_api_key != "":
-        title = get_title(phenny, uri, input.sender)
+        title = linx_gettitle(phenny, uri, input.sender)
     else:
-        title = gettitle(uri)
+        title = gettitle(phenny, uri)
 
     if title:
         phenny.msg(input.sender, title)
@@ -130,7 +110,7 @@ snarfuri.priority = 'low'
 snarfuri.thread = True
 
 
-def gettitle(uri):
+def gettitle(phenny, uri):
     if not ':' in uri:
         uri = 'http://' + uri
     uri = uri.replace('#!', '?_escaped_fragment_=')
@@ -210,6 +190,7 @@ def gettitle(uri):
         if title:
             title = title.replace('\n', '')
             title = title.replace('\r', '')
+            title = "[ {0} ]".format(title)
         else:
             title = None
     return title
