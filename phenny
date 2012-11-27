@@ -38,6 +38,10 @@ def create_default_config(fn):
     # password = 'example'
     # serverpass = 'serverpass'
 
+    # linx-enabled features (.linx, .posted, .lines, snarfuri with special capabilities)
+    # leave the api key blank to not use them and be sure to add the 'linx' module to the ignore list.
+    linx_api_key = ""
+
     # These are people who will be able to use admin.py's functions...
     admins = [owner, 'someoneyoutrust']
     # But admin.py is disabled by default, as follows:
