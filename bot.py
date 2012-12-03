@@ -220,7 +220,7 @@ class Phenny(irc.Bot):
             items = list(self.commands[priority].items())
             for regexp, funcs in items: 
                 for func in funcs: 
-                    if event != func.event: continue
+                    if event != func.event and func.event != '*': continue
 
                     match = regexp.match(text)
                     if match: 
