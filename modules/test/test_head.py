@@ -36,6 +36,7 @@ class TestHead(unittest.TestCase):
 
     def test_snarfuri(self):
         self.phenny.config.prefix = '.'
+        self.phenny.config.linx_api_key = ""
         input = Mock(group=lambda x=0: 'http://google.com',
                 sender='#phenny')
         snarfuri(self.phenny, input)
