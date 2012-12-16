@@ -45,7 +45,7 @@ def create_default_config(fn):
     # These are people who will be able to use admin.py's functions...
     admins = [owner, 'someoneyoutrust']
     # But admin.py is disabled by default, as follows:
-    exclude = ['admin']
+    exclude = ['admin', 'linx']
 
     ignore = ['']
 
