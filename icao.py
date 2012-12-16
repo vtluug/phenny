@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 icao.py - Phenny ICAO Codes Data
 This data and module are in the public domain.
