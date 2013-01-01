@@ -7,13 +7,12 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import time
+import time, os, shelve
 from tools import deprecated
 
 @deprecated
 def f_seen(self, origin, match, args): 
     """.seen <nick> - Reports when <nick> was last seen."""
-    if origin.sender == '#talis': return
     nick = match.group(2).lower()
     if not hasattr(self, 'seen'): 
         return self.msg(origin.sender, '?')
@@ -30,15 +29,12 @@ f_seen.rule = (['seen'], r'(\S+)')
 def f_note(self, origin, match, args): 
     def note(self, origin, match, args): 
         if not hasattr(self.bot, 'seen'): 
-            self.bot.seen = {}
+            fn = self.nick + '-' + self.config.host + '.seen.db'
+            path = os.path.join(os.path.expanduser('~/.phenny'), fn)
+            self.bot.seen = shelve.open(path)
         if origin.sender.startswith('#'): 
-            # if origin.sender == '#inamidst': return
             self.seen[origin.nick.lower()] = (origin.sender, time.time())
-
-        # if not hasattr(self, 'chanspeak'): 
-        #     self.chanspeak = {}
-        # if (len(args) > 2) and args[2].startswith('#'): 
-        #     self.chanspeak[args[2]] = args[0]
+            self.seen.sync()
 
     try: note(self, origin, match, args)
     except Exception as e: print(e)
