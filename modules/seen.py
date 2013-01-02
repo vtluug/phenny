@@ -29,7 +29,7 @@ f_seen.rule = (['seen'], r'(\S+)')
 def f_note(self, origin, match, args): 
     def note(self, origin, match, args): 
         if not hasattr(self.bot, 'seen'): 
-            fn = self.nick + '-' + self.config.host + '.seen.db'
+            fn = self.nick + '-' + self.config.host + '.seen'
             path = os.path.join(os.path.expanduser('~/.phenny'), fn)
             self.bot.seen = shelve.open(path)
         if origin.sender.startswith('#'): 
