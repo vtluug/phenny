@@ -34,7 +34,9 @@ class TestCalc(unittest.TestCase):
         input = Mock(group=lambda x: 'airspeed of an unladen swallow')
         wa(self.phenny, input)
 
-        self.phenny.say.assert_called_once_with('25 mph  (miles per hour)')
+        self.phenny.say.assert_called_once_with('25 mph  (miles per hour), '\
+                '(asked, but not answered, about a general swallow in the '\
+                '1975 film Monty Python and the Holy Grail)')
 
     def test_wa_none(self):
         input = Mock(group=lambda x: "jajoajaj ojewphjqo I!tj")

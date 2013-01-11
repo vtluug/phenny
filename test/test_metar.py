@@ -19,7 +19,4 @@ class MetarTest(unittest.TestCase):
                 assert w.temperature > -100
                 assert w.temperature < 100
 
-                assert w.dewpoint > -100
-                assert w.dewpoint < 100
-
                 assert w.pressure is not None
