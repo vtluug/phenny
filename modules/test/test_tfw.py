@@ -18,14 +18,16 @@ class TestTfw(unittest.TestCase):
         input = Mock(group=lambda x: 'tu3jgoajgoahghqog')
         tfw(self.phenny, input)
     
-        self.phenny.say.assert_called_once_with("UNKNOWN FUCKING LOCATION. Try another?")
+        self.phenny.say.assert_called_once_with(
+                "WHERE THE FUCK IS THAT? Try another location.")
 
     def test_celsius(self):
         input = Mock(group=lambda x: '24060')
         tfw(self.phenny, input, celsius=True)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^\d+°C‽ .* \- .*$', out, flags=re.UNICODE)
+        m = re.match('^\d+°C‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+                flags=re.UNICODE)
         self.assertTrue(m)
 
     def test_fahrenheit(self):
@@ -33,7 +35,8 @@ class TestTfw(unittest.TestCase):
         tfw(self.phenny, input, fahrenheit=True)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^\d+°F‽ .* \- .*$', out, flags=re.UNICODE)
+        m = re.match('^\d+°F‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+                flags=re.UNICODE)
         self.assertTrue(m)
 
     def test_mev(self):
@@ -41,5 +44,6 @@ class TestTfw(unittest.TestCase):
         tfw(self.phenny, input)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^[\d\.]+ meV‽ .* \- .*$', out, flags=re.UNICODE)
+        m = re.match('^[\d\.]+ meV‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+                flags=re.UNICODE)
         self.assertTrue(m)
