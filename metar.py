@@ -266,7 +266,7 @@ def parse(data):
     m = pressure_re.search(w.metar)
     if m.group(1) == 'A':
         # convert inHg to hPa
-        w.pressure = round(int(m.group(2)) / 100 * 3.386389)
+        w.pressure = round(float(m.group(2)) * 0.3386389)
     else:
         w.pressure = int(m.group(2))
 
