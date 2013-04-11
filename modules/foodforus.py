@@ -70,7 +70,10 @@ def foodvote(phenny, input):
         raise GrumbleError("Uh oh, I couldn't contact foodforus. HOW WILL WE "\
                 "EAT NOW‽")
 
-    phenny.reply("Your vote has been recorded.")
+    if 'error' in data:
+        phenny.reply(data['error'])
+    else:
+        phenny.reply("Your vote has been recorded.")
 foodvote.rule = (['foodvote'], r'(.*) (\d{2}:\d{2})( .*)?')
 
 
