@@ -56,6 +56,7 @@ def setup(phenny):
 
     targs = (phenny,)
     t = threading.Thread(target=monitor, args=targs)
+    t.daemon = True
     t.start()
 
 scaling = {
