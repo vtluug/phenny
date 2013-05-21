@@ -133,5 +133,56 @@ def remind(phenny, input):
     else: phenny.reply('Okay, will remind in %s secs' % duration)
 remind.commands = ['in']
 
+r_time = re.compile(r'^([0-9]{2}[:.][0-9]{2})')
+r_zone = re.compile(r'( ?([A-Za-z]+|[+-]\d\d?))')
+
+import calendar
+from modules.clock import TimeZones
+
+def at(phenny, input):
+    message = input[4:]
+
+    m = r_time.match(message)
+    if not m: 
+        return phenny.reply("Sorry, didn't understand the time spec.")
+    t = m.group(1).replace('.', ':')
+    message = message[len(t):]
+
+    m = r_zone.match(message)
+    if not m: 
+        return phenny.reply("Sorry, didn't understand the zone spec.")
+    z = m.group(2)
+    message = message[len(m.group(1)):].strip()
+
+    if z.startswith('+') or z.startswith('-'):
+        tz = int(z)
+
+    if z in TimeZones:
+        tz = TimeZones[z]
+    else: return phenny.reply("Sorry, didn't understand the time zone.")
+
+    d = time.strftime("%Y-%m-%d", time.gmtime())
+    d = time.strptime(("%s %s" % (d, t)), "%Y-%m-%d %H:%M")
+
+    d = int(calendar.timegm(d) - (3600 * tz))
+    duration = int((d - time.time()) / 60)
+
+    if duration < 1:
+        return phenny.reply("Sorry, that date is this minute or in the past. And only times in the same day are supported!")
+
+    # phenny.say("%s %s %s" % (t, tz, d))
+
+    reminder = (input.sender, input.nick, message)
+    # phenny.say(str((d, reminder)))
+    try: phenny.rdb[d].append(reminder)
+    except KeyError: phenny.rdb[d] = [reminder]
+
+    phenny.sending.acquire()
+    dump_database(phenny.rfn, phenny.rdb)
+    phenny.sending.release()
+
+    phenny.reply("Reminding at %s %s - in %s minute(s)" % (t, z, duration))
+at.commands = ['at']
+
 if __name__ == '__main__': 
     print(__doc__.strip())
