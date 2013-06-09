@@ -5,7 +5,6 @@ author: Ramblurr <unnamedrambler@gmail.com>
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import lxml.html
@@ -15,7 +14,7 @@ def fml(phenny, input):
     """.fml"""
     try:
         req = web.get("http://www.fmylife.com/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("I tried to use .fml, but it was broken. FML")
 
     doc = lxml.html.fromstring(req)
@@ -28,7 +27,7 @@ def mlia(phenny, input):
     """.mlia - My life is average."""
     try:
          req = web.get("http://mylifeisaverage.com/")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("I tried to use .mlia, but it wasn't loading. MLIA")
 
     doc = lxml.html.fromstring(req)
@@ -42,7 +41,7 @@ def mlib(phenny, input):
     """.mlib - My life is bro."""
     try:
         req = web.get("http://mylifeisbro.com/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("MLIB is out getting a case of Natty. It's chill.")
 
     doc = lxml.html.fromstring(req)
@@ -55,7 +54,7 @@ def mlig(phenny, input):
     """.mlig - My life is ginger."""
     try:
         req = web.get("http://www.mylifeisginger.org/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("Busy eating your soul. Be back soon.")
 
     doc = lxml.html.fromstring(req)
@@ -68,7 +67,7 @@ def mlih(phenny, input):
     """.mlih - My life is ho."""
     try:
         req = web.get("http://mylifeisho.com/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("MLIH is giving some dome to some lax bros.")
 
     doc = lxml.html.fromstring(req)
@@ -81,7 +80,7 @@ def mlihp(phenny, input):
     """.mlihp - My life is Harry Potter."""
     try:
         req = web.get("http://www.mylifeishp.com/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("This service is not available to Muggles.")
 
     doc = lxml.html.fromstring(req)
@@ -94,7 +93,7 @@ def mlit(phenny, input):
     """.mlit - My life is Twilight."""
     try:
         req = web.get("http://mylifeistwilight.com/random")
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("Error: Your life is too Twilight. Go outside.")
 
     doc = lxml.html.fromstring(req)

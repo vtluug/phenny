@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib.request, urllib.parse, urllib.error
+import re
 import web
 
 definitions = 'https://github.com/nslater/oblique/wiki'
@@ -30,9 +30,9 @@ def mappings(uri):
 
 def service(phenny, input, command, args): 
     t = o.services[command]
-    template = t.replace('${args}', urllib.parse.quote(args, ''))
-    template = template.replace('${nick}', urllib.parse.quote(input.nick, ''))
-    uri = template.replace('${sender}', urllib.parse.quote(input.sender, ''))
+    template = t.replace('${args}', web.quote(args, ''))
+    template = template.replace('${nick}', web.quote(input.nick, ''))
+    uri = template.replace('${sender}', web.quote(input.sender, ''))
 
     info = web.head(uri)
     if isinstance(info, list): 
@@ -104,7 +104,7 @@ def snippet(phenny, input):
     if not o.services: 
         refresh(phenny)
 
-    search = urllib.parse.quote(input.group(2))
+    search = web.quote(input.group(2))
     py = "BeautifulSoup.BeautifulSoup(re.sub('<.*?>|(?<= ) +', '', " + \
           "''.join(chr(ord(c)) for c in " + \
           "eval(urllib.urlopen('http://ajax.googleapis.com/ajax/serv" + \

@@ -6,7 +6,6 @@ Copyright 2012, Randy Nance, randynance.info
 http://github.com/randynobx/phenny/
 """
 
-from urllib.error import URLError, HTTPError
 from tools import GrumbleError
 import re
 import web
@@ -19,7 +18,7 @@ def wuvt(phenny, input) :
     try:
         playing = web.get('http://www.wuvt.vt.edu/playlists/latest_track.php')
         djpage = web.get('http://www.wuvt.vt.edu/playlists/current_dj.php')
-    except (URLError, HTTPError):
+    except:
         raise GrumbleError('Cannot connect to wuvt')
     play= r_play.search(playing)
     song = play.group(2)

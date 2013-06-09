@@ -17,8 +17,8 @@ NS = NS = '{urn:oasis:names:tc:DSML:2:0:core}'
 def search(query):
     query = web.quote(query)
     try:
-        req = web.get(SEARCH_URL.format(query))
-    except (HTTPError, IOError):
+        req = web.get(SEARCH_URL.format(query), verify=False)
+    except (web.ConnectionError, web.HTTPError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     xml = lxml.etree.fromstring(req.encode('utf-8'))

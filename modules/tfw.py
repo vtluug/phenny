@@ -7,7 +7,6 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 from tools import GrumbleError
 from modules import weather
-import urllib.error
 import random
 import metar
 import web
@@ -31,7 +30,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         bytes = web.get(uri % icao_code)
     except AttributeError: 
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-    except urllib.error.HTTPError:
+    except web.HTTPError:
         phenny.say("WHERE THE FUCK IS THAT? Try another location.")
         return
 

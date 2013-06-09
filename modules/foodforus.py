@@ -4,7 +4,6 @@ foodforus.py - foodforus module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.error import HTTPError
 from tools import GrumbleError
 import hashlib
 import json
@@ -31,7 +30,7 @@ def food(phenny, input):
     try:
         req = web.get(API_URL + '/food/' + web.quote(key.strip()))
         data = json.loads(req)
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("Uh oh, I couldn't contact foodforus. HOW WILL WE "\
                 "EAT NOW‽")
 
@@ -66,8 +65,8 @@ def foodvote(phenny, input):
 
     try:
         req = web.post(API_URL + '/vote', postdata)
-        data = json.loads(req)
-    except (HTTPError, IOError):
+        data = json.loads(req.text)
+    except:
         raise GrumbleError("Uh oh, I couldn't contact foodforus. HOW WILL WE "\
                 "EAT NOW‽")
 
@@ -83,7 +82,7 @@ def pickfood(phenny, input):
     try:
         req = web.get(API_URL + '/food/' + web.quote(key.strip()))
         data = json.loads(req)
-    except (HTTPError, IOError):
+    except:
         raise GrumbleError("Uh oh, I couldn't contact foodforus. HOW WILL WE "\
                 "EAT NOW‽")
 

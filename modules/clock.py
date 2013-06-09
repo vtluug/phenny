@@ -7,7 +7,14 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, math, time, urllib.request, urllib.parse, urllib.error, locale, socket, struct, datetime
+import re
+import math
+import time
+import locale
+import socket
+import struct
+import datetime
+import web
 from decimal import Decimal as dec
 from tools import deprecated
 
@@ -273,9 +280,7 @@ yi.priority = 'low'
 
 def tock(phenny, input): 
     """Shows the time from the USNO's atomic clock."""
-    u = urllib.request.urlopen('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
-    info = u.info()
-    u.close()
+    info = web.head('http://tycho.usno.navy.mil/cgi-bin/timer.pl')
     phenny.say('"' + info['Date'] + '" - tycho.usno.navy.mil')
 tock.commands = ['tock']
 tock.priority = 'high'

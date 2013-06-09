@@ -4,10 +4,10 @@ short.py - vtluug url shortner
 author: andreim <andreim@andreim.net>
 """
 
-from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import json
+
 
 def short(phenny, input):
     """.short <url> - Shorten a URL."""
@@ -18,11 +18,11 @@ def short(phenny, input):
         return
 
     try:
-        req = web.post("http://vtlu.ug/vtluug", {'lurl': url})
-    except (HTTPError, IOError):
+        r = web.post("http://vtlu.ug/vtluug", {'lurl': url})
+    except:
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
-    phenny.reply(req)
+    phenny.reply(r)
 short.rule = (['short'], r'(.*)')
 
 if __name__ == '__main__':

@@ -5,50 +5,41 @@ Author: Sean B. Palmer, inamidst.com
 About: http://inamidst.com/phenny/
 """
 
-import re, urllib.request, urllib.parse, urllib.error
-from html.entities import name2codepoint
+import re
+import urllib.parse
+import requests
 import json as jsonlib
 
-class Grab(urllib.request.URLopener): 
-    def __init__(self, *args): 
-        self.version = 'Mozilla/5.0 (Phenny)'
-        urllib.request.URLopener.__init__(self, *args)
-    def http_error_default(self, url, fp, errcode, errmsg, headers): 
-        return urllib.addinfourl(fp, [headers, errcode], "http:" + url)
-urllib.request._urlopener = Grab()
+from requests.exceptions import ConnectionError, HTTPError, InvalidURL
+from html.entities import name2codepoint
+from urllib.parse import quote, unquote
 
-def get(uri): 
+user_agent = "Mozilla/5.0 (Phenny)"
+default_headers = {'User-Agent': user_agent}
+
+def get(uri, headers={}, verify=True, **kwargs): 
     if not uri.startswith('http'): 
         return
-    u = urllib.request.urlopen(uri)
-    bytes = u.read()
-    try:
-        bytes = bytes.decode('utf-8')
-    except UnicodeDecodeError:
-        bytes = bytes.decode('ISO-8859-1')
-    u.close()
-    return bytes
+    headers.update(default_headers)
+    r = requests.get(uri, headers=headers, verify=verify, **kwargs)
+    r.raise_for_status()
+    return r.text
 
-def head(uri): 
+def head(uri, headers={}, verify=True, **kwargs): 
     if not uri.startswith('http'): 
         return
-    u = urllib.request.urlopen(uri)
-    info = u.info()
-    u.close()
-    return info
+    headers.update(default_headers)
+    r = requests.head(uri, headers=headers, verify=verify, **kwargs)
+    r.raise_for_status()
+    return r.headers
 
-def post(uri, query): 
+def post(uri, data, headers={}, verify=True, **kwargs): 
     if not uri.startswith('http'): 
         return
-    data = urllib.parse.urlencode(query).encode('utf-8')
-    u = urllib.request.urlopen(uri, data)
-    bytes = u.read()
-    try:
-        bytes = bytes.decode('utf-8')
-    except UnicodeDecodeError:
-        bytes = bytes.decode('ISO-8859-1')
-    u.close()
-    return bytes
+    headers.update(default_headers)
+    r = requests.post(uri, data=data, headers=headers, verify=verify, **kwargs)
+    r.raise_for_status()
+    return r.text
 
 r_entity = re.compile(r'&([^;\s]+);')
 
@@ -61,9 +52,6 @@ def entity(match):
     elif value in name2codepoint: 
         return chr(name2codepoint[value])
     return '[' + value + ']'
-
-def quote(text):
-     return urllib.parse.quote(text)
 
 def decode(html): 
     return r_entity.sub(entity, html)

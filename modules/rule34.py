@@ -4,8 +4,6 @@ rule34.py - rule 34 module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.parse import quote as urlquote
-from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import lxml.html
@@ -19,8 +17,8 @@ def rule34(phenny, input):
         return
 
     try:
-        req = web.get("http://rule34.xxx/index.php?page=post&s=list&tags={0}".format(urlquote(q)))
-    except (HTTPError, IOError):
+        req = web.get("http://rule34.xxx/index.php?page=post&s=list&tags={0}".format(web.quote(q)))
+    except:
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     doc = lxml.html.fromstring(req)

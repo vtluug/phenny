@@ -4,7 +4,6 @@ fcc.py - fcc callsign lookup
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import json
@@ -20,7 +19,7 @@ def fcc(phenny, input):
     try:
         req = web.get("http://callook.info/{0}/json".format(web.quote(callsign)))
         data = json.loads(req)
-    except (HTTPError, IOError, ValueError):
+    except:
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     if len(data) <= 0 or data['status'] == 'INVALID':

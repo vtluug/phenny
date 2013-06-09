@@ -7,7 +7,8 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib.request, urllib.parse, urllib.error, gzip, io
+import re
+import web
 import wiki
 
 wikiapi = 'https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={0}&limit=1&prop=snippet&format=json'
@@ -20,7 +21,7 @@ def wik(phenny, input):
     if not origterm: 
         return phenny.say('Perhaps you meant ".wik Zen"?')
 
-    term = urllib.parse.unquote(origterm)
+    term = web.unquote(origterm)
     term = term[0].upper() + term[1:]
     term = term.replace(' ', '_')
 
@@ -28,7 +29,7 @@ def wik(phenny, input):
 
     try:
         result = w.search(term)
-    except IOError: 
+    except web.ConnectionError:
         error = "Can't connect to en.wikipedia.org ({0})".format(wikiuri.format(term))
         return phenny.say(error)
 

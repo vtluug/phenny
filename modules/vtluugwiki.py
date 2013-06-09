@@ -10,7 +10,8 @@ modified from Wikipedia module
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-import re, urllib.request, urllib.parse, urllib.error
+import re
+import web
 import wiki
 
 wikiapi = 'https://vtluug.org/w/api.php?action=query&list=search&srsearch={0}&limit=1&prop=snippet&format=json'
@@ -23,7 +24,7 @@ def vtluug(phenny, input):
     if not origterm: 
         return phenny.say('Perhaps you meant ".vtluug VT-Wireless"?')
 
-    term = urllib.parse.unquote(origterm)
+    term = web.unquote(origterm)
     term = term[0].upper() + term[1:]
     term = term.replace(' ', '_')
 
@@ -31,7 +32,7 @@ def vtluug(phenny, input):
 
     try:
         result = w.search(term)
-    except IOError: 
+    except web.ConnectionError:
         error = "Can't connect to vtluug.org ({0})".format(wikiuri.format(term))
         return phenny.say(error)
 

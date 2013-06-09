@@ -12,6 +12,11 @@ Compatibility with existing phenny modules has been mostly retained, but they
 will need to be updated to run on Python3 if they do not already. All of the
 core modules have been ported.
 
+Requirements
+------------
+* Python 3.2+
+* [python-requests](http://docs.python-requests.org/en/latest/)
+
 Installation
 ------------
 1. Run `./phenny` - this creates a default config file

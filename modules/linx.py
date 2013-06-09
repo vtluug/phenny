@@ -5,7 +5,6 @@ author: andreim <andreim@andreim.net>
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
-from urllib.error import HTTPError
 from tools import GrumbleError
 import web
 import json
@@ -29,7 +28,7 @@ def linx(phenny, input, short=False):
 
     try:
         req = web.post("https://linx.li/vtluug", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
-    except (HTTPError, IOError):
+    except (web.HTTPError, web.ConnectionError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     data = json.loads(req)
@@ -71,7 +70,7 @@ def lines(phenny, input):
 
     try:
         req = web.post("https://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
-    except (HTTPError, IOError):
+    except (web.HTTPError, web.ConnectionError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     phenny.reply(req)
@@ -89,7 +88,7 @@ def posted(phenny, input):
 
     try:
         req = web.post("https://linx.li/vtluugposted", {'message': message, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
-    except (HTTPError, IOError):
+    except (web.HTTPError, web.ConnectionError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
     phenny.reply(req)

@@ -8,7 +8,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib.request, urllib.parse, urllib.error
+import re
 import json
 import web
 
@@ -18,20 +18,19 @@ def translate(text, input='auto', output='en'):
         output = output[:-4]
         raw = True
 
-    opener = urllib.request.build_opener()
-    opener.addheaders = [(
-        'User-Agent', 'Mozilla/5.0' + 
-        '(X11; U; Linux i686)' + 
-        'Gecko/20071127 Firefox/2.0.0.11'
-    )]
-    input = urllib.parse.quote(input)
-    output = urllib.parse.quote(output.encode('utf-8'))
-    text = urllib.parse.quote(text.encode('utf-8'))
+    #opener = urllib.request.build_opener()
+    #opener.addheaders = [(
+    #    'User-Agent', 'Mozilla/5.0' + 
+    #    '(X11; U; Linux i686)' + 
+    #    'Gecko/20071127 Firefox/2.0.0.11'
+    #)]
+    input = web.quote(input)
+    output = web.quote(output.encode('utf-8'))
+    text = web.quote(text.encode('utf-8'))
 
-    result = opener.open('http://translate.google.com/translate_a/t?' +
+    result = web.get('http://translate.google.com/translate_a/t?' +
         ('client=t&hl=en&sl=%s&tl=%s&multires=1' % (input, output)) + 
-        ('&otf=1&ssel=0&tsel=0&uptl=en&sc=1&text=%s' % text)).read()
-    result = result.decode('utf-8')
+        ('&otf=1&ssel=0&tsel=0&uptl=en&sc=1&text=%s' % text))
 
     while ',,' in result: 
         result = result.replace(',,', ',null,')

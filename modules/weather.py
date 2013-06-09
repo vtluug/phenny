@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import re, urllib.request, urllib.parse, urllib.error
+import re
 import metar
 import web
 from tools import deprecated, GrumbleError
@@ -15,7 +15,7 @@ from tools import deprecated, GrumbleError
 r_from = re.compile(r'(?i)([+-]\d+):00 from')
 
 def location(name):
-    name = urllib.parse.quote(name)
+    name = web.quote(name)
     uri = 'http://ws.geonames.org/searchJSON?q=%s&maxRows=1' % name
     for i in range(10):
         bytes = web.get(uri)
@@ -81,7 +81,7 @@ def f_weather(phenny, input):
         bytes = web.get(uri % icao_code)
     except AttributeError:
         raise GrumbleError('OH CRAP NOAA HAS GONE DOWN THE WEB IS BROKEN')
-    except urllib.error.HTTPError:
+    except web.HTTPError:
         phenny.say("No NOAA data available for that location.")
         return
 

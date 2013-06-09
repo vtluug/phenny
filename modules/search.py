@@ -10,24 +10,13 @@ http://inamidst.com/phenny/
 import re
 import web
 
-class Grab(web.urllib.request.URLopener):
-    def __init__(self, *args):
-        self.version = 'Mozilla/5.0 (Phenny)'
-        web.urllib.request.URLopener.__init__(self, *args)
-        self.addheader('Referer', 'https://github.com/sbp/phenny')
-    def http_error_default(self, url, fp, errcode, errmsg, headers):
-        return web.urllib.addinfourl(fp, [headers, errcode], "http:" + url)
-
 def google_ajax(query): 
     """Search using AjaxSearch, and return its JSON."""
     if isinstance(query, str): 
         query = query.encode('utf-8')
     uri = 'http://ajax.googleapis.com/ajax/services/search/web'
     args = '?v=1.0&safe=off&q=' + web.quote(query)
-    handler = web.urllib.request._urlopener
-    web.urllib.request._urlopener = Grab()
-    bytes = web.get(uri + args)
-    web.urllib.request._urlopener = handler
+    bytes = web.get(uri + args, headers={'Referer': 'https://github.com/sbp/phenny'})
     return web.json(bytes)
 
 def google_search(query): 
