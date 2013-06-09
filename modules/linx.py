@@ -14,7 +14,7 @@ import json
 def get_title(phenny, url, channel):
     """ Have linx retrieve the (augmented) title """
     try:
-        return web.post("http://linx.li/vtluuggettitle", {'url': url, 'channel': channel, 'api_key': phenny.config.linx_api_key})
+        return web.post("https://linx.li/vtluuggettitle", {'url': url, 'channel': channel, 'api_key': phenny.config.linx_api_key})
     except:
         return
 
@@ -28,7 +28,7 @@ def linx(phenny, input, short=False):
         return
 
     try:
-        req = web.post("http://linx.li/vtluug", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
+        req = web.post("https://linx.li/vtluug", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
@@ -70,7 +70,7 @@ def lines(phenny, input):
         date = "today"
 
     try:
-        req = web.post("http://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
+        req = web.post("https://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
@@ -88,7 +88,7 @@ def posted(phenny, input):
         return
 
     try:
-        req = web.post("http://linx.li/vtluugposted", {'message': message, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
+        req = web.post("https://linx.li/vtluugposted", {'message': message, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
     except (HTTPError, IOError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
