@@ -124,20 +124,24 @@ class Weather(object):
             return '?'
 
     def __repr__(self):
+        chunks = [self.cover]
+        chunks.append('{0}°C'.format(self.temperature))
+
+        if self.pressure:
+            chunks.append('{0} hPa'.format(self.pressure))
+
         if self.conditions:
-            ret = "{cover}, {temperature}°C, {pressure} hPa, {conditions}, "\
-                    "{windnote} {wind} m/s ({windsock}) - {station} {time}"
-        else:
-            ret = "{cover}, {temperature}°C, {pressure} hPa, "\
-                    "{windnote} {wind} m/s ({windsock}) - {station} {time}"
+            chunks.append(self.conditions)
 
         wind = self.wind_speed if self.wind_speed is not None else '?'
+        chunks.append('{note} {speed} m/s ({windsock})'.format(
+            note=self.describe_wind(),
+            speed=wind,
+            windsock=self.windsock()))
 
-        return ret.format(cover=self.cover, temperature=self.temperature,
-                pressure=self.pressure, conditions=self.conditions,
-                wind=wind, windnote=self.describe_wind(),
-                windsock=self.windsock(), station=self.station,
-                time=self.time.strftime("%H:%MZ"))
+        ret = ', '.join(chunks) + ' - {station} {time}'
+        return ret.format(station=self.station,
+                          time=self.time.strftime("%H:%MZ"))
 
 
 def build_regex(key, classifier):
@@ -264,10 +268,10 @@ def parse(data):
     # pressure
     pressure_re = re.compile(r"([QA])(\d+)")
     m = pressure_re.search(w.metar)
-    if m.group(1) == 'A':
+    if m and m.group(1) == 'A':
         # convert inHg to hPa
         w.pressure = round(float(m.group(2)) * 0.3386389)
-    else:
+    elif m:
         w.pressure = int(m.group(2))
 
     return w
