@@ -273,6 +273,8 @@ def parse(data):
         w.pressure = round(float(m.group(2)) * 0.3386389)
     elif m:
         w.pressure = int(m.group(2))
+    else:
+        w.pressure = None
 
     return w
 
