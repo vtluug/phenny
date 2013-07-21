@@ -11,25 +11,25 @@ import lxml.etree
 SEARCH_URL = "https://webapps.middleware.vt.edu/peoplesearch/PeopleSearch?query={0}&dsml-version=2"
 RESULTS_URL = "http://search.vt.edu/search/people.html?q={0}"
 PERSON_URL = "http://search.vt.edu/search/person.html?person={0:d}"
-NS = NS = '{urn:oasis:names:tc:DSML:2:0:core}'
+NS = '{http://www.dsml.org/DSML}'
 
 """Search the people search database using the argument as a query."""
 def search(query):
     query = web.quote(query)
     try:
-        req = web.get(SEARCH_URL.format(query), verify=False)
+        r = web.get(SEARCH_URL.format(query), verify=False)
     except (web.ConnectionError, web.HTTPError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
-    xml = lxml.etree.fromstring(req.encode('utf-8'))
-    results = xml.findall('{0}searchResponse/{0}searchResultEntry'.format(NS))
+    xml = lxml.etree.fromstring(r.encode('utf-8'))
+    results = xml.findall('{0}directory-entries/{0}entry'.format(NS))
     if len(results) <= 0:
         return False
 
     ret = []
     for entry in results:
         entry_data = {}
-        for attr in entry:
+        for attr in entry.findall('{0}attr'.format(NS)):
             entry_data[attr.attrib['name']] = attr[0].text
         ret.append(entry_data)
 
