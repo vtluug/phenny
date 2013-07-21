@@ -21,6 +21,13 @@ class TestHead(unittest.TestCase):
                 '\d{2}:\d{2}:\d{2} UTC, [0-9\.]+ s$', out, flags=re.UNICODE)
         self.assertTrue(m)
 
+    def test_head_404(self):
+        input = Mock(group=lambda x: 'http://vtluug.org/trigger_404')
+        head(self.phenny, input)
+
+        out = self.phenny.say.call_args[0][0]
+        self.assertEqual(out, '404')
+
     def test_header(self):
         input = Mock(group=lambda x: 'http://vtluug.org Server')
         head(self.phenny, input)

@@ -47,7 +47,10 @@ def head(phenny, input):
         info = web.head(uri)
         info['status'] = '200'
     except web.HTTPError as e:
-        return phenny.say(str(e.code))
+        if hasattr(e, 'code'):
+            return phenny.say(str(e.code))
+        else:
+            return phenny.say(str(e.response.status_code))
     except web.ConnectionError:
         return phenny.say("Can't connect to %s" % uri)
 
