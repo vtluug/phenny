@@ -17,7 +17,6 @@ class TestWiktionary(unittest.TestCase):
     def test_wiktionary(self):
         w = wiktionary.wiktionary('test')
 
-        assert len(w[0]) > 0
         assert len(w[1]) > 0
 
     def test_wiktionary_none(self):
