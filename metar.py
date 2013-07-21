@@ -124,7 +124,10 @@ class Weather(object):
             return '?'
 
     def __repr__(self):
-        chunks = [self.cover]
+        chunks = []
+        if self.cover:
+            chunks.append(self.cover)
+
         chunks.append('{0}°C'.format(self.temperature))
 
         if self.pressure:
