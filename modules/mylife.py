@@ -89,18 +89,5 @@ def mlihp(phenny, input):
 mlihp.commands = ['mlihp']
 
 
-def mlit(phenny, input):
-    """.mlit - My life is Twilight."""
-    try:
-        req = web.get("http://mylifeistwilight.com/random")
-    except:
-        raise GrumbleError("Error: Your life is too Twilight. Go outside.")
-
-    doc = lxml.html.fromstring(req)
-    quote = doc.find_class('fmllink')[0].text_content()
-    phenny.say(quote)
-mlit.commands = ['mlit']
-
-
 if __name__ == '__main__':
     print(__doc__.strip())

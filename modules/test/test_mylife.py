@@ -31,8 +31,3 @@ class TestMylife(unittest.TestCase):
     def test_mlihp(self):
         mylife.mlihp(self.phenny, None)
         assert self.phenny.say.called is True
-
-    def test_mlit(self):
-        mylife.mlit(self.phenny, None)
-        assert self.phenny.say.called is True
-
