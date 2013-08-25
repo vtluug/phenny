@@ -1,36 +1,31 @@
-phenny
-======
+# phenny
+[![Build Status](https://travis-ci.org/mutantmonkey/phenny.png)](https://travis-ci.org/mutantmonkey/phenny)
 
-This is a port of phenny, a Python IRC bot, to Python3. It is currently fairly
-stable, but it has not been as well-tested as the original. It was developed
-for #vtluug on OFTC.
+This is phenny, a Python IRC bot. Originally written by Sean B. Palmer, it has
+been ported to Python3 for use in #vtluug on OFTC.
 
-New features include many new modules, IPv6 and TLS support (which requires
-Python 3.2), and unit tests.
+This version comes with many new modules, IPv6 support, TLS support, and unit
+tests.
 
 Compatibility with existing phenny modules has been mostly retained, but they
 will need to be updated to run on Python3 if they do not already. All of the
-core modules have been ported.
+core modules have been ported, removed, or replaced.
 
-Requirements
-------------
+## Requirements
 * Python 3.2+
 * [python-requests](http://docs.python-requests.org/en/latest/)
 
-Installation
-------------
+## Installation
 1. Run `./phenny` - this creates a default config file
 2. Edit `~/.phenny/default.py`
 3. Run `./phenny` - this now runs phenny with your settings
 
 Enjoy!
 
-Testing
--------
+## Testing
 You will need the Python3 versions of `python-nose` and `python-mock`. To run
 the tests, simply run `nosetests3`.
 
-Authors
--------
+## Authors
 * Sean B. Palmer, http://inamidst.com/sbp/
 * mutantmonkey, http://mutantmonkey.in
