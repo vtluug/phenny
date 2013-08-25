@@ -282,6 +282,8 @@ def parse(data):
     if m:
         w.temperature = parse_temp(m.group('temp'))
         w.dewpoint = parse_temp(m.group('dewpoint'))
+    else:
+        w.temperature = None
 
     # pressure
     pressure_re = re.compile(r"([QA])(\d+)")

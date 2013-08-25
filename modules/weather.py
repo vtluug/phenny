@@ -9,26 +9,27 @@ http://inamidst.com/phenny/
 
 import re
 import metar
+import json
 import web
 from tools import deprecated, GrumbleError
 
 r_from = re.compile(r'(?i)([+-]\d+):00 from')
 
-def location(name):
-    name = web.quote(name)
-    uri = 'http://ws.geonames.org/searchJSON?q=%s&maxRows=1' % name
-    for i in range(10):
-        bytes = web.get(uri)
-        if bytes is not None: break
 
-    results = web.json(bytes)
-    try: name = results['geonames'][0]['name']
-    except IndexError: 
-        return '?', '?', '0', '0'
-    countryName = results['geonames'][0]['countryName']
-    lat = results['geonames'][0]['lat']
-    lng = results['geonames'][0]['lng']
-    return name, countryName, lat, lng
+def location(q):
+    uri = 'http://nominatim.openstreetmap.org/search/?q={query}&format=json'.\
+        format(query=web.quote(q))
+    results = web.get(uri)
+    data = json.loads(results)
+
+    if not 'display_name' in data:
+        return '?', None, None
+
+    display_name = data[0]['display_name']
+    lat = float(data[0]['lat'])
+    lon = float(data[0]['lon'])
+    return display_name, lat, lon
+
 
 def local(icao, hour, minute):
     uri = ('http://www.flightstats.com/' + 
@@ -47,14 +48,16 @@ def local(icao, hour, minute):
         #            ':' + str(minute) + 'Z)')
     return str(hour) + ':' + str(minute) + 'Z'
 
+
 def code(phenny, search):
     from icao import data
     
     if search.upper() in [loc[0] for loc in data]:
         return search.upper()
     else:
-        name, country, latitude, longitude = location(search)
-        if name == '?': return False
+        display_name, latitude, longitude = location(search)
+        if not latitude or not longitude:
+            return False
         sumOfSquares = (99999999999999999999999999999, 'ICAO')
         for icao_code, lat, lon in data:
             latDiff = abs(latitude - lat)
@@ -63,6 +66,7 @@ def code(phenny, search):
             if diff < sumOfSquares[0]:
                 sumOfSquares = (diff, icao_code)
         return sumOfSquares[1]
+
 
 def f_weather(phenny, input):
     """.weather <ICAO> - Show the weather at airport with the code <ICAO>."""

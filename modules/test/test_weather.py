@@ -13,17 +13,42 @@ class TestWeather(unittest.TestCase):
     def setUp(self):
         self.phenny = MagicMock()
 
-    def test_location(self):
-        name, countryName, lat, lng = location('24060')
+    def test_locations(self):
+        def check_places(*args):
+            def validate(actual_name, actual_lat, actual_lon):
+                names = [n.strip() for n in actual_name.split(',')]
+                for arg in args:
+                    self.assertIn(arg, names)
+            return validate
 
-        self.assertEqual(name, "Blacksburg")
-        self.assertEqual(countryName, "United States")
-        self.assertEqual(lat, 37.2295733)
-        self.assertEqual(lng, -80.4139393)
+        locations = [
+            ('24060', check_places("Blacksburg", "Virginia")),
+            ('92121', check_places("San Diego", "California")),
+            ('94110', check_places("San Francisco", "California")),
+            ('94041', check_places("Mountain View", "California")),
+            ('27959', check_places("Nags Head", "North Carolina")),
+            ('48067', check_places("Royal Oak", "Michigan")),
+            ('23606', check_places("Newport News", "Virginia")),
+            ('23113', check_places("Midlothian", "Virginia")),
+            ('27517', check_places("Chapel Hill", "North Carolina")),
+            ('46530', check_places("Granger", "Indiana")),
+            ('15213', check_places("Pittsburgh", "Pennsylvania")),
+            ('90210', check_places("Beverly Hills", "California")),
+            ('12144', check_places("Clinton Park", "New York")),
+            ('33109', check_places("Homestead", "Florida")),
+            ('80201', check_places("Denver", "Colorado")),
 
-    def test_code(self):
+            ("Berlin", check_places("Berlin", "Deutschland")),
+            ("Paris", check_places("Paris", "European Union")),
+            ("Vilnius", check_places("Vilnius", "European Union")),
+        ]
+
+        for loc, validator in locations:
+            names, lat, lon = location(loc)
+            validator(names, lat, lon)
+
+    def test_code_20164(self):
         icao = code(self.phenny, '20164')
-        
         self.assertEqual(icao, 'KIAD')
 
     def test_airport(self):
