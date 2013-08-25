@@ -15,5 +15,10 @@ class TestShort(unittest.TestCase):
     def test_short(self):
         input = Mock(group=lambda x: 'http://vtluug.org/')
         short(self.phenny, input)
-
         self.phenny.reply.assert_called_once_with('http://vtlu.ug/bLQYAy')
+
+    def test_short_none(self):
+        input = Mock(group=lambda x: None)
+        short(self.phenny, input)
+        self.phenny.reply.assert_called_once_with(
+            "No URL provided. CAN I HAS?")

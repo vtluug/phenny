@@ -17,25 +17,32 @@ class TestHs(unittest.TestCase):
         data = search('john')
 
         assert len(data) >= 1
-        assert 'uid' in data[0]
-        assert 'cn' in data[0]
+        self.assertIn('uid', data[0])
+        self.assertIn('cn', data[0])
 
     def test_single(self):
         input = Mock(group=lambda x: 'marchany')
         hs(self.phenny, input)
 
-        out = self.phenny.reply.call_args[0][0]
-        m = re.match(
+        pattern = re.compile(
             '^.* - http://search\.vt\.edu/search/person\.html\?person=\d+$',
-            out, flags=re.UNICODE)
-        self.assertTrue(m)
+            flags=re.UNICODE)
+        out = self.phenny.reply.call_args[0][0]
+        self.assertRegex(out, pattern)
 
     def test_multi(self):
         input = Mock(group=lambda x: 'john')
         hs(self.phenny, input)
 
-        out = self.phenny.reply.call_args[0][0]
-        m = re.match(
+        pattern = re.compile(
             '^Multiple results found; try http://search\.vt\.edu/search/people\.html\?q=.*$',
-            out, flags=re.UNICODE)
-        self.assertTrue(m)
+            flags=re.UNICODE)
+        out = self.phenny.reply.call_args[0][0]
+        self.assertRegex(out, pattern)
+
+    def test_none(self):
+        input = Mock(group=lambda x: 'THIS_IS_NOT_A_REAL_SEARCH_QUERY')
+        hs(self.phenny, input)
+
+        out = self.phenny.reply.call_args[0][0]
+        self.phenny.reply.assert_called_once_with("No results found")

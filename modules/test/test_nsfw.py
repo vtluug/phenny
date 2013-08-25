@@ -16,6 +16,11 @@ class TestNsfw(unittest.TestCase):
     def test_nsfw(self):
         input = Mock(group=lambda x: "test")
         nsfw(self.phenny, input)
-
         self.phenny.say.assert_called_once_with(
-                "!!NSFW!! -> test <- !!NSFW!!")
+            "!!NSFW!! -> test <- !!NSFW!!")
+
+    def test_nsfw_none(self):
+        input = Mock(group=lambda x: None)
+        nsfw(self.phenny, input)
+        self.phenny.say.assert_called_once_with(
+            ".nsfw <link> - for when a link isn't safe for work")

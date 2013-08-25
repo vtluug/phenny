@@ -25,6 +25,15 @@ class TestImdb(unittest.TestCase):
         input = Mock(group=lambda x: 'Antitrust')
         imdb(self.phenny, input)
 
-        out = self.phenny.reply.call_args[0][0]
-        m = re.match('^.* \(.*\): .* http://imdb.com/title/[a-z\d]+$', out, flags=re.UNICODE)
-        self.assertTrue(m)
+        out = self.phenny.say.call_args[0][0]
+        pattern = re.compile(
+            r'^.* \(.*\): .* http://imdb.com/title/[a-z\d]+$',
+            flags=re.UNICODE)
+        self.assertRegex(out, pattern)
+
+    def test_imdb_none(self):
+        input = Mock(group=lambda x: None)
+        imdb(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with(
+            ".imdb what?")

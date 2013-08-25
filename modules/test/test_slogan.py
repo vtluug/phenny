@@ -14,12 +14,17 @@ class TestSlogan(unittest.TestCase):
 
     def test_sloganize(self):
         out = sloganize('slogan')
-
-        assert len(out) > 0
+        self.assertRegex(out, ".*slogan.*")
 
     def test_slogan(self):
         input = Mock(group=lambda x: 'slogan')
         slogan(self.phenny, input)
-        out = self.phenny.say.call_args[0][0]
 
-        self.assertNotEqual(out, "Looks like an issue with sloganizer.net")
+        out = self.phenny.say.call_args[0][0]
+        self.assertRegex(out, ".*slogan.*")
+
+    def test_slogan_none(self):
+        input = Mock(group=lambda x: None)
+        slogan(self.phenny, input)
+        self.phenny.say.assert_called_once_with(
+            "You need to specify a word; try .slogan Granola")
