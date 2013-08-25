@@ -22,7 +22,7 @@ def location(q):
     results = web.get(uri)
     data = json.loads(results)
 
-    if not 'display_name' in data:
+    if len(data) < 1:
         return '?', None, None
 
     display_name = data[0]['display_name']
