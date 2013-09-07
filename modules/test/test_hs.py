@@ -40,6 +40,13 @@ class TestHs(unittest.TestCase):
         out = self.phenny.reply.call_args[0][0]
         self.assertRegex(out, pattern)
 
+    def test_2char(self):
+        input = Mock(group=lambda x: 'hs')
+        hs(self.phenny, input)
+
+        out = self.phenny.reply.call_args[0][0]
+        self.phenny.reply.assert_called_once_with("No results found")
+
     def test_none(self):
         input = Mock(group=lambda x: 'THIS_IS_NOT_A_REAL_SEARCH_QUERY')
         hs(self.phenny, input)

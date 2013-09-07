@@ -21,6 +21,11 @@ def search(query):
     except (web.ConnectionError, web.HTTPError):
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
 
+    # apparently the failure mode if you search for <3 characters is a blank
+    # XML page...
+    if len(r) <= 0:
+        return False
+
     xml = lxml.etree.fromstring(r.encode('utf-8'))
     results = xml.findall('{0}directory-entries/{0}entry'.format(NS))
     if len(results) <= 0:
