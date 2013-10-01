@@ -14,7 +14,7 @@ class TestValidate(unittest.TestCase):
         self.phenny = MagicMock()
 
     def test_valid(self):
-        url = 'http://vtluug.org/'
+        url = 'http://validator.w3.org/'
         input = Mock(group=lambda x: url)
         val(self.phenny, input)
 
