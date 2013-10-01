@@ -11,6 +11,7 @@ import random
 import metar
 import web
 
+
 def tfw(phenny, input, fahrenheit=False, celsius=False):
     """.tfw <city/zip> - Show the fucking weather at the specified location."""
 
@@ -21,20 +22,20 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
     else:
         icao_code = weather.code(phenny, where)
 
-    if not icao_code: 
+    if not icao_code:
         phenny.say("WHERE THE FUCK IS THAT? Try another location.")
         return
 
     uri = 'http://weather.noaa.gov/pub/data/observations/metar/stations/%s.TXT'
     try:
         bytes = web.get(uri % icao_code)
-    except AttributeError: 
+    except AttributeError:
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
     except web.HTTPError:
         phenny.say("WHERE THE FUCK IS THAT? Try another location.")
         return
 
-    if 'Not Found' in bytes: 
+    if 'Not Found' in bytes:
         phenny.say("WHERE THE FUCK IS THAT? Try another location.")
         return
 
@@ -52,7 +53,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
 
     if w.temperature < 6:
         remark = "IT'S FUCKING COLD"
-        flavors = ["Where's the cat? Oh shit. Fluffy's frozen.",
+        flavors = [
+            "Where's the cat? Oh shit. Fluffy's frozen.",
             "Nothing a few shots couldn't fix",
             "Should have gone south",
             "You think this is cold? Have you been to upstate New York?",
@@ -85,7 +87,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
             "It's bone chilling cold out. Sorry ladies."]
     elif w.temperature < 20:
         remark = "IT'S FUCKING...ALRIGHT"
-        flavors = ["Might as well rain, I'm not going out in that.",
+        flavors = [
+            "Might as well rain, I'm not going out in that.",
             "Better than a sharp stick in the eye.",
             "Everything's nice butter weather!",
             "At least you aren't living in a small town in Alaska",
@@ -114,7 +117,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
             "Maybe Jersey Shore is on tonight."]
     else:
         remark = "IT'S FUCKING NICE"
-        flavors = ["I made today breakfast in bed.", "FUCKING SWEET",
+        flavors = [
+            "I made today breakfast in bed.", "FUCKING SWEET",
             "Quit your bitching", "Enjoy.", "IT'S ABOUT FUCKING TIME",
             "READ A FUCKIN' BOOK", "LETS HAVE A FUCKING PICNIC",
             "It is safe to take your ball-mittens off.", "More please.",
@@ -135,7 +139,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
             "The geese are on their way back! Unless you live where they migrate to for the winter.",
             "FUCKING AFFABLE AS SHIT", "Give the sun a raise!",
             "Today is better than an original holographic charizard. Loser!"]
-    
+
     if w.descriptor == "thunderstorm":
         remark += " AND THUNDERING"
     elif w.precipitation in ("snow", "snow grains"):
@@ -147,31 +151,35 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
     elif w.precipitation in ("hail", "small hail"):
         remark += " AND HAILING"
 
-    if tempf == 69:
+    if int(tempf) == 69:
         remark = "IT'S FUCKING SEXY TIME"
-        flavors = ["Why is 77 better than 69? You get eight more.",
-                "What comes after 69? Mouthwash.",
-                "If you are given two contradictory orders, obey them both.",
-                "a good fuckin' time! ;)",
-                "What's the square root of 69? Eight something."]
+        flavors = [
+            "Why is 77 better than 69? You get eight more.",
+            "What comes after 69? Mouthwash.",
+            "If you are given two contradictory orders, obey them both.",
+            "a good fuckin' time! ;)",
+            "What's the square root of 69? Eight something."]
 
     flavor = random.choice(flavors)
 
     response = "{temp} {remark} - {flavor} - {location} {time}Z".format(
-            temp=temp, remark=remark, flavor=flavor, location=w.station,
-            time=w.time.strftime("%H:%M"))
+        temp=temp, remark=remark, flavor=flavor, location=w.station,
+        time=w.time.strftime("%H:%M"))
     phenny.say(response)
 tfw.rule = (['tfw'], r'(.*)')
+
 
 def tfwf(phenny, input):
     """.tfwf <city/zip> - The fucking weather, in fucking degrees Fahrenheit."""
     return tfw(phenny, input, fahrenheit=True)
 tfwf.rule = (['tfwf'], r'(.*)')
 
+
 def tfwc(phenny, input):
     """.tfwc <city/zip> - The fucking weather, in fucking degrees celsius."""
     return tfw(phenny, input, celsius=True)
 tfwc.rule = (['tfwc'], r'(.*)')
+
 
 if __name__ == '__main__':
     print(__doc__.strip())
