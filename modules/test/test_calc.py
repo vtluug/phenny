@@ -38,6 +38,13 @@ class TestCalc(unittest.TestCase):
                 '(asked, but not answered, about a general swallow in the '\
                 '1975 film Monty Python and the Holy Grail)')
 
+    def test_wa_math(self):
+        input = Mock(group=lambda x: '2+2')
+        wa(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with('4')
+
+
     def test_wa_none(self):
         input = Mock(group=lambda x: "jajoajaj ojewphjqo I!tj")
         wa(self.phenny, input)
