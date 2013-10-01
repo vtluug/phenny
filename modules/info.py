@@ -7,40 +7,48 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-def doc(phenny, input): 
-    """Shows a command's documentation, and possibly an example."""
-    name = input.group(1)
-    name = name.lower()
 
-    if name in phenny.doc: 
-        phenny.reply(phenny.doc[name][0])
-        if phenny.doc[name][1]: 
-            phenny.say('e.g. ' + phenny.doc[name][1])
-doc.rule = ('$nick', '(?i)(?:help|doc) +([A-Za-z]+)(?:\?+)?$')
-doc.example = '$nickname: doc tell?'
-doc.priority = 'low'
+def help(phenny, input):
+    command = input.group(2)
 
-def commands(phenny, input): 
-    # This function only works in private message
-    if input.sender.startswith('#'): return
-    names = ', '.join(sorted(phenny.doc.keys()))
-    phenny.say('Commands I recognise: ' + names + '.')
-    phenny.say(("For help, do '%s: help example?' where example is the " + 
-                    "name of the command you want help for.") % phenny.nick)
-commands.commands = ['commands']
-commands.priority = 'low'
+    # work out a help URL to display
+    if hasattr(phenny.config, 'helpurl'):
+        helpurl = phenny.config.helpurl
+    else:
+        helpurl = "https://vtluug.org/wiki/Wadsworth"
 
-def help(phenny, input): 
-    response = (
-        "Hey there, I'm a friendly bot for this channel. Say \".commands\" " +
-        "to me in private for a list of my commands or check out my wiki " +
-        "page at %s. My owner is %s."
-    ) % (phenny.config.helpurl, phenny.config.owner)
-    #phenny.reply(response)
-    phenny.say(response)
-#help.rule = ('$nick', r'(?i)help(?:[?!]+)?$')
-help.commands = ['help']
+    if input.sender.startswith('#'):
+        # channels get a brief message instead
+        phenny.say(
+            "Hey there, I'm a friendly bot for this channel. Say \".help\" "
+            "to me in private for a list of my commands or check out my help "
+            "page at {helpurl}.".format(
+            helpurl=helpurl,
+            owner=phenny.config.owner))
+    elif command is not None:
+        command = command.lower()
+        if command in phenny.doc:
+            phenny.say(phenny.doc[command][0])
+            if phenny.doc[command][1]: 
+                phenny.say('e.g. ' + phenny.doc[command][1])
+        else:
+            phenny.say("Sorry, I'm not that kind of bot.")
+    else:
+        commands = ', '.join(sorted(phenny.doc.keys()))
+        phenny.say(
+            "Hey there, I'm a friendly bot! Here are the commands I "
+            "recognize: {commands}".format(commands=commands))
+        phenny.say(
+            "For help with a command, just use .help followed by the name of"
+            " the command, like \".help botsnack\".")
+        phenny.say(
+            "If you need additional help can check out {helpurl} or you can "
+            "talk to my owner, {owner}.".format(
+            helpurl=helpurl,
+            owner=phenny.config.owner))
+help.rule = (['help', 'command'], r'(.*)')
 help.priority = 'low'
+
 
 def stats(phenny, input): 
     """Show information on command usage patterns."""
@@ -88,5 +96,6 @@ def stats(phenny, input):
 stats.commands = ['stats']
 stats.priority = 'low'
 
-if __name__ == '__main__': 
+
+if __name__ == '__main__':
     print(__doc__.strip())
