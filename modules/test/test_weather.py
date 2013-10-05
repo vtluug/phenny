@@ -69,4 +69,3 @@ class TestWeather(unittest.TestCase):
         
         self.phenny.say.called_once_with('#phenny',
                 "No NOAA data available for that location.")
-        
