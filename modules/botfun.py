@@ -9,6 +9,8 @@ import random
 otherbot = "truncatedcone"
 
 def botfight(phenny, input):
+    """.botfight - Fight the other bot in the channel."""
+
     messages = ["hits %s", "punches %s", "kicks %s", "hits %s with a rubber hose", "stabs %s with a clean kitchen knife"]
     response = random.choice(messages)
 
@@ -17,6 +19,8 @@ botfight.commands = ['botfight']
 botfight.priority = 'low'
 
 def bothug(phenny, input):
+    """.bothug - Hug the other bot in the channel."""
+
     phenny.do("hugs %s" % otherbot)
 bothug.commands = ['bothug']
 bothug.priority = 'low'

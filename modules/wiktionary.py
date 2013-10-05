@@ -90,6 +90,8 @@ def format(word, definitions, number=2):
     return result.strip(' .,')
 
 def w(phenny, input): 
+    """.w <word> - Get the definition of a word from wiktionary."""
+
     if not input.group(2):
         return phenny.reply("Nothing to define.")
     word = input.group(2)

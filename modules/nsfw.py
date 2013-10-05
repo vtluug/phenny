@@ -5,6 +5,7 @@ author: Casey Link <unnamedrambler@gmail.com
 """
 
 def nsfw(phenny, input):
+    """.nsfw <link> - Mark a link (or some text) as being not safe for work."""
     link = input.group(2)
     if not link:
         phenny.say(".nsfw <link> - for when a link isn't safe for work")

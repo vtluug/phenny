@@ -18,7 +18,9 @@ def catfacts_get():
         return False
 
 def catfacts(phenny, input):
+    """.catfact - Receive a cat fact."""
+
     fact = catfacts_get()
     if fact:
         phenny.reply(fact)
-catfacts.commands = ['catfacts']
+catfacts.commands = ['catfact', 'catfacts']

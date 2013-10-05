@@ -9,6 +9,9 @@ import web
 
 
 def bitcoin(phenny, input):
+    """.bitcoin <amount> <currency> [<output currency]> - Convert an
+    arbitrary amount of some currency to or from Bitcoin."""
+
     amount = input.group(2)
     currency = input.group(3)
 

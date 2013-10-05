@@ -14,7 +14,9 @@ re.MULTILINE
 r_play = re.compile(r'^(.*?) - (.*?)$')
 r_dj = re.compile(r'Current DJ: </span>\n(.+?)<')
 
-def wuvt(phenny, input) :
+def wuvt(phenny, input):
+    """.wuvt - Find out what is currently playing on the radio station WUVT."""
+
     try:
         playing = web.get('http://www.wuvt.vt.edu/playlists/latest_track.php')
         djpage = web.get('http://www.wuvt.vt.edu/playlists/current_dj.php')

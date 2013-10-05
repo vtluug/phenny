@@ -20,6 +20,8 @@ wikisearch = 'https://vtluug.org/wiki/Special:Search?' \
                           + 'search={0}&fulltext=Search'
 
 def vtluug(phenny, input): 
+    """.vtluug <term> - Look up something on the VTLUUG wiki."""
+
     origterm = input.groups()[1]
     if not origterm: 
         return phenny.say('Perhaps you meant ".vtluug VT-Wireless"?')
@@ -40,7 +42,6 @@ def vtluug(phenny, input):
         phenny.say(result)
     else:
         phenny.say('Can\'t find anything in the VTLUUG Wiki for "{0}".'.format(origterm))
-
 vtluug.commands = ['vtluug']
 vtluug.priority = 'high'
 

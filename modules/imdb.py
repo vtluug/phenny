@@ -12,26 +12,29 @@ import web
 
 
 def imdb_search(query): 
-   query = query.replace('!', '')
-   query = query.encode('utf-8')
-   query = web.quote(query)
-   uri = 'http://www.omdbapi.com/?i=&t=%s' % query
-   bytes = web.get(uri)
-   m = json.loads(bytes)
-   return m
+    query = query.replace('!', '')
+    query = query.encode('utf-8')
+    query = web.quote(query)
+    uri = 'http://www.omdbapi.com/?i=&t=%s' % query
+    bytes = web.get(uri)
+    m = json.loads(bytes)
+    return m
+
 
 def imdb(phenny, input): 
-   query = input.group(2)
-   if not query:
-       return phenny.say('.imdb what?')
+    """.imdb <movie> - Use the OMDB API to find a link to a movie on IMDb."""
 
-   m = imdb_search(query)
-   try:
-       phenny.say('{0} ({1}): {2}  http://imdb.com/title/{3}'.format(
-           m['Title'],
-           m['Year'],
-           m['Plot'],
-           m['imdbID']))
-   except:
+    query = input.group(2)
+    if not query:
+        return phenny.say('.imdb what?')
+
+    m = imdb_search(query)
+    try:
+        phenny.say('{0} ({1}): {2}  http://imdb.com/title/{3}'.format(
+            m['Title'],
+            m['Year'],
+            m['Plot'],
+            m['imdbID']))
+    except:
         phenny.reply("No results found for '%s'." % query)
 imdb.commands = ['imdb']

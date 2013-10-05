@@ -17,6 +17,8 @@ def sloganize(word):
     return bytes
 
 def slogan(phenny, input): 
+    """.slogan <term> - Come up with a slogan for a term."""
+
     word = input.group(2)
     if word is None:
         phenny.say("You need to specify a word; try .slogan Granola")

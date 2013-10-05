@@ -17,6 +17,8 @@ wikisearch = 'https://en.wikipedia.org/wiki/Special:Search?' \
                           + 'search={0}&fulltext=Search'
 
 def wik(phenny, input): 
+    """.wik <term> - Look up something on Wikipedia."""
+
     origterm = input.groups()[1]
     if not origterm: 
         return phenny.say('Perhaps you meant ".wik Zen"?')

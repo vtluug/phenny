@@ -11,7 +11,7 @@ import lxml.html
 
 
 def fml(phenny, input):
-    """.fml"""
+    """.fml - Grab something from fmylife.com."""
     try:
         req = web.get("http://www.fmylife.com/random")
     except:
