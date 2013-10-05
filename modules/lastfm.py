@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-lastfmn.py - lastfm module
+lastfm.py - lastfm module
 author: Casey Link <unnamedrambler@gmail.com>
 """
 

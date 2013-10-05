@@ -11,7 +11,7 @@ from modules.lastfm import now_playing, tasteometer
 
 class TestLastfm(unittest.TestCase):
     user1 = 'test'
-    user2 = 'ackthet'
+    user2 = 'josh'
 
     def setUp(self):
         self.phenny = MagicMock()
