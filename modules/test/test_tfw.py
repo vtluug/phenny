@@ -27,7 +27,7 @@ class TestTfw(unittest.TestCase):
         tfw.tfw(self.phenny, input, celsius=True)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^\d+°C‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+        m = re.match('^[\-\d]+°C‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
                      flags=re.UNICODE)
         self.assertTrue(m)
 
@@ -36,7 +36,7 @@ class TestTfw(unittest.TestCase):
         tfw.tfw(self.phenny, input, fahrenheit=True)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^\d+°F‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+        m = re.match('^[\-\d]+°F‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
                      flags=re.UNICODE)
         self.assertTrue(m)
 
@@ -45,7 +45,7 @@ class TestTfw(unittest.TestCase):
         tfw.tfw(self.phenny, input)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^[\d\.]+ meV‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+        m = re.match('^[\-\d\.]+ meV‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
                      flags=re.UNICODE)
         self.assertTrue(m)
 
