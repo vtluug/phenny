@@ -20,15 +20,16 @@ def bitcoin(phenny, input):
                    "like .bitcoin 1 EUR")
         return
 
-    if currency == 'BTC':
+    if currency.upper() == 'BTC':
         from_btc = True
         currency = input.group(4)
     else:
         from_btc = False
+        currency = currency.upper()
 
     if not currency:
         currency = 'USD'
-    currency = currency.strip()[:3]
+    currency = currency.strip()[:3].upper()
 
     try:
         amount = decimal.Decimal(amount)

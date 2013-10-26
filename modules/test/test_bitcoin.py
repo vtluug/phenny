@@ -83,3 +83,10 @@ class TestCalc(unittest.TestCase):
 
         out = self.phenny.say.call_args[0][0]
         self.assertNotRegex(out, r'[\d\.]+ BTC')
+
+    def test_lettercase(self):
+        input = Mock(group=self.makegroup('1', 'btc', 'EuR'))
+        bitcoin(self.phenny, input)
+
+        out = self.phenny.say.call_args[0][0]
+        self.assertRegex(out, r'\d+\.\d{2} EUR')
