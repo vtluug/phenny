@@ -15,26 +15,26 @@ class TestTranslation(unittest.TestCase):
 
     def test_translate(self):
         out = translate("plomo o plata", input='es')
-
         self.assertEqual(('lead or silver', 'es'), out)
 
     def test_tr(self):
         input = Mock(groups=lambda: ('fr', 'en', 'mon chien'))
         tr(self.phenny, input)
 
-        out = self.phenny.reply.call_args[0][0]
-        m = re.match("^\"my dog\" \(fr to en, .*\)$",
-                out, flags=re.UNICODE)
-        self.assertTrue(m)
+        self.assertIn("my dog", self.phenny.reply.call_args[0][0])
 
     def test_tr2(self):
         input = Mock(group=lambda x: 'Estoy bien')
         tr2(self.phenny, input)
 
-        out = self.phenny.reply.call_args[0][0]
-        m = re.match("^\"I'm fine\" \(es to en, .*\)$",
-                out, flags=re.UNICODE)
-        self.assertTrue(m)
+        self.assertIn("I'm fine", self.phenny.reply.call_args[0][0])
+
+    def test_translate_bracketnull(self):
+        input = Mock(group=lambda x: 'Moja je lebdjelica puna jegulja')
+        tr2(self.phenny, input)
+
+        self.assertIn("My hovercraft is full of eels",
+                      self.phenny.reply.call_args[0][0])
 
     def test_mangle(self):
         input = Mock(group=lambda x: 'Mangle this phrase!')
