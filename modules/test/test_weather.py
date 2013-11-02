@@ -39,8 +39,8 @@ class TestWeather(unittest.TestCase):
             ('80201', check_places("Denver", "Colorado")),
 
             ("Berlin", check_places("Berlin", "Deutschland")),
-            ("Paris", check_places("Paris", "European Union")),
-            ("Vilnius", check_places("Vilnius", "European Union")),
+            ("Paris", check_places("Paris", "France métropolitaine")),
+            ("Vilnius", check_places("Vilnius", "Lietuva")),
         ]
 
         for loc, validator in locations:
