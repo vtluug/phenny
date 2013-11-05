@@ -18,6 +18,7 @@ class TestCalc(unittest.TestCase):
 
         self.phenny.say.assert_called_once_with('25')
 
+    @unittest.skip('Not supported with DuckDuckGo')
     def test_c_scientific(self):
         input = Mock(group=lambda x: '2^64')
         c(self.phenny, input)

@@ -29,25 +29,25 @@ subs = [
 
 
 def c(phenny, input):
-    """Google calculator."""
+    """DuckDuckGo calculator."""
     if not input.group(2):
         return phenny.reply("Nothing to calculate.")
     q = input.group(2)
-    q = q.replace('\xcf\x95', 'phi')  # utf-8 U+03D5
-    q = q.replace('\xcf\x80', 'pi')  # utf-8 U+03C0
-    uri = 'http://www.google.com/ig/calculator?q='
-    bytes = web.get(uri + web.quote(q))
-    parts = bytes.split('",')
-    answer = [p for p in parts if p.startswith('rhs: "')][0][6:]
+
+    try:
+        r = web.get(
+            'https://api.duckduckgo.com/?q={}&format=json&no_html=1'
+            '&t=mutantmonkey/phenny'.format(web.quote(q)))
+    except web.HTTPError:
+        raise GrumbleError("Couldn't parse the result from DuckDuckGo.")
+
+    data = web.json(r)
+    if data['AnswerType'] == 'calc':
+        answer = data['Answer'].split('=')[-1].strip()
+    else:
+        answer = None
+
     if answer:
-        #answer = ''.join(chr(ord(c)) for c in answer)
-        #answer = answer.decode('utf-8')
-        answer = answer.replace('\\x26#215;', '*')
-        answer = answer.replace('\\x3c', '<')
-        answer = answer.replace('\\x3e', '>')
-        answer = answer.replace('<sup>', '^(')
-        answer = answer.replace('</sup>', ')')
-        answer = web.decode(answer)
         phenny.say(answer)
     else:
         phenny.reply('Sorry, no result.')
