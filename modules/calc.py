@@ -11,20 +11,13 @@ http://inamidst.com/phenny/
 import re
 import web
 
-r_result = re.compile(r'(?i)<A NAME=results>(.*?)</A>')
-r_tag = re.compile(r'<\S+.*?>')
-
 subs = [
-    (' in ', ' -> '),
-    (' over ', ' / '),
     ('£', 'GBP '),
     ('€', 'EUR '),
     ('\$', 'USD '),
-    (r'\bKB\b', 'kilobytes'),
-    (r'\bMB\b', 'megabytes'),
-    (r'\bGB\b', 'kilobytes'),
-    ('kbps', '(kilobits / second)'),
-    ('mbps', '(megabits / second)')
+    (r'\n', '; '),
+    ('&deg;', '°'),
+    (r'\/', '/'),
 ]
 
 
@@ -70,7 +63,9 @@ def wa(phenny, input):
         return
 
     answer = answers[1]
-    answer = answer.replace('\\n', ', ')
+    for sub in subs:
+        answer = answer.replace(sub[0], sub[1])
+
     phenny.say(answer)
 wa.commands = ['wa']
 
