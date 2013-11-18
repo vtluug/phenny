@@ -58,4 +58,4 @@ def bitcoin(phenny, input):
 
     phenny.say("{amount} {currency}".format(amount=amount2,
                                             currency=currency2))
-bitcoin.rule = (['bitcoin'], r'(\d+)\s(\w+)(\s\w+)?')
+bitcoin.rule = (['bitcoin'], r'([\d\.]+)\s(\w+)(\s\w+)?')

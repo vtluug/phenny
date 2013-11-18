@@ -35,6 +35,13 @@ class TestCalc(unittest.TestCase):
         out = self.phenny.say.call_args[0][0]
         self.assertRegex(out, r'[\d\.]+ BTC')
 
+    def test_usd_decimal(self):
+        input = Mock(group=self.makegroup('1.25', 'USD'))
+        bitcoin(self.phenny, input)
+
+        out = self.phenny.say.call_args[0][0]
+        self.assertRegex(out, r'[\d\.]+ BTC')
+
     def test_eur(self):
         input = Mock(group=self.makegroup('1', 'EUR'))
         bitcoin(self.phenny, input)
