@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 tfw.py - the fucking weather module
+mostly remarks and flavors from thefuckingweather.com
+http://thefuckingweather.com/HelpThisGuy.aspx
+
 author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
@@ -115,7 +118,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
             "Slap me around and call me Sally. It'd be an improvement.",
             "Today is the perfect size, really honey.",
             "Maybe Jersey Shore is on tonight."]
-    else:
+    elif w.temperature < 27:
         remark = "IT'S FUCKING NICE"
         flavors = [
             "I made today breakfast in bed.", "FUCKING SWEET",
@@ -139,6 +142,29 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
             "The geese are on their way back! Unless you live where they migrate to for the winter.",
             "FUCKING AFFABLE AS SHIT", "Give the sun a raise!",
             "Today is better than an original holographic charizard. Loser!"]
+    else:
+        remark = "IT'S FUCKING HOT"
+        flavors = [
+            "Do you have life insurance?",
+            "Like super models, IT'S TOO FUCKING HOT.",
+            "Not even PAM can make me not stick to this seat",
+            "SWIMMIN HOLE!",
+            "Time to crank the AC.",
+            "THE FUCKING EQUATER CALLED, AND IT'S JEALOUS.",
+            "Looked in the fridge this morning for some eggs. They're already cooked.",
+            "Keeping the AC business in business.",
+            "I burned my feet walking on grass.",
+            "times you wish you didn't have leather seats",
+            "Isn't the desert nice this time of year?",
+            "Why, oh why did we decide to live in an oven?",
+            "It's hotter outside than my fever.",
+            "I recommend staying away from fat people.",
+            "TAKE IT OFF!",
+            "Even your frigid girlfriend can't save you from today.",
+            "I need gloves to touch the steering wheel.",
+            "Lock up yo' ice cream trucks, lock up yo' wife.",
+            "FUCKING SUNBURNED, AND I WAS INSIDE ALL DAY.",
+            "Fuck this shit, I'm moving back to Alaska."]
 
     if w.descriptor == "thunderstorm":
         remark += " AND THUNDERING"
