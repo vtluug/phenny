@@ -32,7 +32,7 @@ TimeZones = {'KST': 9, 'CADT': 10.5, 'EETDST': 3, 'MESZ': 2, 'WADT': 9,
                  'EDT': -4, 'UT': 0, 'PST': -8, 'MEZ': 1, 'BST': 1, 
                  'ACS': 9.5, 'ATL': -4, 'ALA': -9, 'HAW': -10, 'AKDT': -8, 
                  'AKST': -9, 
-                 'BDST': 2}
+                 'BDST': 2, 'KGT': 6}
 
 TZ1 = {
  'NDT': -2.5, 
@@ -200,40 +200,39 @@ TimeZones.update(TZ3)
 
 r_local = re.compile(r'\([a-z]+_[A-Z]+\)')
 
-@deprecated
-def f_time(self, origin, match, args): 
+def f_time(phenny, input): 
     """Returns the current time."""
-    tz = match.group(2) or 'GMT'
+    tz = input.group(2) or 'GMT'
 
     # Personal time zones, because they're rad
-    if hasattr(self.config, 'timezones'): 
-        People = self.config.timezones
+    if hasattr(phenny.config, 'timezones'): 
+        People = phenny.config.timezones
     else: People = {}
 
     if tz in People: 
         tz = People[tz]
-    elif (not match.group(2)) and origin.nick in People: 
-        tz = People[origin.nick]
+    elif (not input.group(2)) and input.nick in People: 
+        tz = People[input.nick]
 
     TZ = tz.upper()
     if len(tz) > 30: return
 
     if (TZ == 'UTC') or (TZ == 'Z'): 
         msg = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
-        self.msg(origin.sender, msg)
+        phenny.reply(msg)
     elif r_local.match(tz): # thanks to Mark Shoulsdon (clsn)
         locale.setlocale(locale.LC_TIME, (tz[1:-1], 'UTF-8'))
         msg = time.strftime("%A, %d %B %Y %H:%M:%SZ", time.gmtime())
-        self.msg(origin.sender, msg)
+        phenny.reply(msg)
     elif TZ in TimeZones: 
         offset = TimeZones[TZ] * 3600
         timenow = time.gmtime(time.time() + offset)
         msg = time.strftime("%a, %d %b %Y %H:%M:%S " + str(TZ), timenow)
-        self.msg(origin.sender, msg)
+        phenny.reply(msg)
     elif tz and tz[0] in ('+', '-') and 4 <= len(tz) <= 6: 
         timenow = time.gmtime(time.time() + (int(tz[:3]) * 3600))
         msg = time.strftime("%a, %d %b %Y %H:%M:%S " + str(tz), timenow)
-        self.msg(origin.sender, msg)
+        phenny.reply(msg)
     else: 
         try: t = float(tz)
         except ValueError: 
@@ -242,17 +241,17 @@ def f_time(self, origin, match, args):
             if r_tz.match(tz) and os.path.isfile('/usr/share/zoneinfo/' + tz): 
                 cmd, PIPE = 'TZ=%s date' % tz, subprocess.PIPE
                 proc = subprocess.Popen(cmd, shell=True, stdout=PIPE)
-                self.msg(origin.sender, proc.communicate()[0])
+                phenny.reply(proc.communicate()[0])
             else: 
                 error = "Sorry, I don't know about the '%s' timezone." % tz
-                self.msg(origin.sender, origin.nick + ': ' + error)
+                phenny.reply(error)
         else: 
             timenow = time.gmtime(time.time() + (t * 3600))
             msg = time.strftime("%a, %d %b %Y %H:%M:%S " + str(tz), timenow)
-            self.msg(origin.sender, msg)
-f_time.commands = ['t']
-f_time.name = 't'
-f_time.example = '.t UTC'
+            phenny.reply(msg)
+f_time.name = 'time'
+f_time.commands = ['time']
+f_time.example = '.time UTC'
 
 def beats(phenny, input): 
     """Shows the internet time in Swatch beats."""
