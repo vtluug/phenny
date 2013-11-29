@@ -103,6 +103,7 @@ p_command = r'\.in ([0-9]+(?:\.[0-9]+)?)\s?((?:%s)\b)?:?\s?(.*)' % periods
 r_command = re.compile(p_command)
 
 def remind(phenny, input): 
+    """Set a reminder"""
     m = r_command.match(input.bytes)
     if not m: 
         return phenny.reply("Sorry, didn't understand the input.")
@@ -131,6 +132,8 @@ def remind(phenny, input):
         w += time.strftime(' at %H:%MZ', time.gmtime(t))
         phenny.reply('Okay, will remind%s' % w)
     else: phenny.reply('Okay, will remind in %s secs' % duration)
+remind.name = 'in'
+remind.example = '.in 15 minutes do work'
 remind.commands = ['in']
 
 r_time = re.compile(r'^([0-9]{2}[:.][0-9]{2})')

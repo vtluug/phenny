@@ -46,6 +46,8 @@ def eightball(phenny, input):
     quote = random.choice(quotes)
     phenny.reply(quote)
 eightball.commands = ['8ball']
+eightball.name = '8ball'
+eightball.example = '.8ball is pie amazing?'
 
 if __name__ == '__main__':
     print(__doc__.strip())

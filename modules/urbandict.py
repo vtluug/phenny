@@ -43,6 +43,7 @@ def urbandict(phenny, input):
 
     response = "{0} - {1}".format(result['definition'].strip()[:256], url)
     phenny.say(response)
+urbandict.name = 'urb'
 urbandict.rule = (['urb'], r'(.*)')
 
 if __name__ == '__main__':

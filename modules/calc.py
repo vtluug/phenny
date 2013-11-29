@@ -68,7 +68,7 @@ def wa(phenny, input):
 
     phenny.say(answer)
 wa.commands = ['wa']
-
+wa.example = '.wa answer to life'
 
 if __name__ == '__main__':
     print(__doc__.strip())

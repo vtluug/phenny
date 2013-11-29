@@ -17,6 +17,7 @@ def botfight(phenny, input):
     phenny.do(response % otherbot)
 botfight.commands = ['botfight']
 botfight.priority = 'low'
+botfight.example = '.botfight'
 
 def bothug(phenny, input):
     """.bothug - Hug the other bot in the channel."""
@@ -24,6 +25,7 @@ def bothug(phenny, input):
     phenny.do("hugs %s" % otherbot)
 bothug.commands = ['bothug']
 bothug.priority = 'low'
+bothug.example = '.bothug'
 
 if __name__ == '__main__':
     print(__doc__.strip())
