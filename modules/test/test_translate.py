@@ -27,7 +27,7 @@ class TestTranslation(unittest.TestCase):
         input = Mock(group=lambda x: 'Estoy bien')
         tr2(self.phenny, input)
 
-        self.assertIn("I'm fine", self.phenny.reply.call_args[0][0])
+        self.assertIn("'m fine", self.phenny.reply.call_args[0][0])
 
     def test_translate_bracketnull(self):
         input = Mock(group=lambda x: 'Moja je lebdjelica puna jegulja')
