@@ -152,7 +152,7 @@ def gettitle(phenny, uri):
         #bytes = u.read(262144)
         #u.close()
 
-    except web.ConnectionError:
+    except:
         return
 
     m = r_title.search(bytes)

@@ -49,3 +49,12 @@ class TestHead(unittest.TestCase):
         snarfuri(self.phenny, input)
 
         self.phenny.msg.assert_called_once_with('#phenny', "[ Google ]")
+
+    def test_snarfuri_405(self):
+        self.phenny.config.prefix = '.'
+        self.phenny.config.linx_api_key = ""
+        input = Mock(group=lambda x=0: 'http://ozuma.sakura.ne.jp/httpstatus/405',
+                sender='#phenny')
+        snarfuri(self.phenny, input)
+
+        self.assertEqual(self.phenny.msg.called, False)
