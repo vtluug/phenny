@@ -17,9 +17,7 @@ class TestClock(unittest.TestCase):
     @patch('time.time')
     def test_time(self, mock_time):
         mock_time.return_value = 1338674651
-        input = Mock(
-                match=Mock(group=lambda x: 'EDT'),
-                sender='#phenny', nick='phenny_test')
+        input = Mock(group=lambda x: 'EDT')
         f_time(self.phenny, input)
 
         self.phenny.msg.called_once_with('#phenny',
