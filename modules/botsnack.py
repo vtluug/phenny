@@ -106,14 +106,5 @@ botsnack.hunger = 50.0
 botsnack.last_tick = time.time()
 botsnack.coolingdown = False
 
-def botslap(phenny, input):
-    """tell me I'm being a bad bot"""
-    messages = ["hides in corner", "eats own hat", "apologises", "stares at feet", "points at zfe", "didn't do anything", "doesn't deserve this", "hates you guys", "did it on purpose", "is an inconsistent sketchy little bot", "scurries off"]
-    phenny.do(random.choice(messages))
-
-botslap.commands = ['botslap', 'botsmack']
-botslap.rule = r'(?i)(?:$nickname[,:]? )?(you suck|I hate you|you ruin everything|you spoil all [themyour]*fun|bad|wtf|lame|[youare\']*stupid|silly)(?:[,]? $nickname)?[ \t]*$'
-botsnack.priority = 'low'
-
 if __name__ == '__main__':
     print(__doc__.strip())
