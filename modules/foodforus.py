@@ -65,7 +65,7 @@ def foodvote(phenny, input):
 
     try:
         req = web.post(API_URL + '/vote', postdata)
-        data = json.loads(req.text)
+        data = json.loads(req)
     except:
         raise GrumbleError("Uh oh, I couldn't contact foodforus. HOW WILL WE "\
                 "EAT NOW‽")
