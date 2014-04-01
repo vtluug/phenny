@@ -10,14 +10,6 @@ import web
 import json
 
 
-def get_title(phenny, url, channel):
-    """ Have linx retrieve the (augmented) title """
-    try:
-        return web.post("https://linx.li/vtluuggettitle", {'url': url, 'channel': channel, 'api_key': phenny.config.linx_api_key})
-    except:
-        return
-
-
 def linx(phenny, input, short=False):
     """.linx <url> - Upload a remote URL to linx.li."""
 
@@ -27,9 +19,9 @@ def linx(phenny, input, short=False):
         return
 
     try:
-        req = web.post("https://linx.li/vtluug", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
+        req = web.post("https://linx.li/upload/remote", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
     except (web.HTTPError, web.ConnectionError):
-        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
+        raise GrumbleError("Couldn't reach linx.li")
 
     data = json.loads(req)
     if len(data) <= 0 or not data['success']:
@@ -46,55 +38,3 @@ def lnx(phenny, input):
     """
     linx(phenny, input, True)
 lnx.rule = (['lnx'], r'(.*)')
-
-
-def lines(phenny, input):
-    """.lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date."""
-
-    if input.group(2):
-        info = input.group(2).split(" ")
-
-        if len(info) == 1:
-            nickname = info[0]
-            date = "today"
-        elif len(info) == 2:
-            nickname = info[0]
-            date = info[1]
-        else:
-            phenny.reply(".lines <nickname> (<today/yesterday/YYYYMMDD>) - Returns the number of lines a user posted on a specific date.")
-            return
-
-    else:
-        nickname = input.nick
-        date = "today"
-
-    try:
-        req = web.post("https://linx.li/vtluuglines", {'nickname': nickname, 'date': date, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
-    except (web.HTTPError, web.ConnectionError):
-        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-
-    phenny.reply(req)
-
-lines.rule = (['lines'], r'(.*)')
-
-
-def posted(phenny, input):
-    """.posted <message> - Checks if <message> has already been posted."""
-
-    message = input.group(2)
-    if not message:
-        phenny.say(".posted <message> - Checks if <message> has already been posted.")
-        return
-
-    try:
-        req = web.post("https://linx.li/vtluugposted", {'message': message, 'sender': input.nick, 'channel': input.sender, 'api_key': phenny.config.linx_api_key})
-    except (web.HTTPError, web.ConnectionError):
-        raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
-
-    phenny.reply(req)
-
-posted.rule = (['posted'], r'(.*)')
-
-
-if __name__ == '__main__':
-    print(__doc__.strip())

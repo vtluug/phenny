@@ -13,7 +13,6 @@ import time
 from html.entities import name2codepoint
 import web
 from tools import deprecated
-from modules.linx import get_title as linx_gettitle
 
 
 def head(phenny, input):
@@ -90,11 +89,7 @@ noteuri.priority = 'low'
 
 def snarfuri(phenny, input):
     uri = input.group(1)
-
-    if phenny.config.linx_api_key != "":
-        title = linx_gettitle(phenny, uri, input.sender)
-    else:
-        title = gettitle(phenny, uri)
+    title = gettitle(phenny, uri)
 
     if title:
         phenny.msg(input.sender, title)
