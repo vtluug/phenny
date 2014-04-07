@@ -89,7 +89,7 @@ noteuri.priority = 'low'
 
 def snarfuri(phenny, input):
     uri = input.group(1)
-    title = gettitle(phenny, uri)
+    title = gettitle(phenny, input, uri)
 
     if title:
         phenny.msg(input.sender, title)
@@ -98,7 +98,7 @@ snarfuri.priority = 'low'
 snarfuri.thread = True
 
 
-def gettitle(phenny, uri):
+def gettitle(phenny, input, uri):
     if not ':' in uri:
         uri = 'http://' + uri
     uri = uri.replace('#!', '?_escaped_fragment_=')
@@ -179,6 +179,16 @@ def gettitle(phenny, uri):
             title = title.replace('\n', '')
             title = title.replace('\r', '')
             title = "[ {0} ]".format(title)
+
+            if "posted" in phenny.variables:
+                from modules.posted import check_posted
+                
+                posted = check_posted(phenny, input, uri)
+
+                if posted:
+                    title = "{0} (posted: {1})".format(title, posted)
+
+
         else:
             title = None
     return title
