@@ -12,7 +12,6 @@ import urllib.parse
 import time
 from html.entities import name2codepoint
 import web
-from modules.posted import check_posted
 from tools import deprecated
 
 
@@ -182,6 +181,8 @@ def gettitle(phenny, input, uri):
             title = "[ {0} ]".format(title)
 
             if "posted" in phenny.variables:
+                from modules.posted import check_posted
+                
                 posted = check_posted(phenny, input, uri)
 
                 if posted:
