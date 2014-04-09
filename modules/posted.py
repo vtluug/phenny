@@ -61,9 +61,7 @@ def posted(phenny, input):
 
     posted = check_posted(phenny, input, url)
     if posted:
-        # when the day comes when you can inhibit snarfuri if modules are called
-        # phenny.reply("URL was posted {0}".format(posted))
-        pass
+        phenny.reply("URL was posted {0}".format(posted))
     else:
         phenny.reply("I don't remember seeing this URL in this channel.")
 

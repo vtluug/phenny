@@ -88,12 +88,12 @@ noteuri.priority = 'low'
 
 
 def snarfuri(phenny, input):
-    uri = input.group(1)
+    uri = input.group(2)
     title = gettitle(phenny, input, uri)
 
     if title:
         phenny.msg(input.sender, title)
-snarfuri.rule = r'.*(http[s]?://[^<> "\x01]+)[,.]?'
+snarfuri.rule = r'([^\.].*)?(http[s]?://[^<> "\x01]+)[,.]?'
 snarfuri.priority = 'low'
 snarfuri.thread = True
 
