@@ -42,10 +42,19 @@ class TestTfw(unittest.TestCase):
 
     def test_mev(self):
         input = Mock(group=lambda x: '24060')
-        tfw.tfw(self.phenny, input)
+        tfw.tfwev(self.phenny, input)
 
         out = self.phenny.say.call_args[0][0]
         m = re.match('^[\-\d\.]+ meV‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
+                     flags=re.UNICODE)
+        self.assertTrue(m)
+
+    def test_meter(self):
+        input = Mock(group=lambda x: '24060')
+        tfw.tfw(self.phenny, input)
+
+        out = self.phenny.say.call_args[0][0]
+        m = re.match('^[\-\d\.]+ Meters‽ .* \- .* \- [A-Z]{4} \d{2}:\d{2}Z$', out,
                      flags=re.UNICODE)
         self.assertTrue(m)
 

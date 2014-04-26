@@ -15,7 +15,7 @@ import metar
 import web
 
 
-def tfw(phenny, input, fahrenheit=False, celsius=False):
+def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
     """.tfw <city/zip> - Show the fucking weather at the specified location."""
 
     where = input.group(2)
@@ -50,9 +50,11 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         temp = "{0:d}°F‽".format(int(tempf))
     elif celsius:
         temp = "{0:d}°C‽".format(w.temperature)
-    else:
+    elif mev:
         tempev = (w.temperature + 273.15) * 8.617343e-5 * 1000
         temp = "%f meV‽" % tempev
+    else:
+        temp = "{0:f} Meters‽".format((w.temperature + 273.15) * 8.617343e-5 * 12.39842)
 
     if w.temperature < 6:
         remark = "IT'S FUCKING COLD"
@@ -192,7 +194,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
         temp=temp, remark=remark, flavor=flavor, location=w.station,
         time=w.time.strftime("%H:%M"))
     phenny.say(response)
-tfw.rule = (['tfw'], r'(.*)')
+tfw.rule = (['tfw', 'tfwm'], r'(.*)')
 
 
 def tfwf(phenny, input):
@@ -206,6 +208,10 @@ def tfwc(phenny, input):
     return tfw(phenny, input, celsius=True)
 tfwc.rule = (['tfwc'], r'(.*)')
 
+def tfwev(phenny, input):
+    """.tfwc <city/zip> - The fucking weather, in fucking degrees celsius."""
+    return tfw(phenny, input, mev=True)
+tfwev.rule = (['tfwev'], r'(.*)')
 
 if __name__ == '__main__':
     print(__doc__.strip())
