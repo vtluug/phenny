@@ -45,7 +45,7 @@ class TestLastfm(unittest.TestCase):
 
         out = self.phenny.say.call_args[0][0]
         m = re.match("^{0}'s and {1}'s musical compatibility rating is .*"\
-                " and music they have in common includes: .*$".
+                " they don't have any artists in common.$".
                 format(self.user1, self.user2), out, flags=re.UNICODE)
         self.assertTrue(m)
 
@@ -62,6 +62,6 @@ class TestLastfm(unittest.TestCase):
 
         out = self.phenny.say.call_args[0][0]
         m = re.match("^{0}'s and {1}'s musical compatibility rating is .*"\
-                " and music they have in common includes: .*$".
+                " they don't have any artists in common.$".
                 format(self.user1, self.user2), out, flags=re.UNICODE)
         self.assertTrue(m)
