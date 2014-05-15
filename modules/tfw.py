@@ -50,11 +50,12 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
         temp = "{0:d}°F‽".format(int(tempf))
     elif celsius:
         temp = "{0:d}°C‽".format(w.temperature)
-    elif mev:
-        tempev = (w.temperature + 273.15) * 8.617343e-5 * 1000
-        temp = "%f meV‽" % tempev
     else:
-        temp = "{0:f} Meters‽".format((w.temperature + 273.15) * 8.617343e-5 * 12.39842)
+        tempev = (w.temperature + 273.15) * 8.6173324e-5 / 2
+        if mev:
+            temp = "{0:f} meV‽".format(tempev * 1000)
+        else:
+            temp = "{0:f} Meters‽".format(tempev * 12.39842)
 
     if w.temperature < 6:
         remark = "IT'S FUCKING COLD"
