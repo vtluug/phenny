@@ -120,7 +120,7 @@ class Bot(asynchat.async_chat):
                 else:
                     ca_certs = self.ca_certs
                 sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1,
-                        cert_reqs=ssl.CERT_OPTIONAL, ca_certs=ca_certs)
+                        cert_reqs=ssl.CERT_REQUIRED, ca_certs=ca_certs)
         # FIXME: this doesn't work with SSL enabled
         #sock.setblocking(False)
         self.set_socket(sock)
