@@ -156,6 +156,9 @@ def main(argv=None):
  
         if not hasattr(module, 'ssl'):
             module.ssl = False
+
+        if not hasattr(module, 'ca_certs'):
+            module.ca_certs = None
  
         if not hasattr(module, 'ipv6'):
             module.ipv6 = False

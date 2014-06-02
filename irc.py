@@ -114,8 +114,13 @@ class Bot(asynchat.async_chat):
                     cafile=self.ca_certs)
                 sock = context.wrap_socket(sock, server_hostname=hostname)
             except:
+                if self.ca_certs is None:
+                    # default to standard path on most non-EL distros
+                    ca_certs = "/etc/ssl/certs/ca-certificates.crt"
+                else:
+                    ca_certs = self.ca_certs
                 sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1,
-                        cert_reqs=ssl.CERT_OPTIONAL, ca_certs=self.ca_certs)
+                        cert_reqs=ssl.CERT_OPTIONAL, ca_certs=ca_certs)
         # FIXME: this doesn't work with SSL enabled
         #sock.setblocking(False)
         self.set_socket(sock)
