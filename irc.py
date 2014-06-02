@@ -85,7 +85,7 @@ class Bot(asynchat.async_chat):
             #pass
 
     def run(self, host, port=6667, ssl=False,
-            ipv6=False, ca_certs='/etc/ssl/certs/ca-certificates.crt'): 
+            ipv6=False, ca_certs=None): 
         self.ca_certs = ca_certs
         self.initiate_connect(host, port, ssl, ipv6)
 
@@ -97,20 +97,26 @@ class Bot(asynchat.async_chat):
              af = socket.AF_INET6
         else:
              af = socket.AF_INET
-        self.create_socket(af, socket.SOCK_STREAM, use_ssl)
+        self.create_socket(af, socket.SOCK_STREAM, use_ssl, host)
         self.connect((host, port))
         try: asyncore.loop()
         except KeyboardInterrupt: 
             sys.exit()
 
-    def create_socket(self, family, type, use_ssl=False):
+    def create_socket(self, family, type, use_ssl=False, hostname=None):
         self.family_and_type = family, type
         sock = socket.socket(family, type)
         if use_ssl:
-            sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1,
-                    cert_reqs=ssl.CERT_OPTIONAL, ca_certs=self.ca_certs)
-        # FIXME: ssl module does not appear to work properly with nonblocking sockets
-        #sock.setblocking(0)
+            # this stuff is all new in python 3.4, so fallback if needed
+            try:
+                context = ssl.create_default_context(
+                    purpose=ssl.Purpose.SERVER_AUTH,
+                    cafile=self.ca_certs)
+                sock = context.wrap_socket(sock, server_hostname=hostname)
+            except:
+                sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1,
+                        cert_reqs=ssl.CERT_OPTIONAL, ca_certs=self.ca_certs)
+        sock.setblocking(False)
         self.set_socket(sock)
 
     def handle_connect(self): 
