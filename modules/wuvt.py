@@ -28,8 +28,12 @@ def wuvt(phenny, input):
     dj = r_dj.search(djpage).group(1)
 
     if song and artist:
-        phenny.reply('DJ {0} is currently playing: {1} by {2}'
-                .format(dj.strip(), song.strip(), artist.strip()))
+        if dj[0:3] == 'DJ ':
+            phenny.reply('{0} is currently playing: {1} by {2}'
+                    .format(dj.strip(), song.strip(), artist.strip()))
+        else:
+            phenny.reply('DJ {0} is currently playing: {1} by {2}'
+                    .format(dj.strip(), song.strip(), artist.strip()))
     else:
         phenny.reply('Cannot connect to wuvt')
 wuvt.commands = ['wuvt']
