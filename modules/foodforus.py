@@ -9,7 +9,7 @@ import hashlib
 import json
 import web
 
-API_URL = 'http://foodfor.vtluug.org'
+API_URL = 'https://foodfor.vtluug.org'
 
 
 def _sign_vote(api_key, args):
