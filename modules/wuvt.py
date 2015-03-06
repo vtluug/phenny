@@ -1,39 +1,29 @@
 #!/usr/bin/env python
 """
-wuvt.py - Phenny WUVT Module
-Copyright 2012, Randy Nance, randynance.info
-
-http://github.com/randynobx/phenny/
+wuvt.py - WUVT now playing module for phenny
 """
 
 from tools import GrumbleError
-import re
 import web
 
-re.MULTILINE
-r_play = re.compile(r'^(.*?) - (.*?)$')
-r_dj = re.compile(r'Current DJ: </span>\n(.+?)<')
 
 def wuvt(phenny, input):
     """.wuvt - Find out what is currently playing on the radio station WUVT."""
 
     try:
-        playing = web.get('http://www.wuvt.vt.edu/playlists/latest_track.php')
-        djpage = web.get('http://www.wuvt.vt.edu/playlists/current_dj.php')
+        data = web.get('https://www.wuvt.vt.edu/playlists/latest_track',
+                       headers={'Accept': "application/json"})
+        trackinfo = web.json(data)
     except:
-        raise GrumbleError('Cannot connect to wuvt')
-    play= r_play.search(playing)
-    song = play.group(2)
-    artist = play.group(1)
-    dj = r_dj.search(djpage).group(1)
+        raise GrumbleError("Failed to fetch current track from WUVT")
 
-    if song and artist:
-        if dj.strip()[0:3] == 'DJ ':
-            phenny.reply('{0} is currently playing: {1} by {2}'
-                    .format(dj.strip(), song.strip(), artist.strip()))
-        else:
-            phenny.reply('DJ {0} is currently playing: {1} by {2}'
-                    .format(dj.strip(), song.strip(), artist.strip()))
-    else:
-        phenny.reply('Cannot connect to wuvt')
+    dj = trackinfo['dj'].strip()
+    if dj[0:3] != 'DJ ':
+        dj = 'DJ {}'.format(dj)
+
+    phenny.say("{dj} is currently playing {title} by {artist}".format(
+        dj=dj,
+        title=trackinfo['title'].strip(),
+        artist=trackinfo['artist'].strip()))
 wuvt.commands = ['wuvt']
+wuvt.example = '.wuvt'
