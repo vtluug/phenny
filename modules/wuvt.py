@@ -17,12 +17,8 @@ def wuvt(phenny, input):
     except:
         raise GrumbleError("Failed to fetch current track from WUVT")
 
-    dj = trackinfo['dj'].strip()
-    if dj[0:3] != 'DJ ':
-        dj = 'DJ {}'.format(dj)
-
     phenny.say("{dj} is currently playing {title} by {artist}".format(
-        dj=dj,
+        dj=trackinfo['dj'].strip(),
         title=trackinfo['title'].strip(),
         artist=trackinfo['artist'].strip()))
 wuvt.commands = ['wuvt']

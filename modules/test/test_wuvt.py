@@ -16,6 +16,6 @@ class TestWuvt(unittest.TestCase):
         wuvt(self.phenny, None)
 
         out = self.phenny.say.call_args[0][0]
-        m = re.match('^DJ .* is currently playing .* by .*$', out,
+        m = re.match('^.* is currently playing .* by .*$', out,
                 flags=re.UNICODE)
         self.assertTrue(m)
