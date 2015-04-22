@@ -12,7 +12,7 @@ import web
 from lxml import etree
 from datetime import datetime
 
-APIKEY = "f8f2a50033d7385e547fccbae92b2138"
+APIKEY = "816cfe50ddeeb73c9987b85de5c19e71"
 APIURL = "http://ws.audioscrobbler.com/2.0/?api_key="+APIKEY+"&"
 AEPURL = "http://www.davethemoonman.com/lastfm/aep.php?format=txt&username="
 
