@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/mutantmonkey/phenny.png?branch=master)](https://travis-ci.org/mutantmonkey/phenny)
 
 This is phenny, a Python IRC bot. Originally written by Sean B. Palmer, it has
-been ported to Python3 for use in #vtluug on OFTC.
+been ported to Python3.
 
 This version comes with many new modules, IPv6 support, TLS support, and unit
 tests.
