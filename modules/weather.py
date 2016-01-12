@@ -17,7 +17,7 @@ r_from = re.compile(r'(?i)([+-]\d+):00 from')
 
 
 def location(q):
-    uri = 'http://nominatim.openstreetmap.org/search/?q={query}&format=json'.\
+    uri = 'https://nominatim.openstreetmap.org/search/?q={query}&format=json'.\
         format(query=web.quote(q))
     results = web.get(uri)
     data = json.loads(results)
