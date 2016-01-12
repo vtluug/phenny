@@ -144,7 +144,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Water park! Water drive! Just get wet!",
             "The geese are on their way back! Unless you live where they migrate to for the winter.",
             "FUCKING AFFABLE AS SHIT", "Give the sun a raise!",
-            "Today is better than an original holographic charizard. Loser!"]
+            "Today is better than an original holographic Charizard. Loser!"]
     else:
         remark = "IT'S FUCKING HOT"
         flavors = [
@@ -153,7 +153,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Not even PAM can make me not stick to this seat",
             "SWIMMIN HOLE!",
             "Time to crank the AC.",
-            "THE FUCKING EQUATER CALLED, AND IT'S JEALOUS.",
+            "THE FUCKING EQUATOR CALLED, AND IT'S JEALOUS.",
             "Looked in the fridge this morning for some eggs. They're already cooked.",
             "Keeping the AC business in business.",
             "I burned my feet walking on grass.",
