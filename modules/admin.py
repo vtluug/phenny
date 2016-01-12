@@ -34,7 +34,7 @@ def part(phenny, input):
     if input.sender.startswith('#'): return
     if input.admin: 
         phenny.write(['PART'], input.group(2))
-part.commands = ['part']
+part.rule = (['part'], r'(#\S+)')
 part.priority = 'low'
 part.example = '.part #example'
 
