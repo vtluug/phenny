@@ -19,14 +19,14 @@ def wuvt(phenny, input):
 
     if 'listeners' in trackinfo:
         phenny.say(
-            "{dj} is currently playing {title} by {artist} with {listeners:d} "
-            "online listeners".format(
+            "{dj} is currently playing \"{title}\" by {artist} with "
+            "{listeners:d} online listeners".format(
                 dj=trackinfo['dj'],
                 title=trackinfo['title'],
                 artist=trackinfo['artist'],
                 listeners=trackinfo['listeners']))
     else:
-        phenny.say("{dj} is currently playing {title} by {artist}".format(
+        phenny.say("{dj} is currently playing \"{title}\" by {artist}".format(
             dj=trackinfo['dj'],
             title=trackinfo['title'],
             artist=trackinfo['artist']))
