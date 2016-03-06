@@ -28,7 +28,7 @@ def translate(text, input='auto', output='en'):
     output = web.quote(output.encode('utf-8'))
     text = web.quote(text.encode('utf-8'))
 
-    result = web.get('http://translate.google.com/translate_a/t?' +
+    result = web.get('https://translate.google.com/translate_a/t?' +
         ('client=t&hl=en&sl=%s&tl=%s&multires=1' % (input, output)) + 
         ('&otf=1&ssel=0&tsel=0&uptl=en&sc=1&text=%s' % text))
 
