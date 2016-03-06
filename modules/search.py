@@ -14,7 +14,7 @@ def google_ajax(query):
     """Search using AjaxSearch, and return its JSON."""
     if isinstance(query, str): 
         query = query.encode('utf-8')
-    uri = 'http://ajax.googleapis.com/ajax/services/search/web'
+    uri = 'https://ajax.googleapis.com/ajax/services/search/web'
     args = '?v=1.0&safe=off&q=' + web.quote(query)
     bytes = web.get(uri + args, headers={'Referer': 'https://github.com/sbp/phenny'})
     return web.json(bytes)
@@ -100,7 +100,7 @@ r_bing = re.compile(r'<h3><a href="([^"]+)"')
 
 def bing_search(query, lang='en-GB'): 
     query = web.quote(query)
-    base = 'http://www.bing.com/search?mkt=%s&q=' % lang
+    base = 'https://www.bing.com/search?mkt=%s&q=' % lang
     bytes = web.get(base + query)
     m = r_bing.search(bytes)
     if m: return m.group(1)
@@ -130,7 +130,7 @@ r_duck = re.compile(r'nofollow" class="[^"]+" href="(http.*?)">')
 def duck_search(query): 
     query = query.replace('!', '')
     query = web.quote(query)
-    uri = 'http://duckduckgo.com/html/?q=%s&kl=uk-en' % query
+    uri = 'https://duckduckgo.com/html/?q=%s&kl=uk-en' % query
     bytes = web.get(uri)
     m = r_duck.search(bytes)
     if m: return web.decode(m.group(1))
