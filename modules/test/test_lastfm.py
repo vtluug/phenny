@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 import re
 import unittest
 from mock import MagicMock, Mock
-from modules.lastfm import now_playing, tasteometer
+from modules.lastfm import now_playing
 
 
 class TestLastfm(unittest.TestCase):
@@ -31,37 +31,4 @@ class TestLastfm(unittest.TestCase):
 
         out = self.phenny.say.call_args[0][0]
         m = re.match('^{0} listened to ".+" by .+ on .+ .*$'.format(self.user1), out, flags=re.UNICODE)
-        self.assertTrue(m)
-
-    def test_tasteometer(self):
-        def mock_group(x):
-            if x == 2:
-                return self.user1
-            else:
-                return self.user2
-
-        input = Mock(group=mock_group)
-        tasteometer(self.phenny, input)
-
-        out = self.phenny.say.call_args[0][0]
-        m = re.match("^{0}'s and {1}'s musical compatibility rating is .*"\
-                " they don't have any artists in common.$".
-                format(self.user1, self.user2), out, flags=re.UNICODE)
-        self.assertTrue(m)
-
-    def test_tasteometer_sender(self):
-        def mock_group(x):
-            if x == 2:
-                return self.user1
-            else:
-                return ''
-
-        input = Mock(group=mock_group)
-        input.nick = self.user2
-        tasteometer(self.phenny, input)
-
-        out = self.phenny.say.call_args[0][0]
-        m = re.match("^{0}'s and {1}'s musical compatibility rating is .*"\
-                " they don't have any artists in common.$".
-                format(self.user1, self.user2), out, flags=re.UNICODE)
         self.assertTrue(m)
