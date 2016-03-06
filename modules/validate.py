@@ -18,7 +18,7 @@ def val(phenny, input):
         uri = 'http://' + uri
 
     path = '/check?uri=%s;output=xml' % web.quote(uri)
-    info = web.head('http://validator.w3.org' + path)
+    info = web.head('https://validator.w3.org' + path)
 
     result = uri + ' is '
 
