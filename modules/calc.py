@@ -48,27 +48,5 @@ c.commands = ['c']
 c.example = '.c 5 + 3'
 
 
-def wa(phenny, input):
-    if not input.group(2):
-        return phenny.reply("No search term.")
-    query = input.group(2)
-
-    re_output = re.compile(r'{"stringified": "(.*?)",')
-
-    uri = 'http://www.wolframalpha.com/input/?i={}'
-    out = web.get(uri.format(web.quote(query)))
-    answers = re_output.findall(out)
-    if len(answers) <= 0:
-        phenny.reply("Sorry, no result.")
-        return
-
-    answer = answers[1]
-    for sub in subs:
-        answer = answer.replace(sub[0], sub[1])
-
-    phenny.say(answer)
-wa.commands = ['wa']
-wa.example = '.wa answer to life'
-
 if __name__ == '__main__':
     print(__doc__.strip())
