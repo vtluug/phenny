@@ -96,7 +96,7 @@ def gcs(phenny, input):
 gcs.commands = ['gcs', 'comp']
 gcs.example = '.gcs Ronaldo Messi'
 
-r_bing = re.compile(r'<h3><a href="([^"]+)"')
+r_bing = re.compile(r'<h2><a href="([^"]+)"')
 
 def bing_search(query, lang='en-GB'): 
     query = web.quote(query)
