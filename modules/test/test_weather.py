@@ -22,7 +22,6 @@ class TestWeather(unittest.TestCase):
             return validate
 
         locations = [
-            ('24060', check_places("Blacksburg", "Virginia")),
             ('92121', check_places("San Diego", "California")),
             ('94110', check_places("San Francisco", "California")),
             ('94041', check_places("Mountain View", "California")),
@@ -41,15 +40,17 @@ class TestWeather(unittest.TestCase):
             ("Berlin", check_places("Berlin", "Deutschland")),
             ("Paris", check_places("Paris", "France métropolitaine")),
             ("Vilnius", check_places("Vilnius", "Lietuva")),
+
+            ('Blacksburg, VA', check_places("Blacksburg", "Virginia")),
         ]
 
         for loc, validator in locations:
             names, lat, lon = location(loc)
             validator(names, lat, lon)
 
-    def test_code_20164(self):
-        icao = code(self.phenny, '20164')
-        self.assertEqual(icao, 'KIAD')
+    def test_code_94110(self):
+        icao = code(self.phenny, '94110')
+        self.assertEqual(icao, 'KSFO')
 
     def test_airport(self):
         input = Mock(group=lambda x: 'KIAD')
