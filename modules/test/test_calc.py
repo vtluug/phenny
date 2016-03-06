@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 import unittest
 from mock import MagicMock, Mock
-from modules.calc import c, wa
+from modules.calc import c
 
 
 class TestCalc(unittest.TestCase):

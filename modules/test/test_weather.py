@@ -23,18 +23,16 @@ class TestWeather(unittest.TestCase):
 
         locations = [
             ('92121', check_places("San Diego", "California")),
-            ('94110', check_places("San Francisco", "California")),
+            ('94110', check_places("SF", "California")),
             ('94041', check_places("Mountain View", "California")),
-            ('27959', check_places("Nags Head", "North Carolina")),
+            ('27959', check_places("Dare County", "North Carolina")),
             ('48067', check_places("Royal Oak", "Michigan")),
             ('23606', check_places("Newport News", "Virginia")),
             ('23113', check_places("Midlothian", "Virginia")),
             ('27517', check_places("Chapel Hill", "North Carolina")),
-            ('46530', check_places("Granger", "Indiana")),
-            ('15213', check_places("Pittsburgh", "Pennsylvania")),
-            ('90210', check_places("Beverly Hills", "California")),
-            ('12144', check_places("Clinton Park", "New York")),
-            ('33109', check_places("Homestead", "Florida")),
+            ('15213', check_places("Allegheny County", "Pennsylvania")),
+            ('90210', check_places("Los Angeles County", "California")),
+            ('33109', check_places("Miami-Dade County", "Florida")),
             ('80201', check_places("Denver", "Colorado")),
 
             ("Berlin", check_places("Berlin", "Deutschland")),
@@ -42,6 +40,7 @@ class TestWeather(unittest.TestCase):
             ("Vilnius", check_places("Vilnius", "Lietuva")),
 
             ('Blacksburg, VA', check_places("Blacksburg", "Virginia")),
+            ('Granger, IN', check_places("Granger", "Indiana")),
         ]
 
         for loc, validator in locations:

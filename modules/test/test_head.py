@@ -13,7 +13,7 @@ class TestHead(unittest.TestCase):
         self.phenny = MagicMock()
 
     def test_head(self):
-        input = Mock(group=lambda x: 'http://vtluug.org')
+        input = Mock(group=lambda x: 'https://vtluug.org')
         head(self.phenny, input)
 
         out = self.phenny.reply.call_args[0][0]
