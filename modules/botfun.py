@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 
 import random
 
-otherbot = "truncatedcone"
+otherbot = "quone"
 
 def botfight(phenny, input):
     """.botfight - Fight the other bot in the channel."""

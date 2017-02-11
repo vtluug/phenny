@@ -80,7 +80,7 @@ def f_weather(phenny, input):
         phenny.say("No ICAO code found, sorry")
         return
 
-    uri = 'http://weather.noaa.gov/pub/data/observations/metar/stations/%s.TXT'
+    uri = 'http://tgftp.nws.noaa.gov/data/observations/metar/stations/%s.TXT'
     try:
         bytes = web.get(uri % icao_code)
     except AttributeError:
