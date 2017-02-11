@@ -10,31 +10,30 @@ http://inamidst.com/phenny/
 import re
 import web
 
-def google_ajax(query): 
-    """Search using AjaxSearch, and return its JSON."""
-    if isinstance(query, str): 
-        query = query.encode('utf-8')
-    uri = 'https://ajax.googleapis.com/ajax/services/search/web'
-    args = '?v=1.0&safe=off&q=' + web.quote(query)
-    bytes = web.get(uri + args, headers={'Referer': 'https://github.com/sbp/phenny'})
-    return web.json(bytes)
+
+r_google = re.compile(r'href="\/url\?q=(http.*?)\/&amp')
 
 def google_search(query): 
-    results = google_ajax(query)
-    try: return results['responseData']['results'][0]['unescapedUrl']
-    except IndexError: return None
-    except TypeError: 
-        print(results)
-        return False
+    query = web.quote(query)
+    uri = 'https://google.co.uk/search?q=%s' % query
+    bytes = web.get(uri)
+    m = r_google.search(bytes)
+    if m:
+        result = web.decode(m.group(1))
+        return web.unquote(result)
+
+r_google_count = re.compile(r'id="resultStats">About (.*?) ')
 
 def google_count(query): 
-    results = google_ajax(query)
-    if 'responseData' not in results: return '0'
-    if 'cursor' not in results['responseData']: return '0'
-    if 'estimatedResultCount' not in results['responseData']['cursor']: 
-        return '0'
-    return results['responseData']['cursor']['estimatedResultCount']
-
+    query = web.quote(query)
+    uri = 'https://google.co.uk/search?q=%s' % query
+    bytes = web.get(uri)
+    m = r_google_count.search(bytes)
+    if m:
+        result = web.decode(m.group(1)).replace(',', '')
+        return int(result)
+    else: return 0
+    
 def formatnumber(n): 
     """Format a number with beautiful commas."""
     parts = list(str(n))
@@ -53,7 +52,6 @@ def g(phenny, input):
         if not hasattr(phenny.bot, 'last_seen_uri'):
             phenny.bot.last_seen_uri = {}
         phenny.bot.last_seen_uri[input.sender] = uri
-    elif uri is False: phenny.reply("Problem getting data from Google.")
     else: phenny.reply("No results found for '%s'." % query)
 g.commands = ['g']
 g.priority = 'high'
@@ -81,7 +79,6 @@ def gcs(phenny, input):
     queries = r_query.findall(input.group(2))
     if len(queries) > 6: 
         return phenny.reply('Sorry, can only compare up to six things.')
-
     results = []
     for i, query in enumerate(queries): 
         query = query.strip('[]')
@@ -114,7 +111,6 @@ def bing(phenny, input):
     else: lang = 'en-GB'
     if not query:
         return phenny.reply('.bing what?')
-
     uri = bing_search(query, lang)
     if uri: 
         phenny.reply(uri)
@@ -125,7 +121,7 @@ def bing(phenny, input):
 bing.commands = ['bing']
 bing.example = '.bing swhack'
 
-r_duck = re.compile(r'nofollow" class="[^"]+" href="(http.*?)">')
+r_duck = re.compile(r'nofollow" class="[^"]+" href=".+?(http.*?)">')
 
 def duck_search(query): 
     query = query.replace('!', '')
@@ -133,14 +129,26 @@ def duck_search(query):
     uri = 'https://duckduckgo.com/html/?q=%s&kl=uk-en' % query
     bytes = web.get(uri)
     m = r_duck.search(bytes)
-    if m: return web.decode(m.group(1))
+    if m:
+        result = web.decode(m.group(1))
+        return web.unquote(result)
+
+def duck_api(query):
+    uri = 'https://api.duckduckgo.com/?q=%s&format=json&no_redirect=1' % query
+    bytes = web.get(uri)
+    json = web.json(bytes)
+    if query[:1] == '!':
+        return json['Redirect']
+    elif json['Abstract']:
+        return json['AbstractURL'] + ' : ' + json['Abstract']
+    else: return json['AbstractURL']
 
 def duck(phenny, input):
     """Queries DuckDuckGo for specified input.""" 
     query = input.group(2)
     if not query: return phenny.reply('.ddg what?')
-
-    uri = duck_search(query)
+    uri = duck_api(query)
+    if not uri: uri = duck_search(query)
     if uri: 
         phenny.reply(uri)
         if not hasattr(phenny.bot, 'last_seen_uri'):

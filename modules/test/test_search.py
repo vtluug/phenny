@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 import re
 import unittest
 from mock import MagicMock, Mock
-from modules.search import google_ajax, google_search, google_count, \
+from modules.search import duck_api, google_search, google_count, \
         formatnumber, g, gc, gcs, bing_search, bing, duck_search, duck, \
         search, suggest
 
@@ -14,12 +14,6 @@ from modules.search import google_ajax, google_search, google_count, \
 class TestSearch(unittest.TestCase):
     def setUp(self):
         self.phenny = MagicMock()
-
-    def test_google_ajax(self):
-        data = google_ajax('phenny')
-
-        assert 'responseData' in data
-        assert data['responseStatus'] == 200
 
     def test_google_search(self):
         out = google_search('phenny')
@@ -31,8 +25,7 @@ class TestSearch(unittest.TestCase):
         input = Mock(group=lambda x: 'swhack')
         g(self.phenny, input)
 
-        self.phenny.reply.assert_not_called_with(
-                "Problem getting data from Google.")
+        assert self.phenny.reply.called is True
 
     def test_gc(self):
         query = 'extrapolate'
@@ -72,6 +65,10 @@ class TestSearch(unittest.TestCase):
         duck(self.phenny, input)
 
         assert self.phenny.reply.called is True
+
+    def test_duck_api(self):
+        input = Mock(group=lambda x: 'swhack')
+        duck(self.phenny, input)
 
     def test_search(self):
         input = Mock(group=lambda x: 'vtluug')

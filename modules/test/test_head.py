@@ -18,7 +18,7 @@ class TestHead(unittest.TestCase):
 
         out = self.phenny.reply.call_args[0][0]
         m = re.match('^200, text/html, utf-8, \d{4}\-\d{2}\-\d{2} '\
-                '\d{2}:\d{2}:\d{2} UTC, [0-9\.]+ s$', out, flags=re.UNICODE)
+                '\d{2}:\d{2}:\d{2} UTC, [0-9]+ bytes, [0-9]+.[0-9]+ s$', out, flags=re.UNICODE)
         self.assertTrue(m)
 
     def test_head_404(self):
