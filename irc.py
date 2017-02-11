@@ -182,6 +182,19 @@ class Bot(asynchat.async_chat):
             except UnicodeEncodeError as e: 
                 return
 
+        # Split long messages
+        maxlength = 430
+        if len(text) > maxlength:
+            first_message = text[0:maxlength].decode('utf-8','ignore')
+            line_break = len(first_message)
+            for i in range(len(first_message)-1,-1,-1):
+                if first_message[i] == " ":
+                    line_break = i
+                    break
+            self.msg(recipient, text.decode('utf-8','ignore')[0:line_break])
+            self.msg(recipient, text.decode('utf-8','ignore')[line_break+1:])
+            return
+
         # No messages within the last 3 seconds? Go ahead!
         # Otherwise, wait so it's been at least 0.8 seconds + penalty
         if self.stack: 
