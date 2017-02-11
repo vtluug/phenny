@@ -11,7 +11,7 @@ import re
 import web
 
 
-r_google = re.compile(r'href="\/url\?q=(http.*?)\/&amp')
+r_google = re.compile(r'href="\/url\?q=(http.*?)&')
 
 def google_search(query): 
     query = web.quote(query)
