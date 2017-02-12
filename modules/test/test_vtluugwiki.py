@@ -8,7 +8,7 @@ import unittest
 from mock import MagicMock, Mock
 from modules import vtluugwiki
 
-
+@unittest.skip('Skipping until wiki is back up')
 class TestVtluugwiki(unittest.TestCase):
     def setUp(self):
         self.phenny = MagicMock()

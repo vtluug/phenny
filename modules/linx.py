@@ -6,7 +6,7 @@ author: mutantmonkey <mutantmonkey@mutantmonkey.in>
 """
 
 from tools import GrumbleError
-import web
+import requests
 import json
 
 
@@ -15,26 +15,19 @@ def linx(phenny, input, short=False):
 
     url = input.group(2)
     if not url:
-        phenny.reply("No URL provided. CAN I HAS?")
+        phenny.reply("No URL provided")
         return
 
     try:
-        req = web.post("https://linx.li/upload/remote", {'url': url, 'short': short, 'api_key': phenny.config.linx_api_key})
-    except (web.HTTPError, web.ConnectionError):
-        raise GrumbleError("Couldn't reach linx.li")
+        r = requests.get("https://linx.vtluug.org/upload?", params={"url": url}, headers={"Accept": "application/json"})
+        if "url" in r.json():
+            phenny.reply(r.json()["url"])
+        else:
+            phenny.reply(r.json()["error"])
 
-    data = json.loads(req)
-    if len(data) <= 0 or not data['success']:
-        phenny.reply('Sorry, upload failed.')
-        return
+    except Exception as exc: 
+        raise GrumbleError(exc)
 
-    phenny.reply(data['url'])
 linx.rule = (['linx'], r'(.*)')
 
 
-def lnx(phenny, input):
-    """
-    same as .linx but returns a short url.
-    """
-    linx(phenny, input, True)
-lnx.rule = (['lnx'], r'(.*)')

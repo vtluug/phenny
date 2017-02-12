@@ -15,7 +15,3 @@ class TestMylife(unittest.TestCase):
     def test_fml(self):
         mylife.fml(self.phenny, None)
         assert self.phenny.say.called is True
-
-    def test_mlia(self):
-        mylife.mlia(self.phenny, None)
-        assert self.phenny.say.called is True
