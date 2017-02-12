@@ -19,9 +19,6 @@ def linx(phenny, input, short=False):
         return
 
     try:
-
-        url = url.replace(".onion/", ".onion.to/")
-
         r = requests.get("https://linx.vtluug.org/upload?", params={"url": url}, headers={"Accept": "application/json"})
         if "url" in r.json():
             phenny.reply(r.json()["url"])
