@@ -148,7 +148,8 @@ def duck(phenny, input):
     query = input.group(2)
     if not query: return phenny.reply('.ddg what?')
     uri = duck_api(query)
-    if not uri: uri = duck_search(query)
+    if not uri:
+        uri = duck_search(query)
     if uri: 
         phenny.reply(uri)
         if not hasattr(phenny.bot, 'last_seen_uri'):
