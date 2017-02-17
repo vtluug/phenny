@@ -48,29 +48,31 @@ def wiktionary(word):
     etymology = None
     definitions = {}
     for line in result.splitlines(): 
-        if line == '===Etymology===':
+        if 'Etymology' in line:
             mode = 'etymology'
-        elif 'Noun' in line: 
+        elif '==Noun==' in line: 
             mode = 'noun'
-        elif 'Verb' in line: 
+        elif '==Verb==' in line: 
             mode = 'verb'
-        elif 'Adjective' in line: 
+        elif '==Adjective==' in line:
             mode = 'adjective'
-        elif 'Adverb' in line: 
+        elif '==Adverb==' in line: 
             mode = 'adverb'
-        elif 'Interjection' in line: 
+        elif '==Interjection==' in line: 
             mode = 'interjection'
         elif 'Particle' in line: 
             mode = 'particle'
-        elif 'Preposition' in line: 
+        elif '==Preposition==' in line: 
             mode = 'preposition'
-        elif len(line) == 0:
-            mode = None
+#        elif len(line) == 0:
+#            mode = None
 
         elif mode == 'etymology':
             etymology = text(line)
+            mode = None
         elif mode is not None and '#' in line:
             definitions.setdefault(mode, []).append(text(line))
+            mode = None
 
         if '====Synonyms====' in line: 
             break
