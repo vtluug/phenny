@@ -64,8 +64,6 @@ def wiktionary(word):
             mode = 'particle'
         elif '==Preposition==' in line: 
             mode = 'preposition'
-#        elif len(line) == 0:
-#            mode = None
 
         elif mode == 'etymology':
             etymology = text(line)
