@@ -8,7 +8,7 @@ import unittest
 from mock import MagicMock, Mock
 from modules.search import duck_api, google_search, google_count, \
         formatnumber, g, gc, gcs, bing_search, bing, duck_search, duck, \
-        search, suggest
+        search
 
 
 class TestSearch(unittest.TestCase):
@@ -75,10 +75,3 @@ class TestSearch(unittest.TestCase):
         duck(self.phenny, input)
 
         assert self.phenny.reply.called is True
-
-    def test_suggest(self):
-        input = Mock(group=lambda x: 'vtluug')
-        suggest(self.phenny, input)
-
-        assert (self.phenny.reply.called is True or \
-                self.phenny.say.called is True)
