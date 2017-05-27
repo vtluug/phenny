@@ -184,16 +184,5 @@ def search(phenny, input):
     phenny.reply(result)
 search.commands = ['search']
 
-def suggest(phenny, input): 
-    if not input.group(2):
-        return phenny.reply("No query term.")
-    query = input.group(2)
-    uri = 'http://websitedev.de/temp-bin/suggest.pl?q='
-    answer = web.get(uri + web.quote(query).replace('+', '%2B'))
-    if answer: 
-        phenny.say(answer)
-    else: phenny.reply('Sorry, no result.')
-suggest.commands = ['suggest']
-
 if __name__ == '__main__': 
     print(__doc__.strip())
