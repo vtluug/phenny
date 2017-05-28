@@ -129,7 +129,7 @@ r_duck = re.compile(r'nofollow" class="[^"]+" href=".+?(http.*?)">')
 def duck_search(query): 
     query = query.replace('!', '')
     query = web.quote(query)
-    uri = 'https://duckduckgo.com/html/?q=%s&kl=uk-en&ia=calculator' % query
+    uri = 'https://duckduckgo.com/html/?q=%s&kl=uk-en' % query
     bytes = web.get(uri)
     m = r_duck.search(bytes)
     if m:
