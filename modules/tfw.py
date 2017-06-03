@@ -120,7 +120,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Well, at least we're not in prison.",
             "Slap me around and call me Sally. It'd be an improvement.",
             "Today is the perfect size, really honey.",
-            "Maybe Jersey Shore is on tonight."]
+            "Maybe Jersey Shore is on tonight.","Praise \"Bob\"!",
+            "Or kill me.","This statement is false.","Lies and slander, sire!"]
     elif w.temperature < 27:
         remark = "IT'S FUCKING NICE"
         flavors = [
@@ -162,7 +163,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Why, oh why did we decide to live in an oven?",
             "It's hotter outside than my fever.",
             "I recommend staying away from fat people.",
-            "TAKE IT OFF!",
+            "TAKE IT OFF!", "TAKE FUCKING EVERYTHING OFF!",
             "Even your frigid girlfriend can't save you from today.",
             "I need gloves to touch the steering wheel.",
             "Lock up yo' ice cream trucks, lock up yo' wife.",
@@ -171,14 +172,36 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
 
     if w.descriptor == "thunderstorm":
         remark += " AND THUNDERING"
+        flavors += [
+            "Are you sure you want to go out in that? I'm not",
+            "Fuck my ears!", "Don't go flying a kite. Unless you're Ben Franklin",
+            "Did you think Eris would smile upon your failings?"
+            ]
     elif w.precipitation in ("snow", "snow grains"):
         remark += " AND SNOWING"
+        flavors += [
+            "What's this white stuff that's sticking to everything?",
+            "At least that stuff doesn't glow in the dark!",
+            "How the fuck am I supposed to get around now?",
+            "And you thought four-wheel-drive would help you!",
+            "Go fight those cadets with snowballs",
+            "Just sNOw"]
     elif w.precipitation in ("drizzle", "rain", "unknown precipitation"):
         remark += " AND WET"
+        flavors += [
+            "Just like your mom!", "I guess it can't get much worse",
+            "Hope you have a rain coat", "Shower outside?"
+            ]
     elif w.precipitation in ("ice crystals", "ice pellets"):
         remark += " AND ICY"
+        flavors += [
+            "Nice, but without the N!", "Where's some NaCl when you need it?"
+            "I hope your skates are nearby." ]
     elif w.precipitation in ("hail", "small hail"):
         remark += " AND HAILING"
+        flavors += [
+            "Windshield damage!", "Car alarms!",
+            "Lay face-down outside; free massage!"]
 
     if int(tempf) == 69:
         remark = "IT'S FUCKING SEXY TIME"
