@@ -28,6 +28,7 @@ class TestWeather(unittest.TestCase):
             ('27959', check_places("Dare County", "North Carolina")),
             ('48067', check_places("Royal Oak", "Michigan")),
             ('23606', check_places("Newport News", "Virginia")),
+            ('23113', check_places("Midlothian", "Virginia")),
             ('27517', check_places("Chapel Hill", "North Carolina")),
             ('15213', check_places("Allegheny County", "Pennsylvania")),
             ('90210', check_places("Los Angeles County", "California")),

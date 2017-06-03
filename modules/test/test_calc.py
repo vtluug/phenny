@@ -29,7 +29,7 @@ class TestCalc(unittest.TestCase):
         input = Mock(group=lambda x: '2^64')
         c(self.phenny, input)
 
-        self.phenny.say.assert_called_once_with('1.84467440737096 * 10^19')
+        self.phenny.say.assert_called_once_with('1.84467441 * 10^19')
 
     def test_c_none(self):
         input = Mock(group=lambda x: 'aif')

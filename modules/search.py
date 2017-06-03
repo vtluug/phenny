@@ -13,14 +13,17 @@ import web
 
 r_google = re.compile(r'href="\/url\?q=(http.*?)&')
 
-def google_search(query): 
+def generic_google(query):
     query = web.quote(query)
     uri = 'https://google.co.uk/search?q=%s' % query
-    bytes = web.get(uri)
+    return web.get(uri)
+
+def google_search(query): 
+    bytes = generic_google(query)
     m = r_google.search(bytes)
     if m:
-        result = web.decode(m.group(1))
-        return web.unquote(result)
+        uri = web.decode(m.group(1))
+        return web.unquote(uri)
 
 r_google_count = re.compile(r'id="resultStats">About (.*?) ')
 
@@ -130,8 +133,8 @@ def duck_search(query):
     bytes = web.get(uri)
     m = r_duck.search(bytes)
     if m:
-        result = web.decode(m.group(1))
-        return web.unquote(result)
+        uri = web.decode(m.group(1))
+        return web.unquote(uri)
 
 def duck_api(query):
     uri = 'https://api.duckduckgo.com/?q=%s&format=json&no_redirect=1' % query

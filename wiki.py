@@ -32,6 +32,7 @@ class Wiki(object):
         s = s.replace('&lt;', '<')
         s = s.replace('&amp;', '&')
         s = s.replace('&#160;', ' ')
+        s = s.replace('&quot;', '"')
         return s
 
     @staticmethod
