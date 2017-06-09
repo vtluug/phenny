@@ -42,8 +42,8 @@ def help(phenny, input):
             "For help with a command, just use .help followed by the name of"
             " the command, like \".help botsnack\".")
         phenny.say(
-            "If you need additional help can check out {helpurl} or you can "
-            "talk to my owner, {owner}.".format(
+            "If you need additional help, check out {helpurl} or talk to my "
+            "owner, {owner}.".format(
             helpurl=helpurl,
             owner=phenny.config.owner))
 help.rule = (['help', 'command'], r'(.*)')
