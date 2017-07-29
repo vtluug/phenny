@@ -36,3 +36,9 @@ class TestCalc(unittest.TestCase):
         c(self.phenny, input)
 
         self.phenny.reply.assert_called_once_with('Sorry, no result.')
+
+    def test_c_quirk(self):
+        input = Mock(group=lambda x: '24/50')
+        c(self.phenny, input)
+
+        self.phenny.say.assert_called_once_with('0.48')

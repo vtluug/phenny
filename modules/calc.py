@@ -22,7 +22,7 @@ subs = [
 ]
 
 r_google_calc = re.compile(r'calculator-40.gif.*? = (.*?)<')
-r_google_calc_exp = re.compile(r'calculator-40.gif.*? = (.*?)<sup>(.*?)<')
+r_google_calc_exp = re.compile(r'calculator-40.gif.*? = (.*?)<sup>(.*?)</sup></h2>')
 
 def c(phenny, input):
     """Google calculator."""
