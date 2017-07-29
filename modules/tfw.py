@@ -26,7 +26,7 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
         icao_code = weather.code(phenny, where)
 
     if not icao_code:
-        phenny.say("WHERE THE FUCK IS THAT? Try another location.")
+        phenny.say("WHERE THE FUCK IS THAT? I guess you might think it's a place, but no one else does. Try again.")
         return
 
     uri = 'http://tgftp.nws.noaa.gov/data/observations/metar/stations/%s.TXT'
@@ -35,11 +35,11 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
     except AttributeError:
         raise GrumbleError("THE INTERNET IS FUCKING BROKEN. Please try again later.")
     except web.HTTPError:
-        phenny.say("WHERE THE FUCK IS THAT? Try another location.")
+        phenny.say("WHERE THE FUCK IS THAT? I guess you might think it's a place, but no one else does. Try again.")
         return
 
     if 'Not Found' in bytes:
-        phenny.say("WHERE THE FUCK IS THAT? Try another location.")
+        phenny.say("WHERE THE FUCK IS THAT? I guess you might think it's a place, but no one else does. Try again.")
         return
 
     w = metar.parse(bytes)
@@ -64,33 +64,44 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Nothing a few shots couldn't fix",
             "Should have gone south",
             "You think this is cold? Have you been to upstate New York?",
-            "Why do I live here?", "wang icicles.",
-            "Freezing my balls off out here", "Fuck this place.",
-            "GREAT! If you're a penguin.", "Fresh off the tap.",
+            "Why do I live here?",
+            "wang icicles.",
+            "Freezing my balls off out here",
+            "Fuck this place.",
+            "GREAT! If you're a penguin.",
+            "Fresh off the tap.",
             "Fantastic do-nothing weather.",
-            "Put on some fucking socks.", "Blue balls x 2",
+            "Put on some fucking socks.",
+            "Blue balls x 2",
             "Good news, food won't spoil nearly as fast outside. Bad news, who cares?",
-            "Really?", "Wear a fucking jacket.",
+            "Really?",
+            "Wear a fucking jacket.",
             "I hear Siberia is the same this time of year.",
-            "NOT FUCKING JOGGING WEATHER", "Shrinkage's best friend.",
-            "Warmer than Hoth.", "Good baby making weather.",
+            "NOT FUCKING JOGGING WEATHER",
+            "Shrinkage's best friend.",
+            "Warmer than Hoth.",
+            "Good baby making weather.",
             "Where's a Tauntaun when you need one?",
-            "My nipples could cut glass", "Global Warming? Bullshit.",
+            "My nipples could cut glass",
+            "Global Warming? Bullshit.",
             "Call your local travel agency and ask them if they're serious.",
             "Freezing my balls off IN here",
-            "I'm not sure how you can stand it", "I'm sorry.",
+            "I'm not sure how you can stand it",
+            "I'm sorry.",
             "Even penguins are wearing jackets.",
             "Keep track of your local old people.",
             "WHAT THE FUCK DO YOU MEAN IT'S NICER IN ALASKA?",
             "Sock warmers are go. Everywhere.",
             "Why does my car feel like a pair of ice skates?",
             "Actually, a sharp-stick in the eye might not all be that bad right now.",
-            "THO Season.", "It's a tit-bit nipplie.",
+            "THO Season.",
+            "It's a tit-bit nipplie.",
             "Anything wooden will make a good fireplace. Thank us later.",
             "MOVE THE FUCK ON GOLDILOCKS",
             "I'm defrosting inside of my freezer.",
             "It's time for a vacation.",
-            "It's bone chilling cold out. Sorry ladies."]
+            "It's bone chilling cold out. Sorry ladies."
+            ]
     elif w.temperature < 20:
         remark = "IT'S FUCKING...ALRIGHT"
         flavors = [
@@ -98,7 +109,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Better than a sharp stick in the eye.",
             "Everything's nice butter weather!",
             "At least you aren't living in a small town in Alaska",
-            "It could be worse.", "FUCKING NOTHING TO SEE HERE",
+            "It could be worse.",
+            "FUCKING NOTHING TO SEE HERE",
             "Listen, weather. We need to have a talk.",
             "OH NO. THE WEATHER MACHINE IS BROKEN.",
             "An Eskimo would beat your ass to be here",
@@ -120,32 +132,52 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Well, at least we're not in prison.",
             "Slap me around and call me Sally. It'd be an improvement.",
             "Today is the perfect size, really honey.",
-            "Maybe Jersey Shore is on tonight.","Praise \"Bob\"!",
-            "Or kill me.","This statement is false.","Lies and slander, sire!"]
+            "It's that kind of day where you want zip off pants, until you realize how much of a jackass you look like in them.",
+            "Maybe Jersey Shore is on tonight.",
+            "Praise \"Bob\"!",
+            "Or kill me.",
+            "This statement is false.",
+            "Lies and slander, sire!"
+            ]
     elif w.temperature < 27:
         remark = "IT'S FUCKING NICE"
         flavors = [
-            "I made today breakfast in bed.", "FUCKING SWEET",
-            "Quit your bitching", "Enjoy.", "IT'S ABOUT FUCKING TIME",
-            "READ A FUCKIN' BOOK", "LETS HAVE A FUCKING PICNIC",
-            "It is safe to take your ball-mittens off.", "More please.",
-            "uh, can we trade?", "WOO, Spring Break!",
-            "I can't believe it's not porn!", "I approve of this message!",
-            "Operation beach volleyball is go.", "Plucky ducky kinda day.",
+            "I made today breakfast in bed.",
+            "FUCKING SWEET",
+            "Quit your bitching",
+            "Enjoy.",
+            "IT'S ABOUT FUCKING TIME",
+            "READ A FUCKIN' BOOK",
+            "LETS HAVE A FUCKING PICNIC",
+            "It is safe to take your ball-mittens off.",
+            "More please.",
+            "uh, can we trade?",
+            "I approve of this message!",
+            "WE WERE BEGINNING TO THINK YOU LOST YOUR MIND",
+            "WOO, Spring Break!",
+            "I can't believe it's not porn!",
+            "I approve of this message!",
+            "Operation beach volleyball is go.",
+            "Plucky ducky kinda day.",
             "Today called just to say \"Hi.\"",
             "STOP AND SMELL THE FUCKING ROSES",
-            "FUCKING NOTHING WRONG WITH TODAY", "LETS HAVE A FUCKING SOIREE",
+            "FUCKING NOTHING WRONG WITH TODAY",
+            "LETS HAVE A FUCKING SOIREE",
             "What would you do for a holyshititsniceout bar?",
             "There are no rules today, blow shit up!",
             "Celebrate Today's Day and buy your Today a present so it knows you care.",
             "I feel bad about playing on my computer all day.",
-            "Party in the woods.", "It is now safe to leave your home.",
+            "Party in the woods.",
+            "It is now safe to leave your home.",
             "PUT A FUCKING CAPE ON TODAY, BECAUSE IT'S SUPER",
             "Today is like \"ice\" if it started with an \"n\". Fuck you, we don't mean nce.",
             "Water park! Water drive! Just get wet!",
             "The geese are on their way back! Unless you live where they migrate to for the winter.",
-            "FUCKING AFFABLE AS SHIT", "Give the sun a raise!",
-            "Today is better than an original holographic Charizard. Loser!"]
+            "FUCKING AFFABLE AS SHIT",
+            "Give the sun a raise!",
+            "Go outside and go cycling or some shit, you fitness nerd!",
+            "Today is better than an original holographic Charizard. Loser!"
+            ]
     else:
         remark = "IT'S FUCKING HOT"
         flavors = [
@@ -162,19 +194,23 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "Isn't the desert nice this time of year?",
             "Why, oh why did we decide to live in an oven?",
             "It's hotter outside than my fever.",
-            "I recommend staying away from fat people.",
-            "TAKE IT OFF!", "TAKE FUCKING EVERYTHING OFF!",
+            "TAKE IT OFF!",
+            "TAKE FUCKING EVERYTHING OFF!",
+            "EVEN THAT NEEDS TO COME OFF!",
             "Even your frigid girlfriend can't save you from today.",
             "I need gloves to touch the steering wheel.",
+            "I can hear that power bill running up right now!",
             "Lock up yo' ice cream trucks, lock up yo' wife.",
             "FUCKING SUNBURNED, AND I WAS INSIDE ALL DAY.",
-            "Fuck this shit, I'm moving back to Alaska."]
+            "Fuck this shit, I'm moving back to Alaska."
+            ]
 
     if w.descriptor == "thunderstorm":
         remark += " AND THUNDERING"
         flavors += [
             "Are you sure you want to go out in that? I'm not",
-            "Fuck my ears!", "Don't go flying a kite. Unless you're Ben Franklin",
+            "Fuck my ears!",
+            "Don't go flying a kite. Unless you're Ben Franklin",
             "Did you think Eris would smile upon your failings?"
             ]
     elif w.precipitation in ("snow", "snow grains"):
@@ -185,23 +221,33 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "How the fuck am I supposed to get around now?",
             "And you thought four-wheel-drive would help you!",
             "Go fight those cadets with snowballs",
-            "Just sNOw"]
+            "Where does the white go when the snow melts?",
+            "Just sNOw"
+            ]
     elif w.precipitation in ("drizzle", "rain", "unknown precipitation"):
         remark += " AND WET"
         flavors += [
-            "Just like your mom!", "I guess it can't get much worse",
-            "Hope you have a rain coat", "Shower outside?"
+            "Just like your mom!",
+            "I guess it can't get much worse",
+            "Hope you have a rain coat",
+            "Shower outside?",
+            "If only more buildings had gargoyles..."
             ]
     elif w.precipitation in ("ice crystals", "ice pellets"):
         remark += " AND ICY"
         flavors += [
-            "Nice, but without the N!", "Where's some NaCl when you need it?"
-            "I hope your skates are nearby." ]
+            "Nice, but without the N!",
+            "Where's some NaCl when you need it?",
+            "I hope your skates are nearby.",
+            "Studded tyres? What're those?"
+            ]
     elif w.precipitation in ("hail", "small hail"):
         remark += " AND HAILING"
         flavors += [
-            "Windshield damage!", "Car alarms!",
-            "Lay face-down outside; free massage!"]
+            "Windshield damage!",
+            "Car alarms!",
+            "Lie face-down outside: free massage!"
+            ]
 
     if int(tempf) == 69:
         remark = "IT'S FUCKING SEXY TIME"
@@ -210,7 +256,8 @@ def tfw(phenny, input, fahrenheit=False, celsius=False, mev=False):
             "What comes after 69? Mouthwash.",
             "If you are given two contradictory orders, obey them both.",
             "a good fuckin' time! ;)",
-            "What's the square root of 69? Eight something."]
+            "What's the square root of 69? Eight something."
+            ]
 
     flavor = random.choice(flavors)
 
