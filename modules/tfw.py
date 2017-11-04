@@ -280,7 +280,7 @@ def tfwc(phenny, input):
 tfwc.rule = (['tfwc'], r'(.*)')
 
 def tfwev(phenny, input):
-    """.tfwc <city/zip> - The fucking weather, in fucking degrees celsius."""
+    """.tfwev <city/zip> - The fucking weather, in fucking electron volts."""
     return tfw(phenny, input, mev=True)
 tfwev.rule = (['tfwev'], r'(.*)')
 
