@@ -20,7 +20,7 @@ class TestTfw(unittest.TestCase):
         tfw.tfw(self.phenny, input)
 
         self.phenny.say.assert_called_once_with(
-            "WHERE THE FUCK IS THAT? Try another location.")
+            "WHERE THE FUCK IS THAT? I guess you might think it's a place, but no one else does. Try again.")
 
     def test_celsius(self):
         input = Mock(group=lambda x: '24060')
