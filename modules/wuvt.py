@@ -17,7 +17,7 @@ def wuvt(phenny, input):
     except:
         raise GrumbleError("Failed to fetch current track from WUVT")
 
-    if 'listeners' in trackinfo:
+    if 'listeners' in trackinfo and trackinfo['listeners'] is not None:
         phenny.say(
             "{dj} is currently playing \"{title}\" by {artist} with "
             "{listeners:d} online listeners".format(
