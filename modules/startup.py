@@ -27,13 +27,11 @@ def setup(phenny):
             timer = threading.Timer(refresh_delay, close, ())
             phenny.data['startup.setup.timer'] = timer
             phenny.data['startup.setup.timer'].start()
-            # print "PING!"
-            phenny.write(('PING', phenny.config.host))
+            phenny.proto.ping(phenny.config.host)
         phenny.data['startup.setup.pingloop'] = pingloop
 
         def pong(phenny, input):
             try:
-                # print "PONG!"
                 phenny.data['startup.setup.timer'].cancel()
                 time.sleep(refresh_delay + 60.0)
                 pingloop()
@@ -50,16 +48,16 @@ def startup(phenny, input):
     if phenny.data.get('startup.setup.pingloop'):
         phenny.data['startup.setup.pingloop']()
 
-    if hasattr(phenny.config, 'serverpass'): 
-        phenny.write(('PASS', phenny.config.serverpass))
+    if hasattr(phenny.config, 'serverpass'):
+        phenny.proto.pass_(phenny.config.serverpass)
 
     if hasattr(phenny.config, 'password'): 
         phenny.msg('NickServ', 'IDENTIFY %s' % phenny.config.password)
         time.sleep(5)
 
     # Cf. http://swhack.com/logs/2005-12-05#T19-32-36
-    for channel in phenny.channels: 
-        phenny.write(('JOIN', channel))
+    for channel in phenny.channels:
+        phenny.proto.join(channel)
         time.sleep(0.5)
 startup.rule = r'(.*)'
 startup.event = '251'

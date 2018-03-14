@@ -9,11 +9,16 @@ http://inamidst.com/phenny/
 
 import asynchat
 import asyncore
+import functools
+import proto
 import re
 import socket
 import ssl
 import sys
 import time
+import traceback
+import threading
+from tools import decorate
 
 
 class Origin(object):
@@ -49,8 +54,11 @@ class Bot(asynchat.async_chat):
         self.channels = channels or []
         self.stack = []
 
-        import threading
         self.sending = threading.RLock()
+
+        proto_func = lambda attr: functools.partial(proto.commands[attr], self)
+        proto_map = {attr: proto_func(attr) for attr in proto.commands}
+        self.proto = decorate(object(), proto_map)
 
     def initiate_send(self):
         self.sending.acquire()
@@ -61,24 +69,22 @@ class Bot(asynchat.async_chat):
     #     asynchat.async_chat.push(self, *args, **kargs)
 
     def __write(self, args, text=None):
-        # print 'PUSH: %r %r %r' % (self, args, text)
-        try:
-            if text is not None:
-                # 510 because CR and LF count too, as nyuszika7h points out
-                self.push((b' '.join(args) + b' :' + text)[:510] + b'\r\n')
-            else:
-                self.push(b' '.join(args)[:512] + b'\r\n')
-        except IndexError:
-            pass
+        line = b' '.join(args)
+
+        if text is not None:
+            line += b' :' + text
+
+        # 510 because CR and LF count too
+        self.push(line[:510] + b'\r\n')
 
     def write(self, args, text=None):
         """This is a safe version of __write"""
         def safe(input):
             if type(input) == str:
-                input = input.replace('\n', '')
-                input = input.replace('\r', '')
+                input = re.sub(' ?(\r|\n)+', ' ', input)
                 return input.encode('utf-8')
             else:
+                input = re.sub(b' ?(\r|\n)+', b' ', input)
                 return input
         try:
             args = [safe(arg) for arg in args]
@@ -127,10 +133,12 @@ class Bot(asynchat.async_chat):
     def handle_connect(self):
         if self.verbose:
             print('connected!', file=sys.stderr)
+
         if self.password:
-            self.write(('PASS', self.password))
-        self.write(('NICK', self.nick))
-        self.write(('USER', self.user, '+iw', self.nick), self.name)
+            self.proto.pass_(self.password)
+
+        self.proto.nick(self.nick)
+        self.proto.user(self.user, '+iw', self.name)
 
     def handle_close(self):
         self.close()
@@ -165,7 +173,7 @@ class Bot(asynchat.async_chat):
         self.dispatch(origin, tuple([text] + args))
 
         if args[0] == 'PING':
-            self.write(('PONG', text))
+            self.proto.pong(text)
 
     def dispatch(self, origin, args):
         pass
@@ -203,12 +211,7 @@ class Bot(asynchat.async_chat):
                 self.sending.release()
                 return
 
-        def safe(input):
-            if type(input) == str:
-                input = input.encode('utf-8')
-            input = input.replace(b'\n', b'')
-            return input.replace(b'\r', b'')
-        self.__write((b'PRIVMSG', safe(recipient)), safe(text))
+        self.proto.privmsg(recipient, text)
         self.stack.append((time.time(), text))
         self.stack = self.stack[-10:]
 
@@ -218,12 +221,8 @@ class Bot(asynchat.async_chat):
         text = "\x01ACTION {0}\x01".format(text)
         return self.msg(recipient, text)
 
-    def notice(self, dest, text):
-        self.write(('NOTICE', dest), text)
-
     def error(self, origin):
         try:
-            import traceback
             trace = traceback.format_exc()
             print(trace)
             lines = list(reversed(trace.splitlines()))

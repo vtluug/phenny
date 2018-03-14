@@ -8,6 +8,19 @@ http://inamidst.com/phenny/
 """
 
 
+def decorate(obj, delegate):
+    class Decorator(object):
+        def __getattr__(self, attr):
+            if attr in delegate:
+                return delegate[attr]
+
+            return getattr(obj, attr)
+
+        def __setattr__(self, attr, value):
+            return setattr(obj, attr, value)
+
+    return Decorator()
+
 class GrumbleError(Exception):
     pass
 
