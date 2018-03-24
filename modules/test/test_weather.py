@@ -30,9 +30,9 @@ class TestWeather(unittest.TestCase):
             ('23606', check_places("Newport News", "Virginia")),
             ('23113', check_places("Chesterfield County", "Virginia")),
             ('27517', check_places("Chapel Hill", "North Carolina")),
-            ('15213', check_places("Allegheny County", "Pennsylvania")),
-            ('90210', check_places("Los Angeles County", "California")),
-            ('33109', check_places("Miami-Dade County", "Florida")),
+            ('15213', check_places("North Oakland", "Pennsylvania")),
+            ('90210', check_places("LA", "California")),
+            ('33109', check_places("Fisher Island", "Florida")),
             ('80201', check_places("Denver", "Colorado")),
 
             ("Berlin", check_places("Berlin", "Deutschland")),
