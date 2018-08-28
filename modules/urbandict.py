@@ -17,13 +17,6 @@ def urbandict(phenny, input):
         phenny.say(urbandict.__doc__.strip())
         return
 
-    # create opener
-    #opener = urllib.request.build_opener()
-    #opener.addheaders = [
-    #    ('User-agent', web.Grab().version),
-    #    ('Referer', "http://m.urbandictionary.com"),
-    #]
-
     try:
         data = web.get(
             "http://api.urbandictionary.com/v0/define?term={0}".format(
@@ -33,11 +26,13 @@ def urbandict(phenny, input):
         raise GrumbleError(
             "Urban Dictionary slemped out on me. Try again in a minute.")
 
-    if data['result_type'] == 'no_results':
+    results = data['list']
+
+    if not results:
         phenny.say("No results found for {0}".format(word))
         return
 
-    result = data['list'][0]
+    result = results[0]
     url = 'http://www.urbandictionary.com/define.php?term={0}'.format(
         web.quote(word))
 

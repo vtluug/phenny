@@ -41,7 +41,7 @@ class TestArchwiki(unittest.TestCase):
         archwiki.awik(self.phenny, self.input)
         out = self.phenny.say.call_args[0][0]
 
-        self.keywords = ['policy', 'mail', 'transfer', 'providers']
+        self.keywords = ['DMARC', 'implementation', 'specification']
         self.check_snippet(out)
 
     def test_awik_fragment(self):
