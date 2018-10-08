@@ -12,9 +12,9 @@ Then run ./phenny again
 """
 
 import argparse
-import imp
 import os
 import sys
+from importlib.machinery import SourceFileLoader
 from textwrap import dedent as trim
 
 dotdir = os.path.expanduser('~/.phenny')
@@ -152,7 +152,7 @@ def main(argv=None):
     config_modules = []
     for config_name in config_names(args.config):
         name = os.path.basename(config_name).split('.')[0] + '_config'
-        module = imp.load_source(name, config_name)
+        module = SourceFileLoader(name, config_name).load_module()
         module.filename = config_name
 
         defaults = {
