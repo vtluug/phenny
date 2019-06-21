@@ -162,6 +162,15 @@ def duck(phenny, input):
 duck.commands = ['duck', 'ddg']
 duck.example = '.duck football'
 
+def newton_api(operation, expression):
+    expression = web.quote(expression, safe='')
+    uri = "https://newton.now.sh/{}/{}".format(operation, expression)
+    bytes = web.get(uri)
+    json = web.json(bytes)
+    if 'result' in json:
+        return str(json['result'])
+    return None
+
 def search(phenny, input): 
     if not input.group(2): 
         return phenny.reply('.search for what?')

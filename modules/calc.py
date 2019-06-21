@@ -10,44 +10,34 @@ http://inamidst.com/phenny/
 
 import re
 import web
-from modules.search import generic_google
+from modules.search import newton_api
 
-subs = [
-    ('£', 'GBP '),
-    ('€', 'EUR '),
-    ('\$', 'USD '),
-    (r'\n', '; '),
-    ('&deg;', '°'),
-    (r'\/', '/'),
-]
-
-r_google_calc = re.compile(r'calculator-40.gif.*? = (.*?)<')
-r_google_calc_exp = re.compile(r'calculator-40.gif.*? = (.*?)<sup>(.*?)</sup></h2>')
+operations = {'simplify', 'factor', 'derive', 'integrate', 'zeroes', 'tangent',
+        'area', 'cos', 'sin', 'tan', 'arccos', 'arcsin', 'arctan', 'abs', 'log'}
 
 def c(phenny, input):
-    """Google calculator."""
+    """Newton calculator."""
     if not input.group(2):
         return phenny.reply("Nothing to calculate.")
     q = input.group(2)
-    bytes = generic_google(q)
-    m = r_google_calc_exp.search(bytes)
-    if not m:
-        m = r_google_calc.search(bytes)
+    q = q.split(' ', 1)
 
-    if not m:
-        num = None
-    elif m.lastindex == 1:
-        num = web.decode(m.group(1))
-    else:
-        num = "^".join((web.decode(m.group(1)), web.decode(m.group(2))))
+    if len(q) > 1 and q[0] in operations:
+        operation = q[0]
+        expression = q[1]
+    elif len(q) > 0:
+        operation = 'simplify'
+        expression = q[0]
 
-    if num:
-        num = num.replace('×', '*')
-        phenny.say(num)
+    result = newton_api(operation, expression)
+
+    if result:
+        phenny.say(result)
     else:
         phenny.reply("Sorry, no result.")
 c.commands = ['c']
 c.example = '.c 5 + 3'
+c.example = '.c integrate 1/3 x^3 + x^2 + C'
 
 
 if __name__ == '__main__':
