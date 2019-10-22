@@ -100,6 +100,7 @@ def f_remind(phenny, input):
     else: phenny.say("Hey, I'm not as stupid as Monty you know!")
 
     dumpReminders(phenny.tell_filename, phenny.reminders) # @@ tell
+f_remind.commands = ['tell']
 f_remind.rule = ('$nick', ['tell', 'ask'], r'(\S+) (.*)')
 f_remind.thread = False
 
