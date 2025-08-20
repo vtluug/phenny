@@ -12,8 +12,8 @@ will need to be updated to run on Python3 if they do not already. All of the
 core modules have been ported, removed, or replaced.
 
 ## Requirements
-* Python 3.4+
-* [python-requests](http://docs.python-requests.org/en/latest/)
+* Python 3.12+
+* see `requirements.txt`
 
 ## Installation
 1. Run `./phenny` - this creates a default config file
