@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 http://inamidst.com/phenny/
 """
 
-import sys, os.path, time, imp
+import sys, os.path, time, notimp
 import irc
 
 def f_reload(phenny, input): 
@@ -34,7 +34,7 @@ def f_reload(phenny, input):
     if not os.path.isfile(path): 
         return phenny.reply('Found %s, but not the source file' % name)
 
-    module = imp.load_source(name, path)
+    module = notimp.load_source(name, path)
     sys.modules[name] = module
     if hasattr(module, 'setup'): 
         module.setup(phenny)
