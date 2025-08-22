@@ -61,10 +61,21 @@ def f_remind(phenny, input):
     teller = input.nick
 
     # @@ Multiple comma-separated tellees? Cf. Terje, #swhack, 2006-04-15
-    verb, tellee, msg = input.groups()
-    verb = verb
-    tellee = tellee
-    msg = msg
+    groups = input.groups()
+    verb = groups[0]
+    # .tell
+    if len(groups) == 2:
+        new_groups = groups[1].rstrip().split(' ', 1)
+        if len(new_groups) == 2:
+            tellee = new_groups[0]
+            msg = new_groups[1]
+        else:
+            # no msg, ignore
+            return
+    # tell:
+    else:
+        tellee = groups[1]
+        msg = groups[2]
 
     tellee_original = tellee.rstrip('.,:;')
     tellee = tellee_original.lower()
@@ -91,8 +102,8 @@ def f_remind(phenny, input):
         #                              "your message may get lost.")
 
         rand = random.random()
-        if rand > 0.9999: response = "yeah, yeah"
-        elif rand > 0.999: response = "yeah, sure, whatever"
+        if rand > 0.999: response = "yeah, yeah"
+        elif rand > 0.99: response = "yeah, sure, whatever"
 
         phenny.reply(response)
     elif teller.lower() == tellee: 
@@ -100,6 +111,7 @@ def f_remind(phenny, input):
     else: phenny.say("Hey, I'm not as stupid as Monty you know!")
 
     dumpReminders(phenny.tell_filename, phenny.reminders) # @@ tell
+f_remind.commands = ['tell']
 f_remind.rule = ('$nick', ['tell', 'ask'], r'(\S+) (.*)')
 f_remind.thread = False
 
